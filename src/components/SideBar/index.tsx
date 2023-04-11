@@ -1,10 +1,15 @@
+import { useSession } from "next-auth/react";
 import {
   HomeIcon,
   MagnifyingGlassIcon,
   MusicalNoteIcon,
 } from "@heroicons/react/24/outline";
 
+import SignOut from "../SignOut";
+
 function SideBar() {
+  const { data: session, status } = useSession();
+
   const links = [
     {
       label: "Home",
@@ -32,6 +37,9 @@ function SideBar() {
             <span>{link.label}</span>
           </li>
         ))}
+        <li>
+          <SignOut />
+        </li>
       </ul>
     </nav>
   );
