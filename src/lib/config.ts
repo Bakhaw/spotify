@@ -1,9 +1,8 @@
-const { JWT_SECRET, SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET } = process.env;
-
 const config = {
-  clientId: SPOTIFY_CLIENT_ID,
-  clientSecret: SPOTIFY_CLIENT_SECRET,
-  jwtSecret: JWT_SECRET,
+  clientId: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID,
+  clientSecret: process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_SECRET,
+  jwtSecret: process.env.NEXT_PUBLIC_JWT_SECRET,
+  redirectUri: process.env.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI,
 };
 
 export default config;

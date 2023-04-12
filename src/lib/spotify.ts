@@ -26,6 +26,7 @@ export const LOGIN_URL = `https://accounts.spotify.com/authorize?${queryParamStr
 const spotifyApi = new SpotifyWebApi({
   clientId: config.clientId,
   clientSecret: config.clientSecret,
+  redirectUri: config.redirectUri,
 });
 
 export default spotifyApi;
