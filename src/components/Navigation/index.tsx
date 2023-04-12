@@ -7,7 +7,7 @@ import {
 
 import SignOut from "../SignOut";
 
-function SideBar() {
+function Navigation() {
   const { data: session, status } = useSession();
 
   const links = [
@@ -45,4 +45,4 @@ function SideBar() {
   );
 }
 
-export default SideBar;
+export default Navigation;

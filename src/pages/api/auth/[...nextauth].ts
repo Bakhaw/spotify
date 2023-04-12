@@ -67,9 +67,12 @@ export default NextAuth({
     async session({ session, token }) {
       const userSession = {
         ...session,
-        accessToken: token.accessToken,
-        refreshToken: token.refreshToken,
-        username: token.username,
+        user: {
+          ...session.user,
+          accessToken: token.accessToken,
+          refreshToken: token.refreshToken,
+          username: token.username,
+        },
       };
 
       return userSession;
