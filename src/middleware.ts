@@ -13,9 +13,16 @@ export async function middleware(req: NextRequest) {
   // Token will exist if user is logged in
   const token = await getToken({ req, secret: config.jwtSecret });
 
+  // Redirect the user to home page if they are on login page
+  // 2. AND already have a valid token
+  if (pathname === "/login" && token) {
+    req.nextUrl.pathname = "/";
+    return NextResponse.redirect(req.nextUrl);
+  }
+
   // Allow the requests if the following is true
   // 1. If its a request for a next-auth session & provider fetching
-  // 2. If the token exists
+  // 2. OR If the token exists
   if (pathname.includes("/api/auth") || token) {
     return NextResponse.next();
   }
