@@ -1,4 +1,5 @@
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import {
   HomeIcon,
@@ -7,7 +8,7 @@ import {
 } from "@heroicons/react/24/outline";
 
 import SignOut from "../SignOut";
-import { useRouter } from "next/router";
+import Playlists from "../Playlists";
 
 function Navigation() {
   const { data: session, status } = useSession();
@@ -35,7 +36,7 @@ function Navigation() {
   ];
 
   return (
-    <nav className="h-screen w-52 bg-[#2d2e37] p-2">
+    <nav className="flex flex-col justify-between items-start gap-4 h-screen w-60 bg-[#2d2e37] p-4 overflow-x-hidden overflow-y-scroll scrollbar-hide">
       <ul className="flex flex-col gap-4">
         {links.map((link, index) => (
           <Link
@@ -47,10 +48,11 @@ function Navigation() {
             <span>{link.label}</span>
           </Link>
         ))}
-        <li>
-          <SignOut />
-        </li>
       </ul>
+
+      <Playlists />
+
+      <SignOut />
     </nav>
   );
 }

@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 import SpotifyProvider from "next-auth/providers/spotify";
 import { JWT } from "next-auth/jwt";
 
-import spotifyApi, { LOGIN_URL } from "@/lib/spotify";
+import spotifyApi, { params } from "@/lib/spotify";
 import config from "@/lib/config";
 
 async function refreshAccessToken(token: JWT) {
@@ -19,8 +19,6 @@ async function refreshAccessToken(token: JWT) {
       refreshToken: refreshedToken.refresh_token ?? token.refreshToken,
     };
   } catch (error) {
-    console.error(error);
-
     return {
       ...token,
       error: "RefreshAccessTokenError",
@@ -31,7 +29,7 @@ async function refreshAccessToken(token: JWT) {
 export default NextAuth({
   providers: [
     SpotifyProvider({
-      authorization: LOGIN_URL,
+      authorization: spotifyApi.createAuthorizeURL(params.scopes, params.state),
       clientId: config.clientId ?? "",
       clientSecret: config.clientSecret ?? "",
     }),

@@ -1,6 +1,13 @@
 import SpotifyWebApi from "spotify-web-api-node";
 
 import config from "./config";
+import generateRandomString from "./generateRandomString";
+
+const spotifyApi = new SpotifyWebApi({
+  clientId: config.clientId,
+  clientSecret: config.clientSecret,
+  redirectUri: config.redirectUri,
+});
 
 const scopes = [
   "playlist-read-private",
@@ -13,20 +20,11 @@ const scopes = [
   "user-top-read",
   "user-follow-read",
   "streaming",
-].join(",");
+];
 
-const params = {
+export const params = {
   scopes,
+  state: generateRandomString(100),
 };
-
-const queryParamString = new URLSearchParams(params).toString();
-
-export const LOGIN_URL = `https://accounts.spotify.com/authorize?${queryParamString}`;
-
-const spotifyApi = new SpotifyWebApi({
-  clientId: config.clientId,
-  clientSecret: config.clientSecret,
-  redirectUri: config.redirectUri,
-});
 
 export default spotifyApi;
