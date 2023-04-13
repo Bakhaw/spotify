@@ -12,6 +12,10 @@ import { useRouter } from "next/router";
 function Navigation() {
   const { data: session, status } = useSession();
 
+  const router = useRouter();
+
+  if (router.asPath === "/login") return null;
+
   const links = [
     {
       href: "/",
@@ -26,10 +30,9 @@ function Navigation() {
     {
       href: "/library",
       icon: <MusicalNoteIcon className="h-6 w-6" />,
-      label: "Your Library",
+      label: "Library",
     },
   ];
-  const router = useRouter();
 
   return (
     <nav className="h-screen w-52 bg-[#2d2e37] p-2">

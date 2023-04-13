@@ -10,7 +10,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <div className="flex h-screen">
         <Navigation />
 
-        <div className="w-full h-screen overflow-x-hidden overflow-y-scroll">
+        <div className="w-full h-screen overflow-x-hidden overflow-y-scroll scrollbar-hide">
           <Component {...pageProps} />
         </div>
       </div>
