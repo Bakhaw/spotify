@@ -6,7 +6,10 @@ import "swiper/css";
 import Cover from "../Cover";
 
 interface HorizontalSliderProps {
-  items: SpotifyApi.ArtistObjectFull[] | SpotifyApi.AlbumObjectFull[];
+  items:
+    | SpotifyApi.ArtistObjectFull[]
+    | SpotifyApi.AlbumObjectFull[]
+    | SpotifyApi.AlbumObjectSimplified[];
   type: "artist" | "album";
   title: string;
 }

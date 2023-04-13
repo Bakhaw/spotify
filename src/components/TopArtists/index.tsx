@@ -20,8 +20,6 @@ const TopArtists: React.FC = () => {
     }
   }, [token]);
 
-  console.log(topArtists);
-
   if (!topArtists) return null;
 
   return (
