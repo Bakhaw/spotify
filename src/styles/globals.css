@@ -25,3 +25,12 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+/* Override "swiper" css */
+.swiper {
+    padding: 0 32px !important;
+}
+
+.swiper-slide {
+    width: 200px !important;
+}

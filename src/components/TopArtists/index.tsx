@@ -25,9 +25,9 @@ const TopArtists: React.FC = () => {
   if (!topArtists) return null;
 
   return (
-    <>
+    <div className="w-full py-8">
       <HorizontalSlider items={topArtists} type="artist" title="Top Artists" />
-    </>
+    </div>
   );
 };
 

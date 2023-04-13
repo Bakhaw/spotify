@@ -2,9 +2,9 @@ import TopArtists from "@/components/TopArtists";
 
 function Home() {
   return (
-    <main className="flex min-h-screen justify-between">
+    <div className="flex min-h-screen justify-between w-full">
       <TopArtists />
-    </main>
+    </div>
   );
 }
 

@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
 
+import "swiper/css";
+
 import Cover from "../Cover";
 
 interface HorizontalSliderProps {
@@ -15,15 +17,10 @@ const HorizontalSlider: React.FC<HorizontalSliderProps> = ({
   title,
 }) => {
   return (
-    <div className="flex flex-col w-full">
-      <h1>{title}</h1>
+    <div className="w-full">
+      <h1 className="px-8 mb-4 text-3xl">{title}</h1>
 
-      <Swiper
-        className="border-2 border-red-300"
-        slidesPerView="auto"
-        spaceBetween={20}
-        speed={700}
-      >
+      <Swiper slidesPerView="auto" spaceBetween={20} speed={1000}>
         {items.map((item) => (
           <SwiperSlide key={item.id}>
             <Link href={`/${type}/${item.id}`}>
