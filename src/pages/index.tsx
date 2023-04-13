@@ -1,4 +1,3 @@
-import Navigation from "@/components/Navigation";
 import TopArtists from "@/components/TopArtists";
 
 function Home() {
