@@ -11,7 +11,7 @@ const Login: React.FC<LoginProps> = ({ providers }) => {
   }
 
   return (
-    <div className="flex items-center justify-center h-screen">
+    <div className="flex items-center justify-center h-full">
       {Object.values(providers).map((provider) => (
         <div key={provider.name}>
           <button
