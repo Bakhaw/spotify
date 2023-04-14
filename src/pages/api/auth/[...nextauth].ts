@@ -34,6 +34,9 @@ export default NextAuth({
       clientSecret: config.clientSecret ?? "",
     }),
   ],
+  session: {
+    strategy: "jwt",
+  },
   secret: config.jwtSecret,
   pages: {
     signIn: "/login",
