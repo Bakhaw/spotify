@@ -6,8 +6,9 @@ import {
   PlayIcon,
 } from "@heroicons/react/24/solid";
 
-import useSpotify from "@/hooks/useSpotify";
+import isFullTrack from "@/lib/isFullTrack";
 import millisToMinutesAndSeconds from "@/lib/millisToMinutesAndSeconds";
+import useSpotify from "@/hooks/useSpotify";
 import Cover from "../Cover";
 
 interface TrackProps {
@@ -16,11 +17,6 @@ interface TrackProps {
   showCover?: boolean; // default false;
   track: SpotifyApi.TrackObjectFull | SpotifyApi.TrackObjectSimplified;
 }
-
-const isFullTrack = (
-  track: SpotifyApi.TrackObjectFull | SpotifyApi.TrackObjectSimplified
-): track is SpotifyApi.TrackObjectFull =>
-  Boolean((track as SpotifyApi.TrackObjectFull).album);
 
 const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
   const spotifyApi = useSpotify();

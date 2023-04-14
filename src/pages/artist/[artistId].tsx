@@ -12,8 +12,8 @@ function ArtistDetails() {
   const spotifyApi = useSpotify();
 
   const [artist, setArtist] = useState<SpotifyApi.ArtistObjectFull>();
-  const [albums, setAlbums] = useState<SpotifyApi.AlbumObjectSimplified[]>();
-  const [singles, setSingles] = useState<SpotifyApi.AlbumObjectSimplified[]>();
+  const [projects, setProjects] =
+    useState<SpotifyApi.AlbumObjectSimplified[]>();
 
   async function getArtistData() {
     if (!artistId) return;
@@ -22,25 +22,34 @@ function ArtistDetails() {
     setArtist(artist);
 
     const { body: projects } = await spotifyApi.getArtistAlbums(
-      String(artistId)
+      String(artistId),
+      { limit: 50 }
     );
-
-    const albums = projects.items.filter(
-      (project) => project.album_type === "album"
-    );
-    const singles = projects.items.filter(
-      (project) => project.album_type !== "album"
-    );
-
-    setAlbums(albums);
-    setSingles(singles);
+    setProjects(projects.items);
   }
 
   useEffect(() => {
     getArtistData();
   }, [artistId]);
 
-  if (!artist || !albums || !singles) return null;
+  if (!artist || !projects) return null;
+
+  const seen = new Set();
+  const removeDuplicatesAlbums = projects
+    .filter((project) => project.album_group === "album")
+    .filter((el) => {
+      const duplicate = seen.has(el.name);
+      seen.add(el.name);
+
+      return Boolean(!duplicate);
+    });
+
+  const singles = projects.filter(
+    (project) => project.album_group === "single"
+  );
+  const appearsOn = projects.filter(
+    (project) => project.album_group === "appears_on"
+  );
 
   return (
     <div className="py-8">
@@ -52,9 +61,14 @@ function ArtistDetails() {
         </h1>
       </div>
 
-      <div className="flex flex-col gap-20">
-        <HorizontalSlider items={albums} type="album" title="albums" />
+      <div className="flex flex-col gap-12">
+        <HorizontalSlider
+          items={removeDuplicatesAlbums}
+          type="album"
+          title="albums"
+        />
         <HorizontalSlider items={singles} type="album" title="singles & ep" />
+        <HorizontalSlider items={appearsOn} type="album" title="appears on" />
       </div>
     </div>
   );
