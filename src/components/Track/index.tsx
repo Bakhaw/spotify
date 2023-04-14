@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { HeartIcon as HeartIconOutline } from "@heroicons/react/24/outline";
-import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
+import {
+  HeartIcon as HeartIconSolid,
+  PlayIcon,
+} from "@heroicons/react/24/solid";
 
 import useSpotify from "@/hooks/useSpotify";
 import millisToMinutesAndSeconds from "@/lib/millisToMinutesAndSeconds";
@@ -22,6 +25,7 @@ const Track: React.FC<TrackProps> = ({
 }) => {
   const spotifyApi = useSpotify();
   const [trackSaved, setTrackSaved] = useState<boolean>(false);
+  const [showPlayIcon, setShowIcon] = useState<boolean>(false);
 
   async function checkIfTrackIsSaved() {
     if (!track) return;
@@ -42,7 +46,7 @@ const Track: React.FC<TrackProps> = ({
     }
   }
 
-  function onTrackDoubleClick() {
+  function playSong() {
     spotifyApi.play({ uris: [track.uri] });
   }
 
@@ -55,14 +59,24 @@ const Track: React.FC<TrackProps> = ({
   return (
     <div
       className="flex justify-between items-center rounded-xl h-14 w-full bg-[#2d2e37] text-gray-300 overflow-hidden transition-colors hover:bg-[#666770] hover:text-white"
-      onDoubleClick={onTrackDoubleClick}
+      onMouseEnter={() => setShowIcon(true)}
+      onMouseLeave={() => setShowIcon(false)}
+      onDoubleClick={playSong}
     >
       <div className="flex justify-start items-center">
-        {order && <span className="px-4">{order}</span>}
+        {order && (
+          <div className="text-center w-14 px-4">
+            {showPlayIcon ? (
+              <PlayIcon className="h-5 w-5 cursor-pointer" onClick={playSong} />
+            ) : (
+              <span>{order}</span>
+            )}
+          </div>
+        )}
 
         {coverSrc && showCover && <Cover size="small" square src={coverSrc} />}
 
-        <div className="flex flex-col gap-1 w-80">
+        <div className="flex flex-col w-80">
           <div className="text-white overflow-hidden whitespace-nowrap text-ellipsis">
             {track.name}
           </div>
