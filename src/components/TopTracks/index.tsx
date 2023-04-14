@@ -26,7 +26,7 @@ const TopTracks: React.FC<TopTracksProps> = () => {
 
   return (
     <div className="p-8">
-      <TrackList showCover title="Mostly Played" tracks={topTracks} />
+      <TrackList showCover title="Mostly Played" fullTracks={topTracks} />
     </div>
   );
 };

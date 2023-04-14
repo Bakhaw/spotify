@@ -8,12 +8,18 @@ import millisToMinutesAndSeconds from "@/lib/millisToMinutesAndSeconds";
 import Cover from "../Cover";
 
 interface TrackProps {
+  coverSrc?: string;
   order?: number | null;
   showCover?: boolean; // default false;
-  track: SpotifyApi.TrackObjectFull;
+  track: SpotifyApi.TrackObjectFull | SpotifyApi.TrackObjectSimplified;
 }
 
-const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
+const Track: React.FC<TrackProps> = ({
+  coverSrc,
+  order,
+  showCover = false,
+  track,
+}) => {
   const spotifyApi = useSpotify();
   const [trackSaved, setTrackSaved] = useState<boolean>(false);
 
@@ -37,7 +43,7 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
   }
 
   function onTrackDoubleClick() {
-    spotifyApi.play({ context_uri: track.album.uri });
+    spotifyApi.play({ uris: [track.uri] });
   }
 
   useEffect(() => {
@@ -51,12 +57,10 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
       className="flex justify-between items-center rounded-xl h-14 w-full bg-[#2d2e37] text-gray-300 overflow-hidden transition-colors hover:bg-[#666770] hover:text-white"
       onDoubleClick={onTrackDoubleClick}
     >
-      <div className="flex justify-start items-center gap-3">
-        {order && <span>{order}</span>}
+      <div className="flex justify-start items-center">
+        {order && <span className="px-4">{order}</span>}
 
-        {showCover && (
-          <Cover size="small" square src={track.album?.images?.[0]?.url} />
-        )}
+        {coverSrc && showCover && <Cover size="small" square src={coverSrc} />}
 
         <div className="flex flex-col gap-1 w-80">
           <div className="text-white overflow-hidden whitespace-nowrap text-ellipsis">
