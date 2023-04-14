@@ -6,7 +6,6 @@ import generateRandomString from "./generateRandomString";
 const spotifyApi = new SpotifyWebApi({
   clientId: config.clientId,
   clientSecret: config.clientSecret,
-  redirectUri: config.redirectUri,
 });
 
 const scopes = [
