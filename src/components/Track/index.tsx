@@ -47,6 +47,7 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
       ...(isFullTrack(track)
         ? {
             context_uri: track.album.uri,
+            offset: { uri: track.uri },
           }
         : {
             uris: [track.uri],
