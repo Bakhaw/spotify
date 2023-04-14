@@ -5,4 +5,6 @@ const config = {
   redirectUri: process.env.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI,
 };
 
+console.log("config", config);
+
 export default config;
