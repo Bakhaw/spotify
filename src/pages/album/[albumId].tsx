@@ -58,7 +58,7 @@ const Album: React.FC = () => {
         </div>
       </div>
 
-      <TrackList showOrder simpleTracks={album.tracks.items} />
+      <TrackList showOrder tracks={album.tracks.items} />
     </div>
   );
 };

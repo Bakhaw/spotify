@@ -17,12 +17,12 @@ interface TrackProps {
   track: SpotifyApi.TrackObjectFull | SpotifyApi.TrackObjectSimplified;
 }
 
-const Track: React.FC<TrackProps> = ({
-  coverSrc,
-  order,
-  showCover = false,
-  track,
-}) => {
+const isFullTrack = (
+  track: SpotifyApi.TrackObjectFull | SpotifyApi.TrackObjectSimplified
+): track is SpotifyApi.TrackObjectFull =>
+  Boolean((track as SpotifyApi.TrackObjectFull).album);
+
+const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
   const spotifyApi = useSpotify();
   const [trackSaved, setTrackSaved] = useState<boolean>(false);
   const [showPlayIcon, setShowIcon] = useState<boolean>(false);
@@ -47,7 +47,15 @@ const Track: React.FC<TrackProps> = ({
   }
 
   function playSong() {
-    spotifyApi.play({ uris: [track.uri] });
+    spotifyApi.play({
+      ...(isFullTrack(track)
+        ? {
+            context_uri: track.album.uri,
+          }
+        : {
+            uris: [track.uri],
+          }),
+    });
   }
 
   useEffect(() => {
@@ -74,7 +82,23 @@ const Track: React.FC<TrackProps> = ({
           </div>
         )}
 
-        {coverSrc && showCover && <Cover size="small" square src={coverSrc} />}
+        {showCover && (
+          <div className="h-[60px] w-[60px] mr-3 relative">
+            <Cover
+              size="small"
+              square
+              src={isFullTrack(track) ? track.album.images[0].url : null}
+            />
+            {showPlayIcon && (
+              <div className="h-full w-full flex justify-center items-center top-0 absolute bg-black/90">
+                <PlayIcon
+                  className="h-5 w-5 cursor-pointer"
+                  onClick={playSong}
+                />
+              </div>
+            )}
+          </div>
+        )}
 
         <div className="flex flex-col w-80">
           <div className="text-white overflow-hidden whitespace-nowrap text-ellipsis">

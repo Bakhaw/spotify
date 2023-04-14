@@ -1,8 +1,9 @@
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+
+import useSpotify from "@/hooks/useSpotify";
 import Cover from "@/components/Cover";
 import HorizontalSlider from "@/components/HorizontalSlider";
-import useSpotify from "@/hooks/useSpotify";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 
 function ArtistDetails() {
   const {
@@ -52,8 +53,8 @@ function ArtistDetails() {
       </div>
 
       <div className="flex flex-col gap-20">
-        <HorizontalSlider items={albums} type="album" title="Albums" />
-        <HorizontalSlider items={singles} type="album" title="Singles & EP" />
+        <HorizontalSlider items={albums} type="album" title="albums" />
+        <HorizontalSlider items={singles} type="album" title="singles & ep" />
       </div>
     </div>
   );

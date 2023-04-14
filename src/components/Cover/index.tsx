@@ -4,7 +4,7 @@ interface CoverProps {
   rounded?: boolean;
   size?: "small" | "medium" | "large"; // default: "medium"
   square?: boolean; // removes border-radius
-  src: string;
+  src: string | null;
 }
 
 const Cover: React.FC<CoverProps> = ({
@@ -25,7 +25,7 @@ const Cover: React.FC<CoverProps> = ({
     <img
       alt="Cover"
       className={classNames(
-        `object-cover rounded-3xl ${sizes[size]}`,
+        `block object-cover rounded-3xl ${sizes[size]}`,
         rounded && "rounded-full",
         square && "rounded-none"
       )}
