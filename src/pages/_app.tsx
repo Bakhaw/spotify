@@ -1,11 +1,12 @@
 import { SessionProvider } from "next-auth/react";
+import { RecoilRoot } from "recoil";
 import type { AppProps } from "next/app";
 
+import Container from "@/components/Container";
 import Navigation from "@/components/Navigation";
 import Player from "@/components/Player";
 
 import "@/styles/globals.css";
-import { RecoilRoot } from "recoil";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -13,10 +14,9 @@ export default function App({ Component, pageProps }: AppProps) {
       <RecoilRoot>
         <div className="flex h-screen">
           <Navigation />
-
-          <div className="w-full h-screen overflow-x-hidden overflow-y-scroll scrollbar-hide">
+          <Container>
             <Component {...pageProps} />
-          </div>
+          </Container>
 
           <Player />
         </div>
