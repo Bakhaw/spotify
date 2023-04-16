@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
 import Link from "next/link";
 import { HeartIcon as HeartIconOutline } from "@heroicons/react/24/outline";
 import {
@@ -10,6 +11,7 @@ import isFullTrack from "@/lib/isFullTrack";
 import millisToMinutesAndSeconds from "@/lib/millisToMinutesAndSeconds";
 import useSpotify from "@/hooks/useSpotify";
 import Cover from "../Cover";
+import { currentTrackIdState, isPlayingState } from "@/atoms/trackAtom";
 
 interface TrackProps {
   coverSrc?: string;
@@ -22,6 +24,9 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
   const spotifyApi = useSpotify();
   const [trackSaved, setTrackSaved] = useState<boolean>(false);
   const [showPlayIcon, setShowIcon] = useState<boolean>(false);
+  const [currentTrackId, setCurrentTrackId] =
+    useRecoilState(currentTrackIdState);
+  const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
 
   async function checkIfTrackIsSaved() {
     if (!track) return;
@@ -43,6 +48,9 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
   }
 
   function playSong() {
+    setCurrentTrackId(track.id);
+    setIsPlaying(true);
+
     spotifyApi.play({
       ...(isFullTrack(track)
         ? {

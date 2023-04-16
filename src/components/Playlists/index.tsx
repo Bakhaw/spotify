@@ -1,17 +1,23 @@
-import useSpotify from "@/hooks/useSpotify";
-import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import Link from "next/link";
+
+import useSpotify from "@/hooks/useSpotify";
+import { playlistState } from "@/atoms/playlistAtom";
 
 function Playlists() {
   const spotifyApi = useSpotify();
   const token = spotifyApi.getAccessToken();
-  const [userPlaylists, setUserPlaylists] =
-    useState<SpotifyApi.PlaylistBaseObject[]>();
+  const [playlists, setPlaylists] =
+    useRecoilState<SpotifyApi.PlaylistBaseObject[]>(playlistState);
 
   async function getPlaylists() {
-    const { body } = await spotifyApi.getUserPlaylists({ limit: 50 });
-
-    setUserPlaylists(body.items);
+    try {
+      const { body } = await spotifyApi.getUserPlaylists({ limit: 50 });
+      setPlaylists(body.items);
+    } catch (error) {
+      console.log("Error when fetching", error);
+    }
   }
 
   useEffect(() => {
@@ -20,11 +26,11 @@ function Playlists() {
     }
   }, [token]);
 
-  if (!userPlaylists) return null;
+  if (!playlists) return null;
 
   return (
     <ul className="flex flex-col gap-2 w-full">
-      {userPlaylists.map((playlist, index) => (
+      {playlists.map((playlist, index) => (
         <Link
           key={index}
           href={`/playlist/${playlist.id}`}
