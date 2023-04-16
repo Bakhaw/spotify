@@ -31,16 +31,13 @@ function Player() {
 
   async function getCurrentTrack() {
     if (!track) {
-      const { body: currentPlayingTrack } =
-        await spotifyApi.getMyCurrentPlayingTrack();
-
-      if (currentPlayingTrack.item) {
-        setCurrentTrackId(currentPlayingTrack.item.id);
-      }
-
       const { body: currentPlaybackState } =
         await spotifyApi.getMyCurrentPlaybackState();
+
+      if (!currentPlaybackState) return;
+
       setIsPlaying(currentPlaybackState.is_playing);
+      setCurrentTrackId(String(currentPlaybackState.item?.id));
     }
   }
 
@@ -87,7 +84,6 @@ function Player() {
   useEffect(() => {
     if (token) {
       if (volume > 0 && volume < 100) {
-        console.log("vbolmue changeed");
         debounceAdjustVolume(volume);
       }
     }

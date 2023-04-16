@@ -37,7 +37,7 @@ function Navigation() {
 
   return (
     <nav
-      className="flex flex-col justify-between items-start gap-4 w-60 bg-[#2d2e37] p-4 overflow-x-hidden overflow-y-scroll scrollbar-hide"
+      className="hidden md:flex flex-col justify-between items-start gap-4 w-60 bg-[#2d2e37] p-4 overflow-x-hidden overflow-y-scroll scrollbar-hide"
       style={{
         height: track ? "calc(100vh - 80px)" : "100vh",
       }}

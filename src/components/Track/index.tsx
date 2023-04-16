@@ -105,7 +105,7 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
           </div>
         )}
 
-        <div className="flex flex-col w-80">
+        <div className="flex flex-col w-[35vw] md:w-80">
           <div className="text-white overflow-hidden whitespace-nowrap text-ellipsis">
             {track.name}
           </div>

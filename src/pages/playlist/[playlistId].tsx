@@ -37,7 +37,7 @@ function Playlist() {
 
   return (
     <div className="flex flex-col gap-8 p-8">
-      <div className="flex items-center gap-6">
+      <div className="flex flex-col md:flex-row items-center gap-6">
         <Cover src={playlist.images?.[0]?.url} />
 
         <div className="flex flex-col justify-between">
