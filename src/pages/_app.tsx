@@ -12,13 +12,13 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <SessionProvider session={pageProps.session}>
       <RecoilRoot>
-        <div className="flex h-screen">
-          <Navigation />
+        <div className="flex flex-col h-screen">
           <Container>
             <Component {...pageProps} />
           </Container>
 
           <Player />
+          <Navigation />
         </div>
       </RecoilRoot>
     </SessionProvider>

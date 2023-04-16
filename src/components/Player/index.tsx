@@ -10,13 +10,14 @@ import {
   PlayCircleIcon,
   SpeakerXMarkIcon,
   SpeakerWaveIcon,
+  ChevronUpIcon,
 } from "@heroicons/react/24/solid";
 
-import isFullTrack from "@/lib/isFullTrack";
 import useSpotify from "@/hooks/useSpotify";
 import useTrack from "@/hooks/useTrack";
 import { currentTrackIdState, isPlayingState } from "@/atoms/trackAtom";
 import Cover from "../Cover";
+import ArtistLink from "../ArtistLink";
 
 function Player() {
   const { data: session } = useSession();
@@ -38,6 +39,7 @@ function Player() {
 
       setIsPlaying(currentPlaybackState.is_playing);
       setCurrentTrackId(String(currentPlaybackState.item?.id));
+      setVolume(Number(currentPlaybackState.device.volume_percent));
     }
   }
 
@@ -92,18 +94,24 @@ function Player() {
   if (!track) return null;
 
   return (
-    <div className="absolute bottom-0 z-50 w-full px-6 py-2 h-20 overflow-hidden bg-[#060606] flex justify-between items-center">
+    <div className="w-full px-6 py-2 h-20 overflow-hidden bg-[#060606] flex justify-between items-center">
       <div className="flex justify-between items-center w-full">
         <div className="flex flex-1 justify-start items-center gap-3 h-full">
           <Cover size="small" square src={track.album.images[0].url} />
 
-          <div>
-            <h1>{track.name}</h1>
-            <h1>{isFullTrack(track) ? track.artists[0].name : null}</h1>
+          <div className="w-[50vw] md:w-[30vw]">
+            <h1 className="overflow-hidden text-ellipsis whitespace-nowrap">
+              {track.name}
+            </h1>
+            <ArtistLink artist={track.artists[0]} />
           </div>
         </div>
 
-        <div className="flex flex-1 justify-center items-center gap-3 h-full">
+        <div className="md:hidden">
+          <ChevronUpIcon className="h-6 w-6" role="button" />
+        </div>
+
+        <div className="hidden md:flex flex-1 justify-center items-center gap-3 h-full">
           <BackwardIcon
             className="h-6 w-6"
             role="button"
@@ -129,9 +137,15 @@ function Player() {
           />
         </div>
 
-        <div className="flex flex-1 justify-end items-center gap-3 h-full">
+        <div className="hidden md:flex flex-1 justify-end items-center gap-3 h-full">
           <SpeakerXMarkIcon className="h-6 w-6" role="button" />
-          <input min={0} max={100} type="range" onChange={onVolumeChange} />
+          <input
+            min={0}
+            max={100}
+            value={volume}
+            type="range"
+            onChange={onVolumeChange}
+          />
           <SpeakerWaveIcon className="h-6 w-6" role="button" />
         </div>
       </div>

@@ -1,17 +1,22 @@
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import Link from "next/link";
-import { HeartIcon as HeartIconOutline } from "@heroicons/react/24/outline";
+import {
+  HeartIcon as HeartIconOutline,
+  PauseIcon,
+} from "@heroicons/react/24/outline";
 import {
   HeartIcon as HeartIconSolid,
   PlayIcon,
 } from "@heroicons/react/24/solid";
 
-import isFullTrack from "@/lib/isFullTrack";
+import { currentTrackIdState, isPlayingState } from "@/atoms/trackAtom";
 import millisToMinutesAndSeconds from "@/lib/millisToMinutesAndSeconds";
 import useSpotify from "@/hooks/useSpotify";
+import useTrack from "@/hooks/useTrack";
+import ArtistLink from "../ArtistLink";
 import Cover from "../Cover";
-import { currentTrackIdState, isPlayingState } from "@/atoms/trackAtom";
+import TrackLink from "../TrackLink";
 
 interface TrackProps {
   coverSrc?: string;
@@ -22,6 +27,7 @@ interface TrackProps {
 
 const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
   const spotifyApi = useSpotify();
+  const currentTrack = useTrack(track.id);
   const [trackSaved, setTrackSaved] = useState<boolean>(false);
   const [showPlayIcon, setShowIcon] = useState<boolean>(false);
   const [currentTrackId, setCurrentTrackId] =
@@ -29,45 +35,50 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
 
   async function checkIfTrackIsSaved() {
-    if (!track) return;
+    if (!currentTrack) return;
 
-    const { body } = await spotifyApi.containsMySavedTracks([track.id]);
+    const { body } = await spotifyApi.containsMySavedTracks([currentTrack.id]);
     setTrackSaved(body[0]);
   }
 
   async function onFavoriteButtonClick() {
-    if (!track) return;
+    if (!currentTrack) return;
 
     if (trackSaved) {
-      await spotifyApi.removeFromMySavedTracks([track.id]);
+      await spotifyApi.removeFromMySavedTracks([currentTrack.id]);
       setTrackSaved(false);
     } else {
-      await spotifyApi.addToMySavedTracks([track.id]);
+      await spotifyApi.addToMySavedTracks([currentTrack.id]);
       setTrackSaved(true);
     }
   }
 
-  function playSong() {
-    setCurrentTrackId(track.id);
-    setIsPlaying(true);
+  function pauseSong() {
+    spotifyApi.pause();
+    setIsPlaying(false);
+  }
 
-    spotifyApi.play({
-      ...(isFullTrack(track)
-        ? {
-            context_uri: track.album.uri,
-            offset: { uri: track.uri },
-          }
-        : {
-            uris: [track.uri],
-          }),
-    });
+  function playSong() {
+    if (!currentTrack) return;
+
+    if (currentTrack.id === currentTrackId) {
+      spotifyApi.play();
+    } else {
+      spotifyApi.play({
+        context_uri: currentTrack.album.uri,
+        offset: { uri: currentTrack.uri },
+      });
+    }
+
+    setCurrentTrackId(currentTrack.id);
+    setIsPlaying(true);
   }
 
   useEffect(() => {
     checkIfTrackIsSaved();
   }, []);
 
-  if (!track) return null;
+  if (!currentTrack) return null;
 
   return (
     <div
@@ -80,7 +91,21 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
         {order && (
           <div className="text-center w-14 px-4">
             {showPlayIcon ? (
-              <PlayIcon className="h-5 w-5 cursor-pointer" onClick={playSong} />
+              <>
+                {currentTrack.id === currentTrackId && isPlaying ? (
+                  <PauseIcon
+                    className="h-5 w-5 cursor-pointer"
+                    onClick={pauseSong}
+                    role="button"
+                  />
+                ) : (
+                  <PlayIcon
+                    className="h-5 w-5 cursor-pointer"
+                    onClick={playSong}
+                    role="button"
+                  />
+                )}
+              </>
             ) : (
               <span>{order}</span>
             )}
@@ -89,11 +114,7 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
 
         {showCover && (
           <div className="h-[60px] w-[60px] mr-3 relative">
-            <Cover
-              size="small"
-              square
-              src={isFullTrack(track) ? track.album.images[0].url : null}
-            />
+            <Cover size="small" square src={currentTrack.album.images[0].url} />
             {showPlayIcon && (
               <div className="h-full w-full flex justify-center items-center top-0 absolute bg-black/90">
                 <PlayIcon
@@ -107,14 +128,9 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
 
         <div className="flex flex-col w-[35vw] md:w-80">
           <div className="text-white overflow-hidden whitespace-nowrap text-ellipsis">
-            {track.name}
+            <TrackLink track={currentTrack} />
           </div>
-          <Link
-            className="w-max hover:underline"
-            href={`/artist/${track.artists[0].id}`}
-          >
-            {track.artists[0].name}
-          </Link>
+          <ArtistLink artist={currentTrack.artists[0]} />
         </div>
       </div>
 
@@ -128,11 +144,7 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
           {trackSaved ? <HeartIconSolid /> : <HeartIconOutline />}
         </div>
 
-        <div>{millisToMinutesAndSeconds(track.duration_ms)}</div>
-
-        {/* <IconButton>
-          <MoreHorizIcon />
-        </IconButton> */}
+        <div>{millisToMinutesAndSeconds(currentTrack.duration_ms)}</div>
       </div>
     </div>
   );

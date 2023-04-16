@@ -4,7 +4,7 @@ import { useRecoilState } from "recoil";
 import { currentTrackIdState } from "@/atoms/trackAtom";
 import useSpotify from "./useSpotify";
 
-function useTrack() {
+function useTrack(trackId?: string) {
   const spotifyApi = useSpotify();
   const [currentTrackId, setCurrentTrackId] =
     useRecoilState(currentTrackIdState);
@@ -12,7 +12,7 @@ function useTrack() {
 
   async function getTrack() {
     if (currentTrackId) {
-      const { body } = await spotifyApi.getTrack(currentTrackId);
+      const { body } = await spotifyApi.getTrack(trackId ?? currentTrackId);
       setTrack(body);
     }
   }
