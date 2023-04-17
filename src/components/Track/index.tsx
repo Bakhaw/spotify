@@ -127,7 +127,7 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
 
         <div className="flex flex-col max-w-[45vw] md:max-w-80">
           <TrackLink track={currentTrack} />
-          <ArtistLink artist={currentTrack.artists[0]} />
+          <ArtistLink artists={currentTrack.artists} />
         </div>
       </div>
 

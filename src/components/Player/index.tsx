@@ -102,7 +102,7 @@ function Player() {
 
           <div className="max-w-[50vw] md:max-w-[30vw]">
             <TrackLink track={track} />
-            <ArtistLink artist={track.artists[0]} />
+            <ArtistLink artists={track.artists} />
           </div>
         </div>
 
