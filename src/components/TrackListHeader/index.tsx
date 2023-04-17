@@ -25,7 +25,7 @@ const TrackListHeader: React.FC<TrackListHeaderProps> = ({ album }) => {
         </div>
 
         <div className="flex gap-2">
-          <ArtistLink artist={album.artists[0]} />
+          <ArtistLink artists={album.artists} />
           <h1>{albumReleaseDate}</h1>
           <h1>
             {album.total_tracks} {album.total_tracks > 1 ? "tracks" : "track"}
