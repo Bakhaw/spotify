@@ -1,9 +1,12 @@
 import Link from "next/link";
+import SwiperCore, { FreeMode, Keyboard, Mousewheel } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
+
+import Cover from "../Cover";
 
 import "swiper/css";
 
-import Cover from "../Cover";
+SwiperCore.use([FreeMode, Keyboard, Mousewheel]);
 
 interface HorizontalSliderProps {
   items:
@@ -25,7 +28,17 @@ const HorizontalSlider: React.FC<HorizontalSliderProps> = ({
     <div className="w-full">
       <h1 className="px-8 mb-4 text-3xl font-bold lowercase">{title}</h1>
 
-      <Swiper slidesPerView="auto" spaceBetween={20} speed={1000}>
+      <Swiper
+        keyboard
+        slidesPerView="auto"
+        spaceBetween={20}
+        mousewheel={{ sensitivity: 0.5 }}
+        freeMode={{
+          enabled: true,
+          sticky: false,
+          momentumBounce: false,
+        }}
+      >
         {items.map((item) => (
           <SwiperSlide key={item.id}>
             <Link href={`/${type}/${item.id}`}>
