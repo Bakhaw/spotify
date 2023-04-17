@@ -5,6 +5,7 @@ import Link from "next/link";
 
 import useSpotify from "@/hooks/useSpotify";
 import { playlistState } from "@/atoms/playlistAtom";
+import Cover from "@/components/Cover";
 
 function Playlists() {
   const { data: session } = useSession();
@@ -31,16 +32,23 @@ function Playlists() {
   if (!playlists) return null;
 
   return (
-    <ul className="flex flex-col gap-2 w-full">
-      {playlists.map((playlist, index) => (
-        <Link
-          key={index}
-          href={`/playlist/${playlist.id}`}
-          className="max-w-fit overflow-hidden text-ellipsis whitespace-nowrap"
-        >
-          {playlist.name}
-        </Link>
-      ))}
+    <ul className="flex flex-wrap justify-center items-center gap-10 w-full p-8">
+      {playlists.map((playlist, index) => {
+        console.log("image:", playlist.images);
+
+        return (
+          <Link
+            key={index}
+            href={`/playlist/${playlist.id}`}
+            className="flex-grow max-w-fit overflow-hidden text-ellipsis whitespace-nowrap"
+          >
+            <Cover
+              src={playlist.images.length > 0 ? playlist.images[0].url : null}
+            />
+            {playlist.name}
+          </Link>
+        );
+      })}
     </ul>
   );
 }

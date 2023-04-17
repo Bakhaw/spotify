@@ -7,7 +7,14 @@ const withPWA = require("next-pwa")({
 const nextConfig = withPWA({
   // next config
   images: {
-    domains: ["i.scdn.co"],
+    domains: [
+      // served from spotify api
+      "i.scdn.co",
+      "mosaic.scdn.co",
+      "blend-playlist-covers.spotifycdn.com",
+      "wrapped-images.spotifycdn.com",
+      "lineup-images.scdn.co",
+    ],
   },
 });
 

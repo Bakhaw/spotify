@@ -1,33 +1,25 @@
-import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-
-import useSpotify from "@/hooks/useSpotify";
-import TrackList from "@/components/TrackList";
+import Link from "next/link";
 
 function Library() {
-  const { data: session } = useSession();
-  const spotifyApi = useSpotify();
-
-  const [savedTracks, setSavedTracks] =
-    useState<SpotifyApi.TrackObjectFull[]>();
-
-  async function getSavedTracks() {
-    const { body } = await spotifyApi.getMySavedTracks({ limit: 50 });
-    const tracks = body.items.map((item) => item.track);
-    setSavedTracks(tracks);
-  }
-
-  useEffect(() => {
-    if (spotifyApi.getAccessToken()) {
-      getSavedTracks();
-    }
-  }, [session, spotifyApi]);
-
-  if (!savedTracks) return null;
-
   return (
-    <div className="p-8">
-      <TrackList showCover title="saved tracks" tracks={savedTracks} />
+    <div className="flex flex-col gap-4 p-8">
+      <div className="flex justify-center items-center rounded-xl h-14 w-full bg-[#2d2e37] text-gray-300 overflow-hidden transition-colors hover:bg-[#666770] hover:text-white">
+        <Link
+          href="/library/saved-tracks"
+          className="text-2xl font-bold lowercase"
+        >
+          saved tracks
+        </Link>
+      </div>
+
+      <div className="flex justify-center items-center rounded-xl h-14 w-full bg-[#2d2e37] text-gray-300 overflow-hidden transition-colors hover:bg-[#666770] hover:text-white">
+        <Link
+          href="/library/playlists"
+          className="text-2xl font-bold lowercase"
+        >
+          playlists
+        </Link>
+      </div>
     </div>
   );
 }

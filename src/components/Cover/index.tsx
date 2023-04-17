@@ -1,6 +1,8 @@
 import Image from "next/image";
 import classNames from "classnames";
 
+import CoverFallback from "../../assets/cover-fallback.svg";
+
 interface CoverProps {
   rounded?: boolean;
   size?: "small" | "medium" | "large"; // default: "medium"
@@ -14,8 +16,6 @@ const Cover: React.FC<CoverProps> = ({
   square,
   src,
 }) => {
-  const srcFallback = "https://placehold.co/600x400/060606/bfbfbf?text=?";
-
   const sizes = {
     small: "h-[60px] w-[60px]",
     medium: "h-[200px] w-[200px]",
@@ -30,9 +30,9 @@ const Cover: React.FC<CoverProps> = ({
         rounded && "rounded-full",
         square && "rounded-none"
       )}
-      src={src ?? srcFallback}
-      height={200}
-      width={200}
+      src={src ?? CoverFallback}
+      height={300}
+      width={300}
     />
   );
 };
