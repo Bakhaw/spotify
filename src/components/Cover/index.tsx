@@ -4,7 +4,7 @@ interface CoverProps {
   rounded?: boolean;
   size?: "small" | "medium" | "large"; // default: "medium"
   square?: boolean; // removes border-radius
-  src: string | null;
+  src: string | null | undefined;
 }
 
 const Cover: React.FC<CoverProps> = ({
