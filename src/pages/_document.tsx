@@ -5,7 +5,11 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          <link rel="manifest" href="/manifest.json" />
+          <link
+            rel="manifest"
+            href="/manifest.json"
+            crossOrigin="use-credentials"
+          />
           <link rel="apple-touch-icon" href="/icon.png"></link>
           <link rel="shortcut icon" href="/favicon.ico" />
           <meta name="theme-color" content="#fff" />
