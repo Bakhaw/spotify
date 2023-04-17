@@ -51,15 +51,18 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
     setIsPlaying(false);
   }
 
-  function playSong() {
+  async function playSong() {
     if (!currentTrack) return;
 
     if (currentTrack.id === currentTrackId) {
       spotifyApi.play();
     } else {
+      const { body: devices } = await spotifyApi.getMyDevices();
+
       spotifyApi.play({
         context_uri: currentTrack.album.uri,
         offset: { uri: currentTrack.uri },
+        device_id: String(devices.devices[0].id),
       });
     }
 
