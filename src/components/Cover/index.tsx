@@ -1,3 +1,4 @@
+import Image from "next/image";
 import classNames from "classnames";
 
 interface CoverProps {
@@ -22,7 +23,7 @@ const Cover: React.FC<CoverProps> = ({
   };
 
   return (
-    <img
+    <Image
       alt="Cover"
       className={classNames(
         `block object-cover rounded-3xl ${sizes[size]}`,
@@ -30,6 +31,8 @@ const Cover: React.FC<CoverProps> = ({
         square && "rounded-none"
       )}
       src={src ?? srcFallback}
+      height={200}
+      width={200}
     />
   );
 };

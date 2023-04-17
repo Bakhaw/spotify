@@ -6,6 +6,9 @@ const withPWA = require("next-pwa")({
 
 const nextConfig = withPWA({
   // next config
+  images: {
+    domains: ["i.scdn.co"],
+  },
 });
 
 module.exports = nextConfig;
