@@ -4,7 +4,7 @@
     "display": "standalone",
     "scope": "/",
     "start_url": "/",
-    "name": "React PWA Spotify",
+    "name": "Spotify",
     "short_name": "Spotify",
     "icons": [
         {
