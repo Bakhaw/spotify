@@ -1,8 +1,6 @@
 {
     "name": "Spotify",
     "short_name": "Spotify",
-    "id": "/",
-    "scope": "/",
     "display": "standalone",
     "theme_color": "#faf3dc",
     "background_color": "#faf3dc",
