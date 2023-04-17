@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
 import useSpotify from "@/hooks/useSpotify";
@@ -6,11 +7,12 @@ import TrackList from "@/components/TrackList";
 import TrackListHeader from "@/components/TrackListHeader";
 
 const Album: React.FC = () => {
+  const { data: session } = useSession();
   const {
     query: { albumId },
   } = useRouter();
   const spotifyApi = useSpotify();
-  const token = spotifyApi.getAccessToken();
+
   const [album, setAlbum] = useState<SpotifyApi.AlbumObjectFull>();
 
   async function getAlbum() {
@@ -21,10 +23,10 @@ const Album: React.FC = () => {
   }
 
   useEffect(() => {
-    if (token) {
+    if (spotifyApi.getAccessToken()) {
       getAlbum();
     }
-  }, [albumId, token]);
+  }, [albumId, session]);
 
   if (!album) return null;
 

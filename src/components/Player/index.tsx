@@ -23,7 +23,6 @@ import TrackLink from "../TrackLink";
 function Player() {
   const { data: session } = useSession();
   const spotifyApi = useSpotify();
-  const token = spotifyApi.getAccessToken();
 
   const [currentTrackId, setCurrentTrackId] =
     useRecoilState(currentTrackIdState);
@@ -73,7 +72,7 @@ function Player() {
   }
 
   useEffect(() => {
-    if (token && !currentTrackId) {
+    if (spotifyApi.getAccessToken() && !currentTrackId) {
       getCurrentTrack();
     }
   }, [currentTrackIdState, spotifyApi, session]);
@@ -86,7 +85,7 @@ function Player() {
   );
 
   useEffect(() => {
-    if (token) {
+    if (spotifyApi.getAccessToken()) {
       if (volume > 0 && volume < 100) {
         debounceAdjustVolume(volume);
       }

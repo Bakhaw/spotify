@@ -1,10 +1,13 @@
-import TrackList from "@/components/TrackList";
-import useSpotify from "@/hooks/useSpotify";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
+import useSpotify from "@/hooks/useSpotify";
+import TrackList from "@/components/TrackList";
+
 function Library() {
+  const { data: session } = useSession();
   const spotifyApi = useSpotify();
-  const token = spotifyApi.getAccessToken();
+
   const [savedTracks, setSavedTracks] =
     useState<SpotifyApi.TrackObjectFull[]>();
 
@@ -15,10 +18,10 @@ function Library() {
   }
 
   useEffect(() => {
-    if (token) {
+    if (spotifyApi.getAccessToken()) {
       getSavedTracks();
     }
-  }, [token]);
+  }, [session, spotifyApi]);
 
   if (!savedTracks) return null;
 

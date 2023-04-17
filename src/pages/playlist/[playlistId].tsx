@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
+import { Playlist, fetchPlaylist } from "@/API/playlists";
 import useSpotify from "@/hooks/useSpotify";
 import millisToMinutesAndSeconds from "@/lib/millisToMinutesAndSeconds";
-import { Playlist, fetchPlaylist } from "@/API/playlists";
-import TrackList from "@/components/TrackList";
 import Cover from "@/components/Cover";
+import TrackList from "@/components/TrackList";
 
 function Playlist() {
+  const { data: session } = useSession();
   const { query } = useRouter();
   const spotifyApi = useSpotify();
-  const token = spotifyApi.getAccessToken();
+
   const [playlist, setPlaylist] = useState<Playlist | null>();
 
   async function getPlaylist() {
@@ -19,10 +21,10 @@ function Playlist() {
   }
 
   useEffect(() => {
-    if (token) {
+    if (spotifyApi.getAccessToken()) {
       getPlaylist();
     }
-  }, [token, query.playlistId]);
+  }, [session, spotifyApi, query]);
 
   if (!playlist) return null;
 

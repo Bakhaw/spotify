@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useSession } from "next-auth/react";
 import { useRecoilState } from "recoil";
 import Link from "next/link";
 
@@ -6,8 +7,9 @@ import useSpotify from "@/hooks/useSpotify";
 import { playlistState } from "@/atoms/playlistAtom";
 
 function Playlists() {
+  const { data: session } = useSession();
   const spotifyApi = useSpotify();
-  const token = spotifyApi.getAccessToken();
+
   const [playlists, setPlaylists] =
     useRecoilState<SpotifyApi.PlaylistBaseObject[]>(playlistState);
 
@@ -21,10 +23,10 @@ function Playlists() {
   }
 
   useEffect(() => {
-    if (token) {
+    if (spotifyApi.getAccessToken()) {
       getPlaylists();
     }
-  }, [token]);
+  }, [session, spotifyApi]);
 
   if (!playlists) return null;
 

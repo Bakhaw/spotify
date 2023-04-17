@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 
 import useSpotify from "@/hooks/useSpotify";
 import HorizontalSlider from "../HorizontalSlider";
+import { useSession } from "next-auth/react";
 
 const TopArtists: React.FC = () => {
+  const { data: session } = useSession();
   const spotifyApi = useSpotify();
-  const token = spotifyApi.getAccessToken();
   const [topArtists, setTopArtists] = useState<SpotifyApi.ArtistObjectFull[]>();
 
   async function getTopArtists() {
@@ -15,10 +16,10 @@ const TopArtists: React.FC = () => {
   }
 
   useEffect(() => {
-    if (token) {
+    if (spotifyApi.getAccessToken()) {
       getTopArtists();
     }
-  }, [token]);
+  }, [session, spotifyApi]);
 
   if (!topArtists) return null;
 

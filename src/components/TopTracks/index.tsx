@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
-import TrackList from "../TrackList";
+import { useSession } from "next-auth/react";
+
 import useSpotify from "@/hooks/useSpotify";
+import TrackList from "../TrackList";
 
 interface TopTracksProps {
   timeRange: "short_term" | "medium_term" | "long_term";
 }
 
 const TopTracks: React.FC<TopTracksProps> = () => {
+  const { data: session } = useSession();
   const spotifyApi = useSpotify();
-  const token = spotifyApi.getAccessToken();
   const [topTracks, setTopTracks] = useState<SpotifyApi.TrackObjectFull[]>();
 
   async function getTopTracks() {
@@ -17,10 +19,10 @@ const TopTracks: React.FC<TopTracksProps> = () => {
   }
 
   useEffect(() => {
-    if (token) {
+    if (spotifyApi.getAccessToken()) {
       getTopTracks();
     }
-  }, [token]);
+  }, [session, spotifyApi]);
 
   if (!topTracks) return null;
 
