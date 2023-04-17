@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
+import classNames from "classnames";
 import {
   HeartIcon as HeartIconOutline,
   PauseIcon,
@@ -32,13 +33,6 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
   const [currentTrackId, setCurrentTrackId] =
     useRecoilState(currentTrackIdState);
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
-
-  async function checkIfTrackIsSaved() {
-    if (!currentTrack) return;
-
-    const { body } = await spotifyApi.containsMySavedTracks([currentTrack.id]);
-    setTrackSaved(body[0]);
-  }
 
   async function onFavoriteButtonClick() {
     if (!currentTrack) return;
@@ -73,15 +67,25 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
     setIsPlaying(true);
   }
 
+  async function checkIfTrackIsSaved() {
+    if (!currentTrack) return;
+
+    const { body } = await spotifyApi.containsMySavedTracks([currentTrack.id]);
+    setTrackSaved(body[0]);
+  }
+
   useEffect(() => {
     checkIfTrackIsSaved();
-  }, []);
+  }, [currentTrack]);
 
   if (!currentTrack) return null;
 
   return (
     <div
-      className="flex justify-between items-center rounded-xl h-14 w-full bg-[#2d2e37] text-gray-300 overflow-hidden transition-colors hover:bg-[#666770] hover:text-white"
+      className={classNames(
+        "flex justify-between items-center rounded-xl h-14 w-full bg-[#2d2e37] text-gray-300 overflow-hidden transition-colors hover:bg-[#666770] hover:text-white",
+        currentTrack.id === currentTrackId && "bg-[#666770]"
+      )}
       onMouseEnter={() => setShowIcon(true)}
       onMouseLeave={() => setShowIcon(false)}
       onDoubleClick={playSong}
