@@ -1,11 +1,11 @@
 {
-    "theme_color": "#f69435",
-    "background_color": "#f69435",
-    "display": "standalone",
-    "scope": "/",
-    "start_url": "/",
     "name": "Spotify",
     "short_name": "Spotify",
+    "id": "/?source=pwa",
+    "scope": "/",
+    "display": "standalone",
+    "theme_color": "#faf3dc",
+    "background_color": "#faf3dc",
     "icons": [
         {
             "src": "/icon-192x192.png",
@@ -26,6 +26,23 @@
             "src": "/icon-512x512.png",
             "sizes": "512x512",
             "type": "image/png"
+        }
+    ],
+    "screenshots": [
+        {
+          "src": "/screen1.png",
+          "type": "image/png",
+          "sizes": "540x720"
+        },
+        {
+          "src": "/screen2.png",
+          "type": "image/png",
+          "sizes": "720x540"
+        },
+        {
+          "src": "/screen3.png",
+          "type": "image/png",
+          "sizes": "720x540"
         }
     ]
 }
