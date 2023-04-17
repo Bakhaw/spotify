@@ -95,7 +95,7 @@ function Player() {
   if (!track) return null;
 
   return (
-    <div className="w-full px-6 py-2 h-20 overflow-hidden bg-[#060606] flex justify-between items-center">
+    <div className="w-full px-8 py-2 h-20 overflow-hidden bg-[#060606] flex justify-between items-center">
       <div className="flex justify-between items-center w-full">
         <div className="flex flex-1 justify-start items-center gap-3 h-full">
           <Cover size="small" square src={track.album.images[0].url} />
