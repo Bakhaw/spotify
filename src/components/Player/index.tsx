@@ -18,6 +18,7 @@ import useTrack from "@/hooks/useTrack";
 import { currentTrackIdState, isPlayingState } from "@/atoms/trackAtom";
 import Cover from "../Cover";
 import ArtistLink from "../ArtistLink";
+import TrackLink from "../TrackLink";
 
 function Player() {
   const { data: session } = useSession();
@@ -99,10 +100,8 @@ function Player() {
         <div className="flex flex-1 justify-start items-center gap-3 h-full">
           <Cover size="small" square src={track.album.images[0].url} />
 
-          <div className="w-[50vw] md:w-[30vw]">
-            <h1 className="overflow-hidden text-ellipsis whitespace-nowrap">
-              {track.name}
-            </h1>
+          <div className="max-w-[50vw] md:max-w-[30vw]">
+            <TrackLink track={track} />
             <ArtistLink artist={track.artists[0]} />
           </div>
         </div>

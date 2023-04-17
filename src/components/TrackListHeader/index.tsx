@@ -1,5 +1,6 @@
 import millisToMinutesAndSeconds from "@/lib/millisToMinutesAndSeconds";
 import Cover from "../Cover";
+import ArtistLink from "../ArtistLink";
 
 interface TrackListHeaderProps {
   album: SpotifyApi.AlbumObjectFull;
@@ -24,7 +25,7 @@ const TrackListHeader: React.FC<TrackListHeaderProps> = ({ album }) => {
         </div>
 
         <div className="flex gap-2">
-          <h1>{album.artists[0].name}</h1>
+          <ArtistLink artist={album.artists[0]} />
           <h1>{albumReleaseDate}</h1>
           <h1>
             {album.total_tracks} {album.total_tracks > 1 ? "tracks" : "track"}

@@ -4,12 +4,13 @@ interface ArtistLinkProps {
   artist: SpotifyApi.ArtistObjectFull | SpotifyApi.ArtistObjectSimplified;
 }
 
-const ArtistLink: React.FC<ArtistLinkProps> = ({ artist }) => {
-  return (
-    <Link href={`/artist/${artist.id}`} className="hover:underline w-max">
-      {artist.name}
-    </Link>
-  );
-};
+const ArtistLink: React.FC<ArtistLinkProps> = ({ artist }) => (
+  <Link
+    className="block overflow-hidden text-ellipsis whitespace-nowrap hover:underline"
+    href={`/artist/${artist.id}`}
+  >
+    {artist.name}
+  </Link>
+);
 
 export default ArtistLink;

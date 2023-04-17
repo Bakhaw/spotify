@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import Link from "next/link";
 import {
   HeartIcon as HeartIconOutline,
   PauseIcon,
@@ -126,15 +125,13 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
           </div>
         )}
 
-        <div className="flex flex-col w-[35vw] md:w-80">
-          <div className="text-white overflow-hidden whitespace-nowrap text-ellipsis">
-            <TrackLink track={currentTrack} />
-          </div>
+        <div className="flex flex-col max-w-[45vw] md:max-w-80">
+          <TrackLink track={currentTrack} />
           <ArtistLink artist={currentTrack.artists[0]} />
         </div>
       </div>
 
-      <div className="flex justify-between items-center gap-3 pr-8">
+      <div className="flex justify-between items-center gap-3 pr-4">
         <div
           aria-label="favorite"
           role="button"
@@ -144,7 +141,9 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
           {trackSaved ? <HeartIconSolid /> : <HeartIconOutline />}
         </div>
 
-        <div>{millisToMinutesAndSeconds(currentTrack.duration_ms)}</div>
+        <div className="hidden md:block">
+          {millisToMinutesAndSeconds(currentTrack.duration_ms)}
+        </div>
       </div>
     </div>
   );
