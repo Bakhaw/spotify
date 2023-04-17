@@ -6,20 +6,23 @@ import useSpotify from "./useSpotify";
 
 function useTrack(trackId?: string) {
   const spotifyApi = useSpotify();
+  const token = spotifyApi.getAccessToken();
   const [currentTrackId, setCurrentTrackId] =
     useRecoilState(currentTrackIdState);
   const [track, setTrack] = useState<SpotifyApi.TrackObjectFull>();
 
   async function getTrack() {
-    if (currentTrackId) {
-      const { body } = await spotifyApi.getTrack(trackId ?? currentTrackId);
-      setTrack(body);
-    }
+    if (!trackId) return;
+
+    const { body } = await spotifyApi.getTrack(trackId);
+    setTrack(body);
   }
 
   useEffect(() => {
-    getTrack();
-  }, [currentTrackId, spotifyApi]);
+    if (token) {
+      getTrack();
+    }
+  }, [currentTrackId, spotifyApi, token]);
 
   return track;
 }

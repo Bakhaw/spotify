@@ -24,11 +24,12 @@ function Player() {
   const { data: session } = useSession();
   const spotifyApi = useSpotify();
   const token = spotifyApi.getAccessToken();
-  const track = useTrack();
 
   const [currentTrackId, setCurrentTrackId] =
     useRecoilState(currentTrackIdState);
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
+
+  const track = useTrack(currentTrackId);
   const [volume, setVolume] = useState(50);
 
   async function getCurrentTrack() {

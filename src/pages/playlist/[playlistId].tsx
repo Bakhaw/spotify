@@ -33,8 +33,6 @@ function Playlist() {
 
   const playlistDuration = millisToMinutesAndSeconds(duration);
 
-  console.log("here", playlist);
-
   return (
     <div className="flex flex-col gap-8 p-8">
       <div className="flex flex-col md:flex-row items-center gap-6">
