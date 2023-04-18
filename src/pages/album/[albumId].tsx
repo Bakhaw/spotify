@@ -26,7 +26,7 @@ const Album: React.FC = () => {
     if (spotifyApi.getAccessToken()) {
       getAlbum();
     }
-  }, [albumId, session]);
+  }, [albumId, session, spotifyApi]);
 
   if (!album) return null;
 

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
 import useSpotify from "@/hooks/useSpotify";
@@ -6,6 +7,7 @@ import Cover from "@/components/Cover";
 import HorizontalSlider from "@/components/HorizontalSlider";
 
 function ArtistDetails() {
+  const { data: session } = useSession();
   const {
     query: { artistId },
   } = useRouter();
@@ -29,8 +31,10 @@ function ArtistDetails() {
   }
 
   useEffect(() => {
-    getArtistData();
-  }, [artistId]);
+    if (spotifyApi.getAccessToken()) {
+      getArtistData();
+    }
+  }, [artistId, session, spotifyApi]);
 
   if (!artist || !projects) return null;
 
