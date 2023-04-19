@@ -14,6 +14,7 @@ const nextConfig = withPWA({
       "blend-playlist-covers.spotifycdn.com",
       "wrapped-images.spotifycdn.com",
       "lineup-images.scdn.co",
+      "platform-lookaside.fbsbx.com",
     ],
   },
 });

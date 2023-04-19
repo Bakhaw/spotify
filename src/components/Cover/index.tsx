@@ -31,8 +31,8 @@ const Cover: React.FC<CoverProps> = ({
         square && "rounded-none"
       )}
       src={src ?? CoverFallback}
-      height={300}
-      width={300}
+      height={640}
+      width={640}
     />
   );
 };

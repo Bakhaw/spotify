@@ -1,0 +1,266 @@
+$grey: #868686;
+$pink: #f27696;
+$intVinylSize: 470;
+$vinylSize: 470px;
+$nbSpire: round($intVinylSize/14);
+
+// canvas {
+//   width: $vinylSize * 3;
+//   height: 150px;
+//   margin: 0 auto;
+// }
+
+.album-box {
+  display: inline-block;
+  display: flex;
+  flex-direction: column;
+  width: $vinylSize * 3;
+  height: $vinylSize + 50;
+  margin: 0 auto;
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+
+  &:hover {
+    .vinyl {
+      margin-left: $vinylSize * 0.75;
+      transition: margin-left 0.5s;
+    }
+  }
+
+  &.active {
+    .vinyl {
+      margin-left: $vinylSize * 1.63;
+      transition: margin-left 0.5s;
+      animation-name: spin;
+      animation-duration: 8s;
+      animation-delay: 2.6s;
+      animation-iteration-count: infinite;
+      animation-timing-function: linear;
+    }
+    #turntable {
+      svg {
+        animation-name: start-play;
+        animation-duration: 2s;
+        animation-delay: 0.5s;
+        animation-fill-mode: forwards;
+      }
+    }
+  }
+
+  .vinyl {
+    -webkit-border-radius: 100%;
+    border-radius: 100%;
+    width: $vinylSize;
+    height: $vinylSize;
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 3;
+    margin-left: $vinylSize * 0.2;
+    transition: margin-left 0.5s;
+
+    .spire {
+      display: none;
+    }
+
+    @for $i from 1 through $nbSpire {
+      .spire-#{$i} {
+        display: block;
+        -webkit-border-radius: 100%;
+        border-radius: 100%;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        width: ($vinylSize/4) + (10px * $i);
+        height: ($vinylSize/4) + (10px * $i);
+        background-color: transparent;
+        position: absolute;
+        margin: auto;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+      }
+    }
+
+    .vinyl-face {
+      -webkit-border-radius: 100%;
+      border-radius: 100%;
+      width: $vinylSize/2.7;
+      height: $vinylSize/2.7;
+      background-color: $pink;
+      position: absolute;
+      margin: auto;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      color: #fff;
+      text-align: center;
+      line-height: 1.2em;
+      font-family: "Anton", sans-serif;
+      font-weight: 400;
+      letter-spacing: 0.25em;
+      font-size: 10px;
+
+      > p {
+        display: block;
+        padding-top: ($vinylSize/2.7) / 2;
+      }
+
+      .triangle {
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0 5px 10px 5px;
+        border-color: transparent transparent #fff transparent;
+        position: absolute;
+        margin: auto;
+        left: 0;
+        right: 0;
+        margin-top: 10px;
+      }
+    }
+    .vinyl-center {
+      -webkit-border-radius: 100%;
+      border-radius: 100%;
+      width: 10px;
+      height: 10px;
+      position: absolute;
+      margin: auto;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+    }
+  }
+}
+.album-cover {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $grey;
+  width: $vinylSize + 20;
+  height: $vinylSize + 20;
+  position: absolute;
+  margin: auto;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 4;
+  color: #fff;
+}
+.album-inside {
+  background-color: #f4eeff;
+  width: $vinylSize + 20;
+  height: $vinylSize + 20;
+  position: absolute;
+  margin: auto;
+  z-index: 2;
+  top: 0;
+  bottom: 0;
+  left: 4px;
+}
+
+#turntable {
+  position: absolute;
+  right: 0;
+  top: 15px;
+  z-index: 20;
+  width: ($intVinylSize - 19) + px;
+  height: ((296 * $intVinylSize)/251) + px;
+  overflow: hidden;
+
+  .shadow {
+    display: block;
+    width: 30px;
+    height: 10px;
+    opacity: 0.3;
+    -webkit-box-shadow: 0 1px 1px 0 darken($grey, 40%);
+    box-shadow: 0 1px 1px 0 darken($grey, 40%);
+    position: absolute;
+    top: -10px;
+    right: 8px;
+    z-index: 3;
+  }
+
+  svg {
+    position: relative;
+    z-index: 2;
+    transition: 0.7s;
+    animation-name: stop-play;
+    animation-duration: 2s;
+    animation-delay: 0;
+    animation-fill-mode: forwards;
+  }
+
+  #bar {
+    fill: $grey;
+  }
+
+  .darken-grey {
+    fill: darken($grey, 30%);
+  }
+
+  .grey {
+    fill: darken($grey, 20%);
+  }
+}
+
+/* The animation code */
+@keyframes spin {
+  from {
+    -moz-transform: rotate(-360deg);
+    -webkit-transform: rotate(-360deg);
+    -o-transform: rotate(-360deg);
+    -ms-transform: rotate(-360deg);
+    transform: rotate(-360deg);
+  }
+  to {
+    -moz-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes start-play {
+  from {
+    -ms-transform: rotate(0deg);
+    -ms-transform-origin: 100% top;
+    -webkit-transform: rotate(0deg);
+    -webkit-transform-origin: 100% top;
+    transform: rotate(0deg);
+    transform-origin: 100% top;
+  }
+  to {
+    -ms-transform: rotate(20deg);
+    -ms-transform-origin: 100% top;
+    -webkit-transform: rotate(20deg);
+    -webkit-transform-origin: 100% top;
+    transform: rotate(20deg);
+    transform-origin: 100% top;
+  }
+}
+
+@keyframes stop-play {
+  from {
+    -ms-transform: rotate(20deg);
+    -ms-transform-origin: 100% top;
+    -webkit-transform: rotate(20deg);
+    -webkit-transform-origin: 100% top;
+    transform: rotate(20deg);
+    transform-origin: 100% top;
+  }
+  to {
+    -ms-transform: rotate(0deg);
+    -ms-transform-origin: 100% top;
+    -webkit-transform: rotate(0deg);
+    -webkit-transform-origin: 100% top;
+    transform: rotate(0deg);
+    transform-origin: 100% top;
+  }
+}

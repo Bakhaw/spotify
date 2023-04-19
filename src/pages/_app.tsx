@@ -7,6 +7,7 @@ import Navigation from "@/components/Navigation";
 import Player from "@/components/Player";
 
 import "@/styles/globals.css";
+import "@/styles/vinyl.scss";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (

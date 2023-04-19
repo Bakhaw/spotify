@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import Link from "next/link";
 import {
+  CloudIcon,
   HomeIcon,
   MagnifyingGlassIcon,
   MusicalNoteIcon,
@@ -10,7 +11,7 @@ import {
 function Navigation() {
   const router = useRouter();
 
-  if (router.asPath === "/login") return null;
+  if (router.asPath === "/login" || router.asPath === "/studio") return null;
 
   const links = [
     {
@@ -27,6 +28,11 @@ function Navigation() {
       href: "/library",
       icon: <MusicalNoteIcon className="h-5 w-5" />,
       label: "Library",
+    },
+    {
+      href: "/studio",
+      icon: <CloudIcon className="h-5 w-5" />,
+      label: "Studio (bêta)",
     },
     {
       href: "/account",
