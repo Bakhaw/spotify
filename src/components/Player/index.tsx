@@ -23,9 +23,6 @@ import TrackLink from "../TrackLink";
 
 function Player() {
   const router = useRouter();
-
-  if (router.asPath === "/studio") return null;
-
   const { data: session } = useSession();
   const spotifyApi = useSpotify();
 
@@ -96,6 +93,8 @@ function Player() {
       }
     }
   }, [volume]);
+
+  if (router.asPath === "/studio") return null;
 
   if (!track) return null;
 
