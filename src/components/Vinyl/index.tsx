@@ -74,7 +74,7 @@ function Vinyl() {
             }}
           >
             {[...Array(32)].map((_, index) => (
-              <div className={`spire spire-${index}`}></div>
+              <div key={index} className={`spire spire-${index}`}></div>
             ))}
             <div
               className="vinyl-face"
