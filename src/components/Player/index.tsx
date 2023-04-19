@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import { useRecoilState } from "recoil";
 import { debounce } from "lodash";
 
 import {
@@ -21,6 +22,10 @@ import ArtistLink from "../ArtistLink";
 import TrackLink from "../TrackLink";
 
 function Player() {
+  const router = useRouter();
+
+  if (router.asPath === "/studio") return null;
+
   const { data: session } = useSession();
   const spotifyApi = useSpotify();
 

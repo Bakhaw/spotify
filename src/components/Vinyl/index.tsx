@@ -7,6 +7,8 @@ import useTrack from "@/hooks/useTrack";
 import { currentTrackIdState, isPlayingState } from "@/atoms/trackAtom";
 import vinylColors from "@/API/vinylColors";
 import CoverFallback from "../../assets/cover-fallback.svg";
+import TrackLink from "../TrackLink";
+import ArtistLink from "../ArtistLink";
 
 function Vinyl() {
   const spotifyApi = useSpotify();
@@ -15,7 +17,7 @@ function Vinyl() {
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
   const track = useTrack(currentTrackId);
 
-  async function stopStartAlbum() {
+  async function togglePlay() {
     // this value is corresponding to .album-box .active .vinyl animation-delay property
     const activeVinylAnimationDelayProperty = 2600;
 
@@ -31,11 +33,10 @@ function Vinyl() {
     }
   }
 
-  // if (!track) return null;
-
   const filteredVinyls = vinylColors.filter(
     (vinyl) => vinyl.albumId === track?.album.id
   );
+
   const vinylColor = (fallbackColor: string) =>
     filteredVinyls.length > 0
       ? filteredVinyls[0].backgroundColor
@@ -44,21 +45,33 @@ function Vinyl() {
   const trackImage = track?.album.images[0];
 
   return (
-    <div>
-      {/* <canvas id="canvas"></canvas> */}
-      <div className="music-box">
-        <div
-          id="album"
-          className={classNames("album-box", isPlaying && "active")}
-        >
-          <div className="album-cover" onClick={stopStartAlbum}>
+    <div className="music-box">
+      <div
+        id="album"
+        className={classNames("album-box", isPlaying && "active")}
+      >
+        <div>
+          <div className="album-cover">
             <Image
               alt={`${track?.name} cover`}
               height={trackImage?.height ?? 300}
               width={trackImage?.width ?? 300}
+              onClick={togglePlay}
+              role="button"
               src={trackImage?.url ?? CoverFallback}
             />
+            {track && (
+              <div className="album-cover__details">
+                <h1 className="album-cover__details__track-name">
+                  <TrackLink track={track} />
+                </h1>
+                <h1 className="album-cover__details__artist-name">
+                  <ArtistLink artists={track.artists} />
+                </h1>
+              </div>
+            )}
           </div>
+
           <div
             className="album-inside"
             style={{
@@ -69,6 +82,7 @@ function Vinyl() {
           ></div>
           <div
             className="vinyl"
+            onClick={togglePlay}
             style={{
               background: vinylColor("#000000"),
             }}
@@ -91,7 +105,6 @@ function Vinyl() {
             ></div>
           </div>
           <div id="turntable">
-            <span className="shadow"></span>
             <svg viewBox="0 0 211 246" xmlSpace="preserve">
               <g>
                 <polygon
@@ -184,6 +197,9 @@ function Vinyl() {
                 </g>
               </g>
             </svg>
+            <button className="power-button" onClick={togglePlay}>
+              PLAY
+            </button>
           </div>
         </div>
       </div>

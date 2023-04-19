@@ -1,33 +1,20 @@
 $grey: #868686;
 $pink: #f27696;
-$intVinylSize: 470;
-$vinylSize: 470px;
-$nbSpire: round($intVinylSize/14);
-
-// canvas {
-//   width: $vinylSize * 3;
-//   height: 150px;
-//   margin: 0 auto;
-// }
-
+$intVinylSize: 370;
+$vinylSize: 370px;
+$nbSpire: round($intVinylSize/15);
 .album-box {
-  display: inline-block;
   display: flex;
-  flex-direction: column;
   width: $vinylSize * 3;
   height: $vinylSize + 50;
   margin: 0 auto;
   position: relative;
-  cursor: pointer;
-  overflow: hidden;
-
   &:hover {
     .vinyl {
       margin-left: $vinylSize * 0.75;
       transition: margin-left 0.5s;
     }
   }
-
   &.active {
     .vinyl {
       margin-left: $vinylSize * 1.63;
@@ -47,8 +34,8 @@ $nbSpire: round($intVinylSize/14);
       }
     }
   }
-
   .vinyl {
+    cursor: pointer;
     -webkit-border-radius: 100%;
     border-radius: 100%;
     width: $vinylSize;
@@ -59,14 +46,12 @@ $nbSpire: round($intVinylSize/14);
     right: 0;
     top: 0;
     bottom: 0;
-    z-index: 3;
+    z-index: 2;
     margin-left: $vinylSize * 0.2;
     transition: margin-left 0.5s;
-
     .spire {
       display: none;
     }
-
     @for $i from 1 through $nbSpire {
       .spire-#{$i} {
         display: block;
@@ -84,7 +69,6 @@ $nbSpire: round($intVinylSize/14);
         bottom: 0;
       }
     }
-
     .vinyl-face {
       -webkit-border-radius: 100%;
       border-radius: 100%;
@@ -104,12 +88,10 @@ $nbSpire: round($intVinylSize/14);
       font-weight: 400;
       letter-spacing: 0.25em;
       font-size: 10px;
-
       > p {
         display: block;
         padding-top: ($vinylSize/2.7) / 2;
       }
-
       .triangle {
         width: 0;
         height: 0;
@@ -137,8 +119,10 @@ $nbSpire: round($intVinylSize/14);
     }
   }
 }
+
 .album-cover {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: $grey;
@@ -151,7 +135,27 @@ $nbSpire: round($intVinylSize/14);
   bottom: 0;
   z-index: 4;
   color: #fff;
+  transition: 0.3s;
+  &:hover {
+    scale: 1.1;
+    transition: 0.3s;
+  }
+  &__details {
+    position: absolute;
+    bottom: -100px;
+    left: 0;
+    &__track-name {
+      font-weight: bold;
+      font-size: 34px;
+    }
+    &__artist-name {
+      color: grey;
+      font-size: 26px;
+      font-weight: lighter;
+    }
+  }
 }
+
 .album-inside {
   background-color: #f4eeff;
   width: $vinylSize + 20;
@@ -168,48 +172,43 @@ $nbSpire: round($intVinylSize/14);
   position: absolute;
   right: 0;
   top: 15px;
-  z-index: 20;
   width: ($intVinylSize - 19) + px;
   height: ((296 * $intVinylSize)/251) + px;
   overflow: hidden;
-
-  .shadow {
-    display: block;
-    width: 30px;
-    height: 10px;
-    opacity: 0.3;
-    -webkit-box-shadow: 0 1px 1px 0 darken($grey, 40%);
-    box-shadow: 0 1px 1px 0 darken($grey, 40%);
-    position: absolute;
-    top: -10px;
-    right: 8px;
-    z-index: 3;
-  }
-
+  background-color: #363636;
   svg {
     position: relative;
-    z-index: 2;
+    z-index: 3;
     transition: 0.7s;
     animation-name: stop-play;
     animation-duration: 2s;
     animation-delay: 0;
     animation-fill-mode: forwards;
   }
-
   #bar {
     fill: $grey;
   }
-
-  .darken-grey {
-    fill: darken($grey, 30%);
-  }
-
-  .grey {
-    fill: darken($grey, 20%);
+  .power-button {
+    border: 2px solid #000;
+    background: #202020;
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    padding: 2px 6px;
+    font-size: 12px;
   }
 }
 
+.darken-grey {
+  fill: darken($grey, 30%);
+}
+
+.grey {
+  fill: darken($grey, 20%);
+}
+
 /* The animation code */
+
 @keyframes spin {
   from {
     -moz-transform: rotate(-360deg);

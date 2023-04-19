@@ -1,6 +1,6 @@
 import { SessionProvider } from "next-auth/react";
-import { RecoilRoot } from "recoil";
 import type { AppProps } from "next/app";
+import { RecoilRoot } from "recoil";
 
 import Container from "@/components/Container";
 import Navigation from "@/components/Navigation";
