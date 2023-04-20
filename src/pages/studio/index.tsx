@@ -15,23 +15,30 @@ function Studio() {
   const [_, setIsPlaying] = useRecoilState(isPlayingState);
   const track = useTrack(currentTrackId);
 
-  async function getCurrentTrack() {
-    if (track) return;
-
-    const { body: currentPlaybackState } =
-      await spotifyApi.getMyCurrentPlaybackState();
-
-    if (!currentPlaybackState) return;
-
-    setIsPlaying(currentPlaybackState.is_playing);
-    setCurrentTrackId(String(currentPlaybackState.item?.id));
-  }
-
   useEffect(() => {
     if (spotifyApi.getAccessToken() && !currentTrackId) {
+      const getCurrentTrack = async () => {
+        if (track) return;
+
+        const { body: currentPlaybackState } =
+          await spotifyApi.getMyCurrentPlaybackState();
+
+        if (!currentPlaybackState) return;
+
+        setIsPlaying(currentPlaybackState.is_playing);
+        setCurrentTrackId(String(currentPlaybackState.item?.id));
+      };
+
       getCurrentTrack();
     }
-  }, [currentTrackIdState, spotifyApi, session]);
+  }, [
+    session,
+    spotifyApi,
+    currentTrackId,
+    setCurrentTrackId,
+    setIsPlaying,
+    track,
+  ]);
 
   return (
     <div className="flex justify-center items-center h-screen">

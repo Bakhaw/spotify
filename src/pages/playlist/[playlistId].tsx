@@ -1,34 +1,36 @@
-import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
+import { useCallback } from "react";
 import { useRouter } from "next/router";
 
-import { Playlist, fetchPlaylist } from "@/API/playlists";
+import useFetch from "@/hooks/useFetch";
 import useSpotify from "@/hooks/useSpotify";
 import millisToMinutesAndSeconds from "@/lib/millisToMinutesAndSeconds";
 import Cover from "@/components/Cover";
 import TrackList from "@/components/TrackList";
 
 function Playlist() {
-  const { data: session } = useSession();
-  const { query } = useRouter();
+  const {
+    query: { playlistId },
+  } = useRouter();
   const spotifyApi = useSpotify();
 
-  const [playlist, setPlaylist] = useState<Playlist | null>();
+  const getPlaylist = useCallback(
+    () => spotifyApi.getPlaylist(String(playlistId)),
+    [spotifyApi, playlistId]
+  );
 
-  async function getPlaylist() {
-    const playlist = await fetchPlaylist(spotifyApi, String(query.playlistId));
-    setPlaylist(playlist);
-  }
-
-  useEffect(() => {
-    if (spotifyApi.getAccessToken()) {
-      getPlaylist();
-    }
-  }, [session, spotifyApi, query]);
+  const playlist = useFetch(getPlaylist, [playlistId]);
 
   if (!playlist) return null;
 
-  const duration = playlist.tracks.items.reduce(
+  const formattedPlaylist = {
+    ...playlist,
+    tracks: {
+      ...playlist.tracks,
+      items: playlist.tracks.items.map((item) => item.track),
+    },
+  };
+
+  const duration = formattedPlaylist.tracks.items.reduce(
     (acc, curr) => (curr?.duration_ms ? acc + curr.duration_ms : 0),
     0
   );
@@ -56,7 +58,7 @@ function Playlist() {
         </div>
       </div>
 
-      <TrackList showCover tracks={playlist.tracks.items} />
+      <TrackList showCover tracks={formattedPlaylist.tracks.items} />
     </div>
   );
 }

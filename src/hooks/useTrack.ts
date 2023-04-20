@@ -13,18 +13,16 @@ function useTrack(trackId?: string) {
     useRecoilState(currentTrackIdState);
   const [track, setTrack] = useState<SpotifyApi.TrackObjectFull>();
 
-  async function getTrack() {
-    if (!trackId) return;
-
-    const { body } = await spotifyApi.getTrack(trackId);
-    setTrack(body);
-  }
-
   useEffect(() => {
-    if (spotifyApi.getAccessToken()) {
+    if (spotifyApi.getAccessToken() && trackId) {
+      const getTrack = async () => {
+        const { body } = await spotifyApi.getTrack(trackId);
+        setTrack(body);
+      };
+
       getTrack();
     }
-  }, [currentTrackId, session, spotifyApi]);
+  }, [session, spotifyApi, currentTrackId, trackId]);
 
   return track;
 }

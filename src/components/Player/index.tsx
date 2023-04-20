@@ -33,19 +33,6 @@ function Player() {
   const track = useTrack(currentTrackId);
   const [volume, setVolume] = useState(50);
 
-  async function getCurrentTrack() {
-    if (!track) {
-      const { body: currentPlaybackState } =
-        await spotifyApi.getMyCurrentPlaybackState();
-
-      if (!currentPlaybackState) return;
-
-      setIsPlaying(currentPlaybackState.is_playing);
-      setCurrentTrackId(String(currentPlaybackState.item?.id));
-      setVolume(Number(currentPlaybackState.device.volume_percent));
-    }
-  }
-
   async function togglePlay() {
     const { body: currentPlaybackState } =
       await spotifyApi.getMyCurrentPlaybackState();
@@ -75,9 +62,29 @@ function Player() {
 
   useEffect(() => {
     if (spotifyApi.getAccessToken() && !currentTrackId) {
+      const getCurrentTrack = async () => {
+        if (!track) {
+          const { body: currentPlaybackState } =
+            await spotifyApi.getMyCurrentPlaybackState();
+
+          if (!currentPlaybackState) return;
+
+          setIsPlaying(currentPlaybackState.is_playing);
+          setCurrentTrackId(String(currentPlaybackState.item?.id));
+          setVolume(Number(currentPlaybackState.device.volume_percent));
+        }
+      };
+
       getCurrentTrack();
     }
-  }, [currentTrackIdState, spotifyApi, session]);
+  }, [
+    spotifyApi,
+    session,
+    currentTrackId,
+    setCurrentTrackId,
+    setIsPlaying,
+    track,
+  ]);
 
   const debounceAdjustVolume = useCallback(
     debounce((volume) => {
@@ -92,7 +99,7 @@ function Player() {
         debounceAdjustVolume(volume);
       }
     }
-  }, [volume]);
+  }, [spotifyApi, volume]);
 
   if (router.asPath === "/studio") return null;
 

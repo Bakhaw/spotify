@@ -1,32 +1,23 @@
-import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
+import { useCallback } from "react";
 import { useRouter } from "next/router";
 
+import useFetch from "@/hooks/useFetch";
 import useSpotify from "@/hooks/useSpotify";
 import TrackList from "@/components/TrackList";
 import TrackListHeader from "@/components/TrackListHeader";
 
 const Album: React.FC = () => {
-  const { data: session } = useSession();
   const {
     query: { albumId },
   } = useRouter();
   const spotifyApi = useSpotify();
 
-  const [album, setAlbum] = useState<SpotifyApi.AlbumObjectFull>();
+  const getAlbum = useCallback(
+    () => spotifyApi.getAlbum(String(albumId)),
+    [spotifyApi, albumId]
+  );
 
-  async function getAlbum() {
-    if (!albumId) return;
-
-    const { body: album } = await spotifyApi.getAlbum(String(albumId));
-    setAlbum(album);
-  }
-
-  useEffect(() => {
-    if (spotifyApi.getAccessToken()) {
-      getAlbum();
-    }
-  }, [albumId, session, spotifyApi]);
+  const album = useFetch<SpotifyApi.SingleAlbumResponse>(getAlbum, [albumId]);
 
   if (!album) return null;
 

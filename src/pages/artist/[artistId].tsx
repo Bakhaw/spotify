@@ -1,45 +1,36 @@
-import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
+import { useCallback } from "react";
 import { useRouter } from "next/router";
 
+import useFetch from "@/hooks/useFetch";
 import useSpotify from "@/hooks/useSpotify";
 import Cover from "@/components/Cover";
 import HorizontalSlider from "@/components/HorizontalSlider";
 
 function ArtistDetails() {
-  const { data: session } = useSession();
   const {
     query: { artistId },
   } = useRouter();
   const spotifyApi = useSpotify();
 
-  const [artist, setArtist] = useState<SpotifyApi.ArtistObjectFull>();
-  const [projects, setProjects] =
-    useState<SpotifyApi.AlbumObjectSimplified[]>();
+  const getArtist = useCallback(
+    () => spotifyApi.getArtist(String(artistId)),
+    [spotifyApi, artistId]
+  );
 
-  async function getArtistData() {
-    if (!artistId) return;
+  const getProjects = useCallback(
+    () => spotifyApi.getArtistAlbums(String(artistId)),
+    [spotifyApi, artistId]
+  );
 
-    const { body: artist } = await spotifyApi.getArtist(String(artistId));
-    setArtist(artist);
-
-    const { body: projects } = await spotifyApi.getArtistAlbums(
-      String(artistId),
-      { limit: 50 }
-    );
-    setProjects(projects.items);
-  }
-
-  useEffect(() => {
-    if (spotifyApi.getAccessToken()) {
-      getArtistData();
-    }
-  }, [artistId, session, spotifyApi]);
+  const artist = useFetch<SpotifyApi.ArtistObjectFull>(getArtist, [artistId]);
+  const projects = useFetch<SpotifyApi.ArtistsAlbumsResponse>(getProjects, [
+    artistId,
+  ]);
 
   if (!artist || !projects) return null;
 
   const seen = new Set();
-  const removeDuplicatesAlbums = projects
+  const removeDuplicatesAlbums = projects.items
     .filter((project) => project.album_group === "album")
     .filter((el) => {
       const duplicate = seen.has(el.name);
@@ -48,10 +39,10 @@ function ArtistDetails() {
       return Boolean(!duplicate);
     });
 
-  const singles = projects.filter(
+  const singles = projects.items.filter(
     (project) => project.album_group === "single"
   );
-  const appearsOn = projects.filter(
+  const appearsOn = projects.items.filter(
     (project) => project.album_group === "appears_on"
   );
 

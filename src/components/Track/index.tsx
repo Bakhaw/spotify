@@ -70,16 +70,21 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
     setIsPlaying(true);
   }
 
-  async function checkIfTrackIsSaved() {
-    if (!currentTrack) return;
-
-    const { body } = await spotifyApi.containsMySavedTracks([currentTrack.id]);
-    setTrackSaved(body[0]);
-  }
-
   useEffect(() => {
-    checkIfTrackIsSaved();
-  }, [currentTrack]);
+    if (spotifyApi.getAccessToken() && currentTrack) {
+      const checkIfTrackIsSaved = async () => {
+        const { body } = await spotifyApi.containsMySavedTracks([
+          currentTrack.id,
+        ]);
+
+        if (body.length > 0) {
+          setTrackSaved(body[0]);
+        }
+      };
+
+      checkIfTrackIsSaved();
+    }
+  }, [spotifyApi, currentTrack]);
 
   if (!currentTrack) return null;
 

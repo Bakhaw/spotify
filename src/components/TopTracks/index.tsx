@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
+import { useCallback } from "react";
 
+import useFetch from "@/hooks/useFetch";
 import useSpotify from "@/hooks/useSpotify";
 import TrackList from "../TrackList";
 
@@ -9,26 +9,20 @@ interface TopTracksProps {
 }
 
 const TopTracks: React.FC<TopTracksProps> = () => {
-  const { data: session } = useSession();
   const spotifyApi = useSpotify();
-  const [topTracks, setTopTracks] = useState<SpotifyApi.TrackObjectFull[]>();
 
-  async function getTopTracks() {
-    const { body } = await spotifyApi.getMyTopTracks();
-    setTopTracks(body.items);
-  }
+  const getTopTracks = useCallback(
+    () => spotifyApi.getMyTopTracks(),
+    [spotifyApi]
+  );
 
-  useEffect(() => {
-    if (spotifyApi.getAccessToken()) {
-      getTopTracks();
-    }
-  }, [session, spotifyApi]);
+  const topTracks = useFetch(getTopTracks);
 
   if (!topTracks) return null;
 
   return (
     <div className="p-8">
-      <TrackList showCover title="Mostly Played" tracks={topTracks} />
+      <TrackList showCover title="Mostly Played" tracks={topTracks.items} />
     </div>
   );
 };
