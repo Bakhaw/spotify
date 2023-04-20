@@ -19,7 +19,6 @@ function SavedTracks() {
   return (
     <div className="p-8">
       <TrackList showCover title="saved tracks" tracks={formattedSavedTracks} />
-      ;
     </div>
   );
 }
