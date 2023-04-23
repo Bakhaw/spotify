@@ -10,6 +10,7 @@ const nextConfig = withPWA({
     domains: [
       // served from spotify api
       "i.scdn.co",
+      "t.scdn.co",
       "mosaic.scdn.co",
       "blend-playlist-covers.spotifycdn.com",
       "wrapped-images.spotifycdn.com",

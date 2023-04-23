@@ -12,6 +12,9 @@ module.exports = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      gridTemplateColumns: {
+        "fill-300": "repeat(auto-fill, 300px)",
+      },
     },
   },
   plugins: [require("tailwind-scrollbar-hide")],
