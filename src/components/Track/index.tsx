@@ -126,14 +126,24 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
         {showCover && (
           <div className="h-[60px] w-[60px] mr-3 relative">
             <Cover size="small" square src={currentTrack.album.images[0].url} />
-            {showPlayIcon && (
-              <div className="h-full w-full flex justify-center items-center top-0 absolute bg-black/90">
-                <PlayIcon
-                  className="h-5 w-5 cursor-pointer"
-                  onClick={playSong}
-                />
-              </div>
-            )}
+
+            <>
+              {showPlayIcon && (
+                <div className="h-full w-full flex justify-center items-center top-0 absolute bg-black/90">
+                  {currentTrack.id === currentTrackId && isPlaying ? (
+                    <PauseIcon
+                      className="h-5 w-5 cursor-pointer"
+                      onClick={pauseSong}
+                    />
+                  ) : (
+                    <PlayIcon
+                      className="h-5 w-5 cursor-pointer"
+                      onClick={playSong}
+                    />
+                  )}
+                </div>
+              )}
+            </>
           </div>
         )}
 

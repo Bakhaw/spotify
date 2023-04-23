@@ -39,6 +39,7 @@ next-env.d.ts
 
 # full vinyl colors
 src/API/fullVinylColors.ts
+src/API/vinylColors.ts
 
 # Auto Generated PWA files
 **/public/sw.js
