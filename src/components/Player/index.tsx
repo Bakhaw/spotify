@@ -126,10 +126,10 @@ function Player() {
   return (
     <div
       className={classNames(
-        "absolute w-full px-8 py-2 bg-[#060606] z-10",
-        showFullPlayer ? "bottom-0 h-screen" : "bottom-16 h-20"
+        "absolute bottom-16 w-full px-8 py-2 bg-[#060606] z-10"
       )}
       style={{
+        height: showFullPlayer ? "calc(100vh - 64px)" : "80px",
         transition: "0.2s",
       }}
     >
