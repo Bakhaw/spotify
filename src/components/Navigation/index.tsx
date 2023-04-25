@@ -42,7 +42,7 @@ function Navigation() {
   ];
 
   return (
-    <nav className="h-16 bg-[#2d2e37]">
+    <nav className="h-16 bg-[#2d2e37] z-10">
       <ul className="h-16 flex justify-around items-center">
         {links.map((link, index) => (
           <Link

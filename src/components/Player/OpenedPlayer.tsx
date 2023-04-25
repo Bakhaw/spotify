@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 
 import {
@@ -10,6 +10,8 @@ import {
 } from "@heroicons/react/24/solid";
 
 import { isPlayingState } from "@/atoms/trackAtom";
+import useFetch from "@/hooks/useFetch";
+import useSpotify from "@/hooks/useSpotify";
 
 import ArtistLink from "../ArtistLink";
 import Cover from "../Cover";
@@ -29,19 +31,34 @@ const OpenedPlayer: React.FC<OpenedPlayer> = ({
   onClose,
   track,
 }) => {
+  const spotifyApi = useSpotify();
+
   const isPlaying = useRecoilValue(isPlayingState);
   const [positionMs, setPositionMs] = useState(0);
 
+  const getPlaybackState = useCallback(
+    () => spotifyApi.getMyCurrentPlaybackState(),
+    [spotifyApi]
+  );
+  const playbackState = useFetch(getPlaybackState);
+
+  useEffect(() => {
+    if (playbackState) {
+      setPositionMs(Number(playbackState.progress_ms));
+    }
+  }, [playbackState]);
+
   function onProgressChange(e: ChangeEvent<HTMLInputElement>) {
-    setPositionMs(Number(e.target.value));
+    const newPositionMs = Number(e.target.value);
+
+    setPositionMs(newPositionMs);
+    spotifyApi.seek(newPositionMs);
   }
 
   const currentMinutes = Math.floor((positionMs / 1000 / 60) << 0);
   const currentSeconds = Math.floor((positionMs / 1000) % 60);
   const maxMinutes = Math.floor((track.duration_ms / 1000 / 60) << 0);
   const maxSeconds = Math.floor((track.duration_ms / 1000) % 60);
-
-  console.log("ms:::", positionMs);
 
   return (
     <div className="flex flex-col justify-between items-center h-full w-[300px] py-8">
@@ -68,6 +85,7 @@ const OpenedPlayer: React.FC<OpenedPlayer> = ({
             <input
               min={0}
               max={track.duration_ms}
+              value={positionMs}
               onChange={onProgressChange}
               type="range"
             />

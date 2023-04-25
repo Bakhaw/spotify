@@ -33,14 +33,14 @@ function Player() {
   const [volume, setVolume] = useState(50);
   const [showFullPlayer, setShowFullPlayer] = useState(false);
 
-  // TODO
+  // TODO: update currentTrackIdState
   function onPreviousTrackClick() {
-    // spotifyApi.skipToPrevious();
+    spotifyApi.skipToPrevious();
   }
 
-  // TODO
+  // TODO: update currentTrackIdState
   function onNextTrackClick() {
-    // spotifyApi.skipToNext();
+    spotifyApi.skipToNext();
   }
 
   async function togglePlay() {
@@ -130,7 +130,7 @@ function Player() {
       )}
       style={{
         height: showFullPlayer ? "calc(100vh - 64px)" : "80px",
-        transition: "0.2s",
+        transition: "0.3s",
       }}
     >
       <div className="flex justify-center items-center h-full">
