@@ -1,3 +1,4 @@
+import { ChangeEvent, useState } from "react";
 import { useRecoilValue } from "recoil";
 
 import {
@@ -29,6 +30,18 @@ const OpenedPlayer: React.FC<OpenedPlayer> = ({
   track,
 }) => {
   const isPlaying = useRecoilValue(isPlayingState);
+  const [positionMs, setPositionMs] = useState(0);
+
+  function onProgressChange(e: ChangeEvent<HTMLInputElement>) {
+    setPositionMs(Number(e.target.value));
+  }
+
+  const currentMinutes = Math.floor((positionMs / 1000 / 60) << 0);
+  const currentSeconds = Math.floor((positionMs / 1000) % 60);
+  const maxMinutes = Math.floor((track.duration_ms / 1000 / 60) << 0);
+  const maxSeconds = Math.floor((track.duration_ms / 1000) % 60);
+
+  console.log("ms:::", positionMs);
 
   return (
     <div className="flex flex-col justify-between items-center h-full w-[300px] py-8">
@@ -49,6 +62,24 @@ const OpenedPlayer: React.FC<OpenedPlayer> = ({
             </div>
 
             <LikeButton track={track} />
+          </div>
+
+          <div className="flex flex-col">
+            <input
+              min={0}
+              max={track.duration_ms}
+              onChange={onProgressChange}
+              type="range"
+            />
+
+            <div className="flex justify-between items-center">
+              <span>
+                {currentMinutes}:{currentSeconds.toString().padStart(2, "0")}
+              </span>
+              <span>
+                {maxMinutes}:{maxSeconds.toString().padStart(2, "0")}
+              </span>
+            </div>
           </div>
 
           <div className="flex justify-center items-center gap-6 w-full">
