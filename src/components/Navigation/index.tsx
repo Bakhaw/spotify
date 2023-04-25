@@ -42,8 +42,8 @@ function Navigation() {
   ];
 
   return (
-    <nav className="w-full bg-[#2d2e37] p-4 overflow-x-hidden overflow-y-scroll scrollbar-hide">
-      <ul className="flex justify-around items-center">
+    <nav className="h-16 bg-[#2d2e37]">
+      <ul className="h-16 flex justify-around items-center">
         {links.map((link, index) => (
           <Link
             key={index}

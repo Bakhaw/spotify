@@ -21,7 +21,7 @@ import Cover from "../Cover";
 import ArtistLink from "../ArtistLink";
 import TrackLink from "../TrackLink";
 
-function Player() {
+function ClosedPlayerBar() {
   const router = useRouter();
   const { data: session } = useSession();
   const spotifyApi = useSpotify();
@@ -32,6 +32,7 @@ function Player() {
 
   const track = useTrack(currentTrackId);
   const [volume, setVolume] = useState(50);
+  const [showFullPlayer, setShowFullPlayer] = useState(false);
 
   async function togglePlay() {
     const { body: currentPlaybackState } =
@@ -106,61 +107,59 @@ function Player() {
   if (!track) return null;
 
   return (
-    <div className="w-full px-8 py-2 h-20 overflow-hidden bg-[#060606] flex justify-between items-center">
-      <div className="flex justify-between items-center w-full">
-        <div className="flex flex-1 justify-start items-center gap-3 h-full">
-          <Cover size="small" square src={track.album.images[0].url} />
+    <div className="flex justify-between items-center w-full">
+      <div className="flex flex-1 justify-start items-center gap-3 h-full">
+        <Cover size="small" square src={track.album.images[0].url} />
 
-          <div className="max-w-[50vw] md:max-w-[30vw]">
-            <TrackLink track={track} />
-            <ArtistLink artists={track.artists} />
-          </div>
+        <div className="max-w-[50vw] md:max-w-[30vw]">
+          <TrackLink track={track} />
+          <ArtistLink artists={track.artists} />
         </div>
+      </div>
 
-        <div className="md:hidden">
-          <ChevronUpIcon className="h-6 w-6" role="button" />
-        </div>
+      <div className="md:hidden">
+        <ChevronUpIcon className="h-6 w-6" role="button" />
+      </div>
 
-        <div className="hidden md:flex flex-1 justify-center items-center gap-3 h-full">
-          <BackwardIcon
-            className="h-6 w-6"
+      <div className="hidden md:flex flex-1 justify-center items-center gap-3 h-full">
+        <BackwardIcon
+          className="h-6 w-6"
+          role="button"
+          onClick={onPreviousTrackClick}
+        />
+        {isPlaying ? (
+          <PauseCircleIcon
+            className="h-10 w-10"
             role="button"
-            onClick={onPreviousTrackClick}
+            onClick={togglePlay}
           />
-          {isPlaying ? (
-            <PauseCircleIcon
-              className="h-10 w-10"
-              role="button"
-              onClick={togglePlay}
-            />
-          ) : (
-            <PlayCircleIcon
-              className="h-10 w-10"
-              role="button"
-              onClick={togglePlay}
-            />
-          )}
-          <ForwardIcon
-            className="h-6 w-6"
+        ) : (
+          <PlayCircleIcon
+            className="h-10 w-10"
             role="button"
-            onClick={onNextTrackClick}
+            onClick={togglePlay}
           />
-        </div>
+        )}
+        <ForwardIcon
+          className="h-6 w-6"
+          role="button"
+          onClick={onNextTrackClick}
+        />
+      </div>
 
-        <div className="hidden md:flex flex-1 justify-end items-center gap-3 h-full">
-          <SpeakerXMarkIcon className="h-6 w-6" role="button" />
-          <input
-            min={0}
-            max={100}
-            value={volume}
-            type="range"
-            onChange={onVolumeChange}
-          />
-          <SpeakerWaveIcon className="h-6 w-6" role="button" />
-        </div>
+      <div className="hidden md:flex flex-1 justify-end items-center gap-3 h-full">
+        <SpeakerXMarkIcon className="h-6 w-6" role="button" />
+        <input
+          min={0}
+          max={100}
+          value={volume}
+          type="range"
+          onChange={onVolumeChange}
+        />
+        <SpeakerWaveIcon className="h-6 w-6" role="button" />
       </div>
     </div>
   );
 }
 
-export default Player;
+export default ClosedPlayerBar;

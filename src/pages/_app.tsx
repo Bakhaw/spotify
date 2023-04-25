@@ -4,7 +4,7 @@ import { RecoilRoot } from "recoil";
 
 import Container from "@/components/Container";
 import Navigation from "@/components/Navigation";
-import Player from "@/components/Player";
+import PlayerBar from "@/components/PlayerBar";
 
 import "@/styles/globals.css";
 import "@/styles/vinyl.scss";
@@ -13,12 +13,12 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <SessionProvider session={pageProps.session}>
       <RecoilRoot>
-        <div className="flex flex-col h-screen">
+        <div className="relative flex flex-col justify-between h-screen">
           <Container>
             <Component {...pageProps} />
           </Container>
 
-          <Player />
+          <PlayerBar />
           <Navigation />
         </div>
       </RecoilRoot>
