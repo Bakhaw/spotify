@@ -6,6 +6,7 @@ body {
   color: #fff;
   background: #000;
   overflow: hidden;
+  overscroll-behavior-y: contain;
 }
 
 a {
