@@ -4,7 +4,7 @@ import { RecoilRoot } from "recoil";
 
 import Container from "@/components/Container";
 import Navigation from "@/components/Navigation";
-import PlayerBar from "@/components/PlayerBar";
+import Player from "@/components/Player";
 
 import "@/styles/globals.css";
 import "@/styles/vinyl.scss";
@@ -18,7 +18,7 @@ export default function App({ Component, pageProps }: AppProps) {
             <Component {...pageProps} />
           </Container>
 
-          <PlayerBar />
+          <Player />
           <Navigation />
         </div>
       </RecoilRoot>

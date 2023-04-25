@@ -3,36 +3,45 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
 import { debounce } from "lodash";
-
-import {
-  BackwardIcon,
-  ForwardIcon,
-  PauseCircleIcon,
-  PlayCircleIcon,
-  SpeakerXMarkIcon,
-  SpeakerWaveIcon,
-  ChevronUpIcon,
-} from "@heroicons/react/24/solid";
+import classNames from "classnames";
 
 import useSpotify from "@/hooks/useSpotify";
 import useTrack from "@/hooks/useTrack";
 import { currentTrackIdState, isPlayingState } from "@/atoms/trackAtom";
-import Cover from "../Cover";
-import ArtistLink from "../ArtistLink";
-import TrackLink from "../TrackLink";
 
-function ClosedPlayerBar() {
+import ClosedPlayer from "./ClosedPlayer";
+import OpenedPlayer from "./OpenedPlayer";
+
+export interface PlayerProps {
+  onBackwardButtonClick: () => void;
+  onForwardButtonClick: () => void;
+  onTogglePlay: () => void;
+  track: SpotifyApi.TrackObjectFull;
+}
+
+function Player() {
   const router = useRouter();
   const { data: session } = useSession();
   const spotifyApi = useSpotify();
 
   const [currentTrackId, setCurrentTrackId] =
     useRecoilState(currentTrackIdState);
-  const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
+  const [_isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
 
   const track = useTrack(currentTrackId);
+
   const [volume, setVolume] = useState(50);
   const [showFullPlayer, setShowFullPlayer] = useState(false);
+
+  // TODO
+  function onPreviousTrackClick() {
+    // spotifyApi.skipToPrevious();
+  }
+
+  // TODO
+  function onNextTrackClick() {
+    // spotifyApi.skipToNext();
+  }
 
   async function togglePlay() {
     const { body: currentPlaybackState } =
@@ -47,20 +56,12 @@ function ClosedPlayerBar() {
     }
   }
 
-  // TODO
-  function onPreviousTrackClick() {
-    // spotifyApi.skipToPrevious();
-  }
-
-  // TODO
-  function onNextTrackClick() {
-    // spotifyApi.skipToNext();
-  }
-
+  // volume handling
   function onVolumeChange(e: React.ChangeEvent<HTMLInputElement>) {
     setVolume(parseInt(e.target.value));
   }
 
+  // volume handling
   useEffect(() => {
     if (spotifyApi.getAccessToken() && !currentTrackId) {
       const getCurrentTrack = async () => {
@@ -87,6 +88,7 @@ function ClosedPlayerBar() {
     track,
   ]);
 
+  // volume handling
   const debounceAdjustVolume = useCallback(
     debounce((volume) => {
       spotifyApi.setVolume(volume);
@@ -94,6 +96,7 @@ function ClosedPlayerBar() {
     []
   );
 
+  // volume handling
   useEffect(() => {
     if (spotifyApi.getAccessToken()) {
       if (volume > 0 && volume < 100) {
@@ -102,64 +105,49 @@ function ClosedPlayerBar() {
     }
   }, [spotifyApi, volume]);
 
+  // player opened or closed state
+  useEffect(() => {
+    if (showFullPlayer) {
+      setShowFullPlayer(false);
+    }
+  }, [router]);
+
   if (router.asPath === "/studio") return null;
 
   if (!track) return null;
 
+  const playerProps: PlayerProps = {
+    onBackwardButtonClick: onPreviousTrackClick,
+    onForwardButtonClick: onNextTrackClick,
+    onTogglePlay: togglePlay,
+    track,
+  };
+
   return (
-    <div className="flex justify-between items-center w-full">
-      <div className="flex flex-1 justify-start items-center gap-3 h-full">
-        <Cover size="small" square src={track.album.images[0].url} />
-
-        <div className="max-w-[50vw] md:max-w-[30vw]">
-          <TrackLink track={track} />
-          <ArtistLink artists={track.artists} />
-        </div>
-      </div>
-
-      <div className="md:hidden">
-        <ChevronUpIcon className="h-6 w-6" role="button" />
-      </div>
-
-      <div className="hidden md:flex flex-1 justify-center items-center gap-3 h-full">
-        <BackwardIcon
-          className="h-6 w-6"
-          role="button"
-          onClick={onPreviousTrackClick}
-        />
-        {isPlaying ? (
-          <PauseCircleIcon
-            className="h-10 w-10"
-            role="button"
-            onClick={togglePlay}
+    <div
+      className={classNames(
+        "absolute bottom-16 w-full px-8 py-2 bg-[#060606] z-10"
+      )}
+      style={{
+        height: showFullPlayer ? "calc(100vh - 64px)" : 80,
+        transition: "0.3s",
+      }}
+    >
+      <div className="flex justify-center items-center h-full">
+        {showFullPlayer ? (
+          <OpenedPlayer
+            onClose={() => setShowFullPlayer(false)}
+            {...playerProps}
           />
         ) : (
-          <PlayCircleIcon
-            className="h-10 w-10"
-            role="button"
-            onClick={togglePlay}
+          <ClosedPlayer
+            onOpen={() => setShowFullPlayer(true)}
+            {...playerProps}
           />
         )}
-        <ForwardIcon
-          className="h-6 w-6"
-          role="button"
-          onClick={onNextTrackClick}
-        />
-      </div>
-
-      <div className="hidden md:flex flex-1 justify-end items-center gap-3 h-full">
-        <SpeakerXMarkIcon className="h-6 w-6" role="button" />
-        <input
-          min={0}
-          max={100}
-          value={volume}
-          type="range"
-          onChange={onVolumeChange}
-        />
-        <SpeakerWaveIcon className="h-6 w-6" role="button" />
       </div>
     </div>
   );
 }
 
-export default ClosedPlayerBar;
+export default Player;

@@ -1,22 +1,19 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRecoilState } from "recoil";
 import classNames from "classnames";
-import {
-  HeartIcon as HeartIconOutline,
-  PauseIcon,
-} from "@heroicons/react/24/outline";
-import {
-  HeartIcon as HeartIconSolid,
-  PlayIcon,
-} from "@heroicons/react/24/solid";
+
+import { PauseIcon } from "@heroicons/react/24/outline";
+import { PlayIcon } from "@heroicons/react/24/solid";
 
 import { currentTrackIdState, isPlayingState } from "@/atoms/trackAtom";
 import millisToMinutesAndSeconds from "@/lib/millisToMinutesAndSeconds";
 import useSpotify from "@/hooks/useSpotify";
 import useTrack from "@/hooks/useTrack";
+
 import ArtistLink from "../ArtistLink";
 import Cover from "../Cover";
 import TrackLink from "../TrackLink";
+import LikeButton from "../LikeButton";
 
 interface TrackProps {
   coverSrc?: string;
@@ -28,23 +25,10 @@ interface TrackProps {
 const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
   const spotifyApi = useSpotify();
   const currentTrack = useTrack(track.id);
-  const [trackSaved, setTrackSaved] = useState<boolean>(false);
   const [showPlayIcon, setShowIcon] = useState<boolean>(false);
   const [currentTrackId, setCurrentTrackId] =
     useRecoilState(currentTrackIdState);
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
-
-  async function onFavoriteButtonClick() {
-    if (!currentTrack) return;
-
-    if (trackSaved) {
-      await spotifyApi.removeFromMySavedTracks([currentTrack.id]);
-      setTrackSaved(false);
-    } else {
-      await spotifyApi.addToMySavedTracks([currentTrack.id]);
-      setTrackSaved(true);
-    }
-  }
 
   function pauseSong() {
     spotifyApi.pause();
@@ -69,22 +53,6 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
     setCurrentTrackId(currentTrack.id);
     setIsPlaying(true);
   }
-
-  useEffect(() => {
-    if (spotifyApi.getAccessToken() && currentTrack) {
-      const checkIfTrackIsSaved = async () => {
-        const { body } = await spotifyApi.containsMySavedTracks([
-          currentTrack.id,
-        ]);
-
-        if (body.length > 0) {
-          setTrackSaved(body[0]);
-        }
-      };
-
-      checkIfTrackIsSaved();
-    }
-  }, [spotifyApi, currentTrack]);
 
   if (!currentTrack) return null;
 
@@ -154,14 +122,7 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
       </div>
 
       <div className="flex justify-between items-center gap-3 pr-4">
-        <div
-          aria-label="favorite"
-          role="button"
-          className="h-7 w-7"
-          onClick={onFavoriteButtonClick}
-        >
-          {trackSaved ? <HeartIconSolid /> : <HeartIconOutline />}
-        </div>
+        <LikeButton track={track} />
 
         <div className="hidden md:block">
           {millisToMinutesAndSeconds(currentTrack.duration_ms)}
