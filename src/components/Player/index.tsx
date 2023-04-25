@@ -126,11 +126,11 @@ function Player() {
   return (
     <div
       className={classNames(
-        "absolute bottom-16 w-full px-8 py-2 bg-[#060606] z-10"
+        "absolute w-full px-8 py-2 bg-[#060606] z-10",
+        showFullPlayer ? "bottom-0 h-screen" : "bottom-16 h-20"
       )}
       style={{
-        height: showFullPlayer ? "calc(100vh - 64px)" : 80,
-        transition: "0.3s",
+        transition: "0.2s",
       }}
     >
       <div className="flex justify-center items-center h-full">

@@ -42,9 +42,11 @@ const ClosedPlayer: React.FC<ClosedPlayerProps> = ({
         </div>
       </div>
 
-      <div className="md:hidden" onClick={onOpen}>
-        <ChevronUpIcon className="h-6 w-6" role="button" />
-      </div>
+      <ChevronUpIcon
+        className="h-6 w-6 md:hidden"
+        role="button"
+        onClick={onOpen}
+      />
 
       <div className="hidden md:flex flex-1 justify-center items-center gap-3 h-full">
         <BackwardIcon

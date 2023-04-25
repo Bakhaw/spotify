@@ -8,6 +8,11 @@ body {
   overflow: hidden;
 }
 
+a {
+  -webkit-tap-highlight-color: transparent !important;
+  outline: none !important;
+}
+
 /* Override "swiper" css */
 .swiper {
     padding: 0 32px !important;
