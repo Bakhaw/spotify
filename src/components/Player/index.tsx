@@ -132,7 +132,7 @@ function Player() {
   // player opened/closed handling
   useEffect(() => {
     if (showFullPlayer) {
-      // setShowFullPlayer(false);
+      setShowFullPlayer(false);
     }
   }, [router]);
 
