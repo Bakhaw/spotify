@@ -22,41 +22,23 @@ import { PlayerProps } from ".";
 
 interface OpenedPlayer extends PlayerProps {
   onClose?: () => void;
+  onProgressChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  progressMs: number;
 }
 
 const OpenedPlayer: React.FC<OpenedPlayer> = ({
   onBackwardButtonClick,
-  onForwardButtonClick,
-  onTogglePlay,
   onClose,
+  onForwardButtonClick,
+  onProgressChange,
+  onTogglePlay,
+  progressMs,
   track,
 }) => {
-  const spotifyApi = useSpotify();
-
   const isPlaying = useRecoilValue(isPlayingState);
-  const [positionMs, setPositionMs] = useState(0);
 
-  const getPlaybackState = useCallback(
-    () => spotifyApi.getMyCurrentPlaybackState(),
-    [spotifyApi]
-  );
-  const playbackState = useFetch(getPlaybackState);
-
-  useEffect(() => {
-    if (playbackState) {
-      setPositionMs(Number(playbackState.progress_ms));
-    }
-  }, [playbackState]);
-
-  function onProgressChange(e: ChangeEvent<HTMLInputElement>) {
-    const newPositionMs = Number(e.target.value);
-
-    setPositionMs(newPositionMs);
-    spotifyApi.seek(newPositionMs);
-  }
-
-  const currentMinutes = Math.floor((positionMs / 1000 / 60) << 0);
-  const currentSeconds = Math.floor((positionMs / 1000) % 60);
+  const currentMinutes = Math.floor((progressMs / 1000 / 60) << 0);
+  const currentSeconds = Math.floor((progressMs / 1000) % 60);
   const maxMinutes = Math.floor((track.duration_ms / 1000 / 60) << 0);
   const maxSeconds = Math.floor((track.duration_ms / 1000) % 60);
 
@@ -85,9 +67,9 @@ const OpenedPlayer: React.FC<OpenedPlayer> = ({
             <input
               min={0}
               max={track.duration_ms}
-              value={positionMs}
               onChange={onProgressChange}
               type="range"
+              value={progressMs}
             />
 
             <div className="flex justify-between items-center">

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
@@ -27,20 +27,22 @@ function Player() {
   const [currentTrackId, setCurrentTrackId] =
     useRecoilState(currentTrackIdState);
   const [_isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
-
   const track = useTrack(currentTrackId);
 
   const [volume, setVolume] = useState(50);
-  const [showFullPlayer, setShowFullPlayer] = useState(false);
+  const [progressMs, setProgressMs] = useState(0);
+  const [showFullPlayer, setShowFullPlayer] = useState(true);
 
   // TODO: update currentTrackIdState
-  function onPreviousTrackClick() {
-    spotifyApi.skipToPrevious();
+  async function onPreviousTrackClick() {
+    await spotifyApi.skipToPrevious();
+    await getCurrentTrack();
   }
 
   // TODO: update currentTrackIdState
-  function onNextTrackClick() {
-    spotifyApi.skipToNext();
+  async function onNextTrackClick() {
+    await spotifyApi.skipToNext();
+    await getCurrentTrack();
   }
 
   async function togglePlay() {
@@ -56,27 +58,22 @@ function Player() {
     }
   }
 
-  // volume handling
-  function onVolumeChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setVolume(parseInt(e.target.value));
-  }
+  const getCurrentTrack = async () => {
+    const { body: currentPlaybackState } =
+      await spotifyApi.getMyCurrentPlaybackState();
 
-  // volume handling
+    if (!currentPlaybackState) return;
+
+    setCurrentTrackId(String(currentPlaybackState.item?.id));
+    setProgressMs(Number(currentPlaybackState.progress_ms));
+    setVolume(Number(currentPlaybackState.device.volume_percent));
+    setIsPlaying(currentPlaybackState.is_playing);
+
+    return currentPlaybackState;
+  };
+
   useEffect(() => {
     if (spotifyApi.getAccessToken() && !currentTrackId) {
-      const getCurrentTrack = async () => {
-        if (!track) {
-          const { body: currentPlaybackState } =
-            await spotifyApi.getMyCurrentPlaybackState();
-
-          if (!currentPlaybackState) return;
-
-          setIsPlaying(currentPlaybackState.is_playing);
-          setCurrentTrackId(String(currentPlaybackState.item?.id));
-          setVolume(Number(currentPlaybackState.device.volume_percent));
-        }
-      };
-
       getCurrentTrack();
     }
   }, [
@@ -89,6 +86,10 @@ function Player() {
   ]);
 
   // volume handling
+  function onVolumeChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setVolume(parseInt(e.target.value));
+  }
+
   const debounceAdjustVolume = useCallback(
     debounce((volume) => {
       spotifyApi.setVolume(volume);
@@ -96,7 +97,6 @@ function Player() {
     []
   );
 
-  // volume handling
   useEffect(() => {
     if (spotifyApi.getAccessToken()) {
       if (volume > 0 && volume < 100) {
@@ -105,10 +105,34 @@ function Player() {
     }
   }, [spotifyApi, volume]);
 
-  // player opened or closed state
+  // progressMs handling
+  function onProgressChange(e: ChangeEvent<HTMLInputElement>) {
+    const newProgressMs = Number(e.target.value);
+    setProgressMs(newProgressMs);
+    spotifyApi.seek(newProgressMs);
+  }
+
+  useEffect(() => {
+    if (!track) return;
+
+    const intervalId = setInterval(() => {
+      setProgressMs((state) => {
+        if (state > track.duration_ms - 1000) {
+          getCurrentTrack();
+          return 0;
+        } else {
+          return state + 1000;
+        }
+      });
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, [track]);
+
+  // player opened/closed handling
   useEffect(() => {
     if (showFullPlayer) {
-      setShowFullPlayer(false);
+      // setShowFullPlayer(false);
     }
   }, [router]);
 
@@ -137,6 +161,8 @@ function Player() {
         {showFullPlayer ? (
           <OpenedPlayer
             onClose={() => setShowFullPlayer(false)}
+            onProgressChange={onProgressChange}
+            progressMs={progressMs}
             {...playerProps}
           />
         ) : (
