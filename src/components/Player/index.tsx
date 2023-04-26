@@ -31,7 +31,7 @@ function Player() {
 
   const [volume, setVolume] = useState(50);
   const [progressMs, setProgressMs] = useState(0);
-  const [showFullPlayer, setShowFullPlayer] = useState(true);
+  const [showFullPlayer, setShowFullPlayer] = useState(false);
 
   // TODO: update currentTrackIdState
   async function onPreviousTrackClick() {
