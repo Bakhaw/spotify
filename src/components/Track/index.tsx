@@ -12,8 +12,8 @@ import useTrack from "@/hooks/useTrack";
 
 import ArtistLink from "../ArtistLink";
 import Cover from "../Cover";
-import TrackLink from "../TrackLink";
 import LikeButton from "../LikeButton";
+import TrackLink from "../TrackLink";
 
 interface TrackProps {
   coverSrc?: string;

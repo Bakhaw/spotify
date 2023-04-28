@@ -1,10 +1,11 @@
 import { useCallback, useRef } from "react";
+import { NextPage } from "next";
+import Link from "next/link";
 
 import useFetch from "@/hooks/useFetch";
 import useSpotify from "@/hooks/useSpotify";
-import Link from "next/link";
 
-function Search() {
+const Search: NextPage = () => {
   const spotifyApi = useSpotify();
   const getCategories = useCallback(
     () => spotifyApi.getCategories(),
@@ -15,6 +16,7 @@ function Search() {
 
   const inputRef = useRef();
 
+  // TODO
   function onInputChange() {}
 
   console.log("input", inputRef);
@@ -46,6 +48,6 @@ function Search() {
       </ul>
     </div>
   );
-}
+};
 
 export default Search;

@@ -1,9 +1,10 @@
 import useFetch from "@/hooks/useFetch";
 import useSpotify from "@/hooks/useSpotify";
-import { useRouter } from "next/router";
 import { useCallback } from "react";
+import { NextPage } from "next";
+import { useRouter } from "next/router";
 
-function Category() {
+const Category: NextPage = () => {
   const { query } = useRouter();
   const spotifyApi = useSpotify();
 
@@ -15,9 +16,7 @@ function Category() {
 
   if (!category) return null;
 
-  console.log("category:", category);
-
   return <div>{category.name}</div>;
-}
+};
 
 export default Category;

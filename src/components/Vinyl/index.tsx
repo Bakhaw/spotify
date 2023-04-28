@@ -1,19 +1,21 @@
 import Image from "next/image";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import classNames from "classnames";
 
+import vinylColors from "@/API/vinylColors";
+
+import { currentTrackIdState, isPlayingState } from "@/atoms/trackAtom";
 import useSpotify from "@/hooks/useSpotify";
 import useTrack from "@/hooks/useTrack";
-import { currentTrackIdState, isPlayingState } from "@/atoms/trackAtom";
-import vinylColors from "@/API/vinylColors";
-import CoverFallback from "../../assets/cover-fallback.svg";
-import TrackLink from "../TrackLink";
-import ArtistLink from "../ArtistLink";
 
-function Vinyl() {
+import ArtistLink from "../ArtistLink";
+import TrackLink from "../TrackLink";
+
+import CoverFallback from "../../assets/cover-fallback.svg";
+
+const Vinyl: React.FC = () => {
   const spotifyApi = useSpotify();
-  const [currentTrackId, setCurrentTrackId] =
-    useRecoilState(currentTrackIdState);
+  const currentTrackId = useRecoilValue(currentTrackIdState);
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
   const track = useTrack(currentTrackId);
 
@@ -205,6 +207,6 @@ function Vinyl() {
       </div>
     </div>
   );
-}
+};
 
 export default Vinyl;

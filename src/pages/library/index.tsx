@@ -1,6 +1,7 @@
+import { NextPage } from "next";
 import Link from "next/link";
 
-function Library() {
+const Library: NextPage = () => {
   return (
     <div className="flex flex-col gap-4 p-8">
       <div className="flex justify-center items-center rounded-xl h-14 w-full bg-[#2d2e37] text-gray-300 overflow-hidden transition-colors hover:bg-[#666770] hover:text-white">
@@ -22,6 +23,6 @@ function Library() {
       </div>
     </div>
   );
-}
+};
 
 export default Library;

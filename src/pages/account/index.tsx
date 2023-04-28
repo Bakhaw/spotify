@@ -1,8 +1,10 @@
+import { NextPage } from "next";
 import { useSession } from "next-auth/react";
+
 import SignOut from "@/components/SignOut";
 import Cover from "@/components/Cover";
 
-function Account() {
+const Account: NextPage = () => {
   const { data } = useSession();
 
   if (!data) return null;
@@ -19,6 +21,6 @@ function Account() {
       </div>
     </div>
   );
-}
+};
 
 export default Account;

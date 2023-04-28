@@ -1,6 +1,6 @@
 import { signOut } from "next-auth/react";
 
-const SignOut = () => {
+const SignOut: React.FC = () => {
   async function handleButtonClick() {
     await signOut();
   }

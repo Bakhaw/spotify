@@ -1,12 +1,14 @@
 import { useCallback } from "react";
+import { NextPage } from "next";
 import { useRouter } from "next/router";
 
 import useFetch from "@/hooks/useFetch";
 import useSpotify from "@/hooks/useSpotify";
+
 import Cover from "@/components/Cover";
 import HorizontalSlider from "@/components/HorizontalSlider";
 
-function ArtistDetails() {
+const ArtistDetails: NextPage = () => {
   const {
     query: { artistId },
   } = useRouter();
@@ -67,6 +69,6 @@ function ArtistDetails() {
       </div>
     </div>
   );
-}
+};
 
 export default ArtistDetails;

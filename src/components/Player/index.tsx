@@ -5,9 +5,10 @@ import { useRecoilState } from "recoil";
 import { debounce } from "lodash";
 import classNames from "classnames";
 
+import { currentTrackIdState, isPlayingState } from "@/atoms/trackAtom";
+
 import useSpotify from "@/hooks/useSpotify";
 import useTrack from "@/hooks/useTrack";
-import { currentTrackIdState, isPlayingState } from "@/atoms/trackAtom";
 
 import ClosedPlayer from "./ClosedPlayer";
 import OpenedPlayer from "./OpenedPlayer";
@@ -19,7 +20,7 @@ export interface PlayerProps {
   track: SpotifyApi.TrackObjectFull;
 }
 
-function Player() {
+const Player: React.FC = () => {
   const router = useRouter();
   const { data: session } = useSession();
   const spotifyApi = useSpotify();
@@ -174,6 +175,6 @@ function Player() {
       </div>
     </div>
   );
-}
+};
 
 export default Player;

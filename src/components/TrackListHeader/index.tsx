@@ -1,6 +1,7 @@
 import millisToMinutesAndSeconds from "@/lib/millisToMinutesAndSeconds";
-import Cover from "../Cover";
+
 import ArtistLink from "../ArtistLink";
+import Cover from "../Cover";
 
 interface TrackListHeaderProps {
   album: SpotifyApi.AlbumObjectFull;

@@ -2,6 +2,7 @@ import { useCallback } from "react";
 
 import useFetch from "@/hooks/useFetch";
 import useSpotify from "@/hooks/useSpotify";
+
 import HorizontalSlider from "../HorizontalSlider";
 
 const TopArtists: React.FC = () => {

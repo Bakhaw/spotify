@@ -8,7 +8,7 @@ import {
   UserIcon,
 } from "@heroicons/react/24/outline";
 
-function Navigation() {
+const Navigation: React.FC = () => {
   const router = useRouter();
 
   if (router.asPath === "/login" || router.asPath === "/studio") return null;
@@ -57,6 +57,6 @@ function Navigation() {
       </ul>
     </nav>
   );
-}
+};
 
 export default Navigation;

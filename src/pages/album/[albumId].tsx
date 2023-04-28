@@ -1,12 +1,14 @@
 import { useCallback } from "react";
+import { NextPage } from "next";
 import { useRouter } from "next/router";
 
 import useFetch from "@/hooks/useFetch";
 import useSpotify from "@/hooks/useSpotify";
+
 import TrackList from "@/components/TrackList";
 import TrackListHeader from "@/components/TrackListHeader";
 
-const Album: React.FC = () => {
+const Album: NextPage = () => {
   const {
     query: { albumId },
   } = useRouter();

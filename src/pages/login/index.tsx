@@ -1,3 +1,4 @@
+import { NextPage } from "next";
 import { Provider } from "next-auth/providers";
 import { getProviders, signIn } from "next-auth/react";
 
@@ -5,7 +6,7 @@ interface LoginProps {
   providers: Provider[];
 }
 
-const Login: React.FC<LoginProps> = ({ providers }) => {
+const Login: NextPage<LoginProps> = ({ providers }) => {
   function handleLoginButtonClick(provider: Provider) {
     signIn(provider.id, { callbackUrl: "/" });
   }

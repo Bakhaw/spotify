@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback, useEffect, useState } from "react";
+import { ChangeEvent } from "react";
 import { useRecoilValue } from "recoil";
 
 import {
@@ -10,8 +10,6 @@ import {
 } from "@heroicons/react/24/solid";
 
 import { isPlayingState } from "@/atoms/trackAtom";
-import useFetch from "@/hooks/useFetch";
-import useSpotify from "@/hooks/useSpotify";
 
 import ArtistLink from "../ArtistLink";
 import Cover from "../Cover";

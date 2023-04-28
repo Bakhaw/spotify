@@ -1,13 +1,16 @@
 import { useCallback } from "react";
+import { NextPage } from "next";
 import { useRouter } from "next/router";
+
+import millisToMinutesAndSeconds from "@/lib/millisToMinutesAndSeconds";
 
 import useFetch from "@/hooks/useFetch";
 import useSpotify from "@/hooks/useSpotify";
-import millisToMinutesAndSeconds from "@/lib/millisToMinutesAndSeconds";
+
 import Cover from "@/components/Cover";
 import TrackList from "@/components/TrackList";
 
-function Playlist() {
+const Playlist: NextPage = () => {
   const {
     query: { playlistId },
   } = useRouter();
@@ -61,6 +64,6 @@ function Playlist() {
       <TrackList showCover tracks={formattedPlaylist.tracks.items} />
     </div>
   );
-}
+};
 
 export default Playlist;
