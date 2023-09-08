@@ -3,18 +3,24 @@ $pink: #f27696;
 $intVinylSize: 370;
 $vinylSize: 370px;
 $nbSpire: round($intVinylSize/15);
+
 .album-box {
-  display: flex;
   width: $vinylSize * 3;
   height: $vinylSize + 50;
   margin: 0 auto;
   position: relative;
+
+  @media (max-width: 768px) {
+    transform: rotate(90deg) scale(0.7);
+  }
+
   &:hover {
     .vinyl {
       margin-left: $vinylSize * 0.75;
       transition: margin-left 0.5s;
     }
   }
+
   &.active {
     .vinyl {
       margin-left: $vinylSize * 1.63;
@@ -25,6 +31,7 @@ $nbSpire: round($intVinylSize/15);
       animation-iteration-count: infinite;
       animation-timing-function: linear;
     }
+
     #turntable {
       svg {
         animation-name: start-play;
@@ -34,6 +41,7 @@ $nbSpire: round($intVinylSize/15);
       }
     }
   }
+
   .vinyl {
     cursor: pointer;
     -webkit-border-radius: 100%;
@@ -49,9 +57,11 @@ $nbSpire: round($intVinylSize/15);
     z-index: 2;
     margin-left: $vinylSize * 0.2;
     transition: margin-left 0.5s;
+
     .spire {
       display: none;
     }
+
     @for $i from 1 through $nbSpire {
       .spire-#{$i} {
         display: block;
@@ -69,6 +79,7 @@ $nbSpire: round($intVinylSize/15);
         bottom: 0;
       }
     }
+
     .vinyl-face {
       -webkit-border-radius: 100%;
       border-radius: 100%;
@@ -88,10 +99,12 @@ $nbSpire: round($intVinylSize/15);
       font-weight: 400;
       letter-spacing: 0.25em;
       font-size: 10px;
+
       > p {
         display: block;
         padding-top: ($vinylSize/2.7) / 2;
       }
+
       .triangle {
         width: 0;
         height: 0;
@@ -105,6 +118,7 @@ $nbSpire: round($intVinylSize/15);
         margin-top: 10px;
       }
     }
+
     .vinyl-center {
       -webkit-border-radius: 100%;
       border-radius: 100%;
@@ -136,18 +150,26 @@ $nbSpire: round($intVinylSize/15);
   z-index: 4;
   color: #fff;
   transition: 0.3s;
+
+  @media (max-width: 768px) {
+    transform: rotate(-90deg);
+  }
+
   &:hover {
     scale: 1.1;
     transition: 0.3s;
   }
+
   &__details {
     position: absolute;
     bottom: -100px;
     left: 0;
+
     &__track-name {
       font-weight: bold;
       font-size: 34px;
     }
+
     &__artist-name {
       color: grey;
       font-size: 26px;
@@ -176,6 +198,7 @@ $nbSpire: round($intVinylSize/15);
   height: ((296 * $intVinylSize)/251) + px;
   overflow: hidden;
   background-color: #363636;
+
   svg {
     position: relative;
     z-index: 3;
@@ -185,9 +208,11 @@ $nbSpire: round($intVinylSize/15);
     animation-delay: 0;
     animation-fill-mode: forwards;
   }
+
   #bar {
     fill: $grey;
   }
+
   .power-button {
     border: 2px solid #000;
     background: #202020;
@@ -217,6 +242,7 @@ $nbSpire: round($intVinylSize/15);
     -ms-transform: rotate(-360deg);
     transform: rotate(-360deg);
   }
+
   to {
     -moz-transform: rotate(0deg);
     -webkit-transform: rotate(0deg);
@@ -235,6 +261,7 @@ $nbSpire: round($intVinylSize/15);
     transform: rotate(0deg);
     transform-origin: 100% top;
   }
+
   to {
     -ms-transform: rotate(20deg);
     -ms-transform-origin: 100% top;
@@ -254,6 +281,7 @@ $nbSpire: round($intVinylSize/15);
     transform: rotate(20deg);
     transform-origin: 100% top;
   }
+
   to {
     -ms-transform: rotate(0deg);
     -ms-transform-origin: 100% top;

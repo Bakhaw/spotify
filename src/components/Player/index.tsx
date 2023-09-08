@@ -158,7 +158,7 @@ const Player: React.FC = () => {
         transition: "0.3s",
       }}
     >
-      <div className="flex justify-center items-center h-full">
+      <div className="flex justify-center items-center h-full w-full">
         {showFullPlayer ? (
           <OpenedPlayer
             onClose={() => setShowFullPlayer(false)}

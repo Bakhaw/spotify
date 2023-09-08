@@ -12,12 +12,14 @@ import ArtistLink from "../ArtistLink";
 import TrackLink from "../TrackLink";
 
 import CoverFallback from "../../assets/cover-fallback.svg";
+import { mockTrack } from "./mockTrack";
 
 const Vinyl: React.FC = () => {
   const spotifyApi = useSpotify();
   const currentTrackId = useRecoilValue(currentTrackIdState);
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
   const track = useTrack(currentTrackId);
+  // const track = mockTrack;
 
   async function togglePlay() {
     // this value is corresponding to .album-box .active .vinyl animation-delay property
@@ -52,7 +54,7 @@ const Vinyl: React.FC = () => {
         id="album"
         className={classNames("album-box", isPlaying && "active")}
       >
-        <div>
+        <>
           <div className="album-cover">
             <Image
               alt={`${track?.name} cover`}
@@ -203,7 +205,7 @@ const Vinyl: React.FC = () => {
               PLAY
             </button>
           </div>
-        </div>
+        </>
       </div>
     </div>
   );
