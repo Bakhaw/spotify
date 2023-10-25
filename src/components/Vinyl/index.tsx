@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import classNames from "classnames";
 
 import vinylColors from "@/API/vinylColors";
@@ -12,14 +12,43 @@ import ArtistLink from "../ArtistLink";
 import TrackLink from "../TrackLink";
 
 import CoverFallback from "../../assets/cover-fallback.svg";
-import { mockTrack } from "./mockTrack";
 
 const Vinyl: React.FC = () => {
   const spotifyApi = useSpotify();
-  const currentTrackId = useRecoilValue(currentTrackIdState);
+  const [currentTrackId, setCurrentTrackId] =
+    useRecoilState(currentTrackIdState);
+
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
   const track = useTrack(currentTrackId);
   // const track = mockTrack;
+
+  const getCurrentTrack = async () => {
+    const { body: currentPlaybackState } =
+      await spotifyApi.getMyCurrentPlaybackState();
+
+    if (!currentPlaybackState) return;
+
+    setCurrentTrackId(String(currentPlaybackState.item?.id));
+    setIsPlaying(currentPlaybackState.is_playing);
+  };
+
+  async function onPreviousButtonClick() {
+    await spotifyApi.skipToPrevious();
+
+    // set timeout is used to make sure the previous song has finished fetching
+    setTimeout(async () => {
+      await getCurrentTrack();
+    }, 500);
+  }
+
+  async function onNextButtonClick() {
+    await spotifyApi.skipToNext();
+
+    // set timeout is used to make sure the next song has finished fetching
+    setTimeout(async () => {
+      await getCurrentTrack();
+    }, 500);
+  }
 
   async function togglePlay() {
     // this value is corresponding to .album-box .active .vinyl animation-delay property
@@ -201,9 +230,20 @@ const Vinyl: React.FC = () => {
                 </g>
               </g>
             </svg>
-            <button className="power-button" onClick={togglePlay}>
-              PLAY
-            </button>
+
+            <div>
+              <button className="prev-button" onClick={onPreviousButtonClick}>
+                {`<<`}
+              </button>
+
+              <button className="next-button" onClick={onNextButtonClick}>
+                {`>>`}
+              </button>
+
+              <button className="power-button" onClick={togglePlay}>
+                {isPlaying ? "PAUSE" : "PLAY"}
+              </button>
+            </div>
           </div>
         </>
       </div>

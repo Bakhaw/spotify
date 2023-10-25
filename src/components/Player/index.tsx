@@ -34,13 +34,25 @@ const Player: React.FC = () => {
   const [progressMs, setProgressMs] = useState(0);
   const [showFullPlayer, setShowFullPlayer] = useState(false);
 
-  // TODO: update currentTrackIdState
+  const getCurrentTrack = async () => {
+    const { body: currentPlaybackState } =
+      await spotifyApi.getMyCurrentPlaybackState();
+
+    if (!currentPlaybackState) return;
+
+    setCurrentTrackId(String(currentPlaybackState.item?.id));
+    setProgressMs(Number(currentPlaybackState.progress_ms));
+    setVolume(Number(currentPlaybackState.device.volume_percent));
+    setIsPlaying(currentPlaybackState.is_playing);
+
+    return currentPlaybackState;
+  };
+
   async function onPreviousTrackClick() {
     await spotifyApi.skipToPrevious();
     await getCurrentTrack();
   }
 
-  // TODO: update currentTrackIdState
   async function onNextTrackClick() {
     await spotifyApi.skipToNext();
     await getCurrentTrack();
@@ -58,20 +70,6 @@ const Player: React.FC = () => {
       setIsPlaying(true);
     }
   }
-
-  const getCurrentTrack = async () => {
-    const { body: currentPlaybackState } =
-      await spotifyApi.getMyCurrentPlaybackState();
-
-    if (!currentPlaybackState) return;
-
-    setCurrentTrackId(String(currentPlaybackState.item?.id));
-    setProgressMs(Number(currentPlaybackState.progress_ms));
-    setVolume(Number(currentPlaybackState.device.volume_percent));
-    setIsPlaying(currentPlaybackState.is_playing);
-
-    return currentPlaybackState;
-  };
 
   useEffect(() => {
     if (spotifyApi.getAccessToken() && !currentTrackId) {
