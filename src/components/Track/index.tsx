@@ -2,8 +2,7 @@ import { useState } from "react";
 import { useRecoilState } from "recoil";
 import classNames from "classnames";
 
-import { PauseIcon } from "@heroicons/react/24/outline";
-import { PlayIcon } from "@heroicons/react/24/solid";
+import { PauseIcon, PlayIcon } from "lucide-react";
 
 import { currentTrackIdState, isPlayingState } from "@/atoms/trackAtom";
 import millisToMinutesAndSeconds from "@/lib/millisToMinutesAndSeconds";

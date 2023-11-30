@@ -4,12 +4,12 @@ import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
 import { RecoilRoot } from "recoil";
 
-import Container from "@/components/Container";
-import Navigation from "@/components/Navigation";
+// import Navigation from "@/components/Navigation";
 import Player from "@/components/Player";
 
 import "@/styles/globals.css";
 import "@/styles/vinyl.scss";
+import SideBar from "@/components/SideBar";
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -30,13 +30,14 @@ export default function App({ Component, pageProps }: AppProps) {
           triggerHeight={50}
           startInvisible={true}
         >
-          <div className="relative flex flex-col justify-between h-screen">
-            <Container>
+          <div className="flex flex-col justify-between h-screen">
+            <SideBar />
+            <div className="flex-auto ml-[266px] pb-20">
               <Component {...pageProps} />
-            </Container>
+            </div>
 
             <Player />
-            <Navigation />
+            {/* <Navigation /> */}
           </div>
         </PullToRefresh>
       </RecoilRoot>

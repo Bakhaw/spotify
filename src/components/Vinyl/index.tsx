@@ -33,20 +33,26 @@ const Vinyl: React.FC = () => {
   };
 
   async function onPreviousButtonClick() {
+    setIsPlaying(false);
+
     await spotifyApi.skipToPrevious();
 
     // set timeout is used to make sure the previous song has finished fetching
     setTimeout(async () => {
       await getCurrentTrack();
+      setIsPlaying(true);
     }, 500);
   }
 
   async function onNextButtonClick() {
+    setIsPlaying(false);
+
     await spotifyApi.skipToNext();
 
     // set timeout is used to make sure the next song has finished fetching
     setTimeout(async () => {
       await getCurrentTrack();
+      setIsPlaying(true);
     }, 500);
   }
 

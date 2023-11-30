@@ -2,12 +2,12 @@ import { ChangeEvent } from "react";
 import { useRecoilValue } from "recoil";
 
 import {
-  BackwardIcon,
-  ForwardIcon,
   ChevronDownIcon,
-  PauseCircleIcon,
-  PlayCircleIcon,
-} from "@heroicons/react/24/solid";
+  PauseIcon,
+  PlayIcon,
+  SkipBackIcon,
+  SkipForwardIcon,
+} from "lucide-react";
 
 import { isPlayingState } from "@/atoms/trackAtom";
 
@@ -81,26 +81,26 @@ const OpenedPlayer: React.FC<OpenedPlayer> = ({
           </div>
 
           <div className="flex justify-center items-center gap-6 w-full">
-            <BackwardIcon
-              className="h-8 w-8"
+            <SkipBackIcon
+              className="h-6 w-6"
               role="button"
               onClick={onBackwardButtonClick}
             />
             {isPlaying ? (
-              <PauseCircleIcon
-                className="h-16 w-16"
+              <PauseIcon
+                className="h-8 w-8"
                 role="button"
                 onClick={onTogglePlay}
               />
             ) : (
-              <PlayCircleIcon
-                className="h-16 w-16"
+              <PlayIcon
+                className="h-8 w-8"
                 role="button"
                 onClick={onTogglePlay}
               />
             )}
-            <ForwardIcon
-              className="h-8 w-8"
+            <SkipForwardIcon
+              className="h-6 w-6"
               role="button"
               onClick={onForwardButtonClick}
             />

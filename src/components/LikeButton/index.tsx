@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { HeartIcon as HeartIconOutline } from "@heroicons/react/24/outline";
-import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
+import { HeartIcon } from "lucide-react";
 
 import useSpotify from "@/hooks/useSpotify";
 
@@ -46,7 +45,11 @@ const LikeButton: React.FC<LikeButtonProps> = ({ track }) => {
       className="h-7 w-7"
       onClick={onFavoriteButtonClick}
     >
-      {isTrackSaved ? <HeartIconSolid color="#1ED760" /> : <HeartIconOutline />}
+      {isTrackSaved ? (
+        <HeartIcon fill="#1ED760" color="#1ED760" />
+      ) : (
+        <HeartIcon />
+      )}
     </div>
   );
 };

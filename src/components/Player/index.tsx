@@ -3,7 +3,6 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
 import { debounce } from "lodash";
-import classNames from "classnames";
 
 import { currentTrackIdState, isPlayingState } from "@/atoms/trackAtom";
 
@@ -148,11 +147,9 @@ const Player: React.FC = () => {
 
   return (
     <div
-      className={classNames(
-        "absolute bottom-16 w-full px-8 py-2 bg-[#060606] z-10"
-      )}
+      className="fixed bottom-0 w-full px-8 py-2 bg-[#060606] z-10"
       style={{
-        height: showFullPlayer ? "calc(100vh - 64px)" : "80px",
+        height: showFullPlayer ? "100vh" : "80px",
         transition: "0.3s",
       }}
     >

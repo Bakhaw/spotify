@@ -32,7 +32,7 @@ const HorizontalSlider: React.FC<HorizontalSliderProps> = ({
         keyboard
         slidesPerView="auto"
         spaceBetween={20}
-        mousewheel={{ sensitivity: 0.5 }}
+        mousewheel={{ forceToAxis: true, sensitivity: 0.5 }}
         freeMode={{
           enabled: true,
           sticky: false,

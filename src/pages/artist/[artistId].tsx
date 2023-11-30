@@ -49,7 +49,7 @@ const ArtistDetails: NextPage = () => {
   );
 
   return (
-    <div className="py-8">
+    <div className="py-8 w-full">
       <div className="flex flex-col justify-center items-center gap-2">
         <Cover rounded size="large" src={artist.images[0].url} />
         <h1 className="text-4xl font-bold">{artist.name}</h1>
