@@ -99,7 +99,7 @@ body {
 /* custom scrollbar */
 
 ::-webkit-scrollbar {
-  width: 4px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -107,10 +107,10 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1ED760;
+  background: #666770;
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #01be47;
+  background: #666770;
 }
