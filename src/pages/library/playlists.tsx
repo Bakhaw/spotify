@@ -1,18 +1,11 @@
-import { useCallback } from "react";
 import Link from "next/link";
 
-import useFetch from "@/hooks/useFetch";
-import useSpotify from "@/hooks/useSpotify";
+import usePlaylists from "@/hooks/usePlaylists";
+
 import Cover from "@/components/Cover";
 
 function Playlists() {
-  const spotifyApi = useSpotify();
-
-  const getPlaylists = useCallback(
-    () => spotifyApi.getUserPlaylists(),
-    [spotifyApi]
-  );
-  const playlists = useFetch(getPlaylists);
+  const playlists = usePlaylists();
 
   if (!playlists) return null;
 
