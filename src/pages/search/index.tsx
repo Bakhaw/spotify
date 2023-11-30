@@ -1,9 +1,11 @@
-import { useCallback, useRef } from "react";
+import { FormEvent, useCallback, useRef } from "react";
 import { NextPage } from "next";
 import Link from "next/link";
 
 import useFetch from "@/hooks/useFetch";
 import useSpotify from "@/hooks/useSpotify";
+import { Input } from "postcss";
+import HorizontalSlider from "@/components/HorizontalSlider";
 
 const Search: NextPage = () => {
   const spotifyApi = useSpotify();
@@ -14,20 +16,53 @@ const Search: NextPage = () => {
   const categories =
     useFetch<SpotifyApi.MultipleCategoriesResponse>(getCategories);
 
-  const inputRef = useRef();
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  // TODO
-  function onInputChange() {}
+  // TODO search feature
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
 
-  console.log("input", inputRef);
+    if (!inputRef.current) return;
+
+    const searchValue = inputRef.current.value;
+
+    const search = await spotifyApi.search(
+      searchValue,
+      ["artist", "album", "track", "playlist"],
+      {
+        limit: 4,
+      }
+    );
+  }
+
+  const getNewReleases = useCallback(
+    () => spotifyApi.getNewReleases(),
+    [spotifyApi]
+  );
+  const newReleases =
+    useFetch<SpotifyApi.ListOfNewReleasesResponse>(getNewReleases);
+
+  console.log("newReleases", newReleases);
 
   if (!categories) return null;
 
   return (
-    <div className="p-8">
-      <input onChange={onInputChange} type="text" placeholder="Search..." />
+    <form className="p-8" onSubmit={onSubmit}>
+      <input
+        disabled
+        ref={inputRef}
+        className="text-black"
+        placeholder="Search..."
+        type="text"
+      />
 
-      <ul className="grid grid-cols-fill-300 justify-center gap-12">
+      <HorizontalSlider
+        items={newReleases.albums.items}
+        type="album"
+        title="singles & ep"
+      />
+
+      {/* <ul className="grid grid-cols-fill-300 justify-center gap-12">
         {categories.categories.items.map((category) => (
           <Link
             key={category.id}
@@ -45,8 +80,8 @@ const Search: NextPage = () => {
             </h1>
           </Link>
         ))}
-      </ul>
-    </div>
+      </ul> */}
+    </form>
   );
 };
 

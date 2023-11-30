@@ -12,14 +12,14 @@ const routes = [
     text: "browse",
   },
   {
-    href: "/studio",
-    icon: <SpeakerIcon className="h-5 w-5" />,
-    text: "studio (beta)",
-  },
-  {
     href: "/library",
     icon: <LibraryIcon className="h-5 w-5" />,
     text: "library",
+  },
+  {
+    href: "/studio",
+    icon: <SpeakerIcon className="h-5 w-5" />,
+    text: "studio (beta)",
   },
 ];
 

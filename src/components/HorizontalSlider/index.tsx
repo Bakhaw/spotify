@@ -5,6 +5,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import Cover from "../Cover";
 
 import "swiper/css";
+import isFullTrack from "@/lib/isFullTrack";
 
 SwiperCore.use([FreeMode, Keyboard, Mousewheel]);
 
