@@ -34,7 +34,7 @@ export default function App({ Component, pageProps }: AppProps) {
             <div className="hidden sm:block">
               <SideBar />
             </div>
-            <div className="flex-auto ml-[266px] pb-20">
+            <div className="flex-auto sm:ml-[266px] pb-20">
               <Component {...pageProps} />
             </div>
 
