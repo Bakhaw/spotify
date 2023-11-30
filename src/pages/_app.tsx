@@ -31,7 +31,9 @@ export default function App({ Component, pageProps }: AppProps) {
           startInvisible={true}
         >
           <div className="flex flex-col justify-between h-screen">
-            <SideBar />
+            <div className="hidden sm:block">
+              <SideBar />
+            </div>
             <div className="flex-auto ml-[266px] pb-20">
               <Component {...pageProps} />
             </div>
