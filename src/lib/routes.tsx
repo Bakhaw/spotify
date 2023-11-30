@@ -4,22 +4,22 @@ const routes = [
   {
     href: "/",
     icon: <MusicIcon className="h-5 w-5" />,
-    text: "Listen Now",
+    text: "listen now",
   },
   {
     href: "/search",
     icon: <SearchIcon className="h-5 w-5" />,
-    text: "Browse",
+    text: "browse",
   },
   {
     href: "/studio",
     icon: <SpeakerIcon className="h-5 w-5" />,
-    text: "Studio",
+    text: "studio (beta)",
   },
   {
     href: "/library",
     icon: <LibraryIcon className="h-5 w-5" />,
-    text: "Library",
+    text: "library",
   },
 ];
 

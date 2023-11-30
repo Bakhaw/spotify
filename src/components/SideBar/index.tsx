@@ -11,12 +11,14 @@ function SideBar() {
   const pathname = usePathname();
   const playlists = usePlaylists();
 
+  if (pathname === "/studio") return null;
+
   return (
     <div className="fixed top-0 overflow-x-hidden bottom-[80px] w-[266px]">
       <div className="space-y-4 py-4">
         <div className="px-4 py-2">
           <h2 className="mb-2 px-2 text-lg font-semibold tracking-tight">
-            Discover
+            discover
           </h2>
           <div className="space-y-1">
             {routes.map((route) => (
@@ -38,7 +40,7 @@ function SideBar() {
       <div className="space-y-4 py-4">
         <div className="px-4 py-2">
           <h2 className="mb-2 px-2 text-lg font-semibold tracking-tight">
-            Playlists
+            playlists
           </h2>
           <div className="space-y-2">
             {playlists?.items.map((playlist) => (
