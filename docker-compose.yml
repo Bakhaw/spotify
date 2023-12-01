@@ -1,0 +1,15 @@
+version: '3'
+services:
+  spotify:
+    container_name: spotify
+    image: spotify:latest
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    restart: unless-stopped
+    ports:
+      - 7555:7555
+
+volumes:
+  spotifyproject:
+
