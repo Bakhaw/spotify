@@ -1,3 +1,5 @@
+"use client";
+
 import { useCallback, useState } from "react";
 import {
   Select,
@@ -15,6 +17,7 @@ import TrackList from "../TrackList";
 
 function TopTracks() {
   const [timeRange, setTimeRange] = useState<TimeRange>("long_term");
+
   const spotifyApi = useSpotify();
 
   const getTopTracks = useCallback(
@@ -38,9 +41,9 @@ function TopTracks() {
             <SelectValue className="text-black" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="short_term">1 month</SelectItem>
-            <SelectItem value="medium_term">6 months</SelectItem>
-            <SelectItem value="long_term">All</SelectItem>
+            <SelectItem value="short_term">last month</SelectItem>
+            <SelectItem value="medium_term">last 6 months</SelectItem>
+            <SelectItem value="long_term">all time</SelectItem>
           </SelectContent>
         </Select>
       </div>

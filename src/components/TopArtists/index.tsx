@@ -1,3 +1,5 @@
+"use client";
+
 import { useCallback, useState } from "react";
 import {
   Select,
@@ -15,8 +17,8 @@ import HorizontalSlider from "../HorizontalSlider";
 
 function TopArtists() {
   const [timeRange, setTimeRange] = useState<TimeRange>("long_term");
-  const spotifyApi = useSpotify();
 
+  const spotifyApi = useSpotify();
   const getTopArtists = useCallback(
     () => spotifyApi.getMyTopArtists({ time_range: timeRange }),
     [spotifyApi, timeRange]
@@ -39,9 +41,9 @@ function TopArtists() {
             <SelectValue className="text-black" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="short_term">1 month</SelectItem>
-            <SelectItem value="medium_term">6 months</SelectItem>
-            <SelectItem value="long_term">All</SelectItem>
+            <SelectItem value="short_term">last month</SelectItem>
+            <SelectItem value="medium_term">last 6 months</SelectItem>
+            <SelectItem value="long_term">all time</SelectItem>
           </SelectContent>
         </Select>
       </div>
