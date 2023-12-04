@@ -1,5 +1,3 @@
-"use client";
-
 import { useCallback } from "react";
 
 import useSpotify from "./useSpotify";
@@ -9,7 +7,7 @@ function usePlaylists() {
   const spotifyApi = useSpotify();
 
   const getPlaylists = useCallback(
-    () => spotifyApi.getUserPlaylists(),
+    () => spotifyApi.getUserPlaylists({ limit: 50 }),
     [spotifyApi]
   );
 
