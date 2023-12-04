@@ -6,6 +6,7 @@ import { RecoilRoot } from "recoil";
 import { ChevronLeftCircleIcon, ChevronRightCircleIcon } from "lucide-react";
 import classNames from "classnames";
 
+import CustomDndContext from "@/components/CustomDndContext";
 import Player from "@/components/Player";
 import SideBar from "@/components/SideBar";
 
@@ -32,32 +33,34 @@ export default function App({ Component, pageProps }: AppProps) {
           triggerHeight={50}
           startInvisible={true}
         >
-          <div className="flex flex-col justify-between h-screen">
-            <div className="hidden sm:block">
-              <SideBar />
-            </div>
-
-            <div
-              className={classNames(
-                "flex-auto pb-20",
-                pathname !== "/studio" && "sm:ml-[266px]"
-              )}
-            >
-              <div className="flex gap-2 m-6">
-                <button className="hover:opacity-75" onClick={router.back}>
-                  <ChevronLeftCircleIcon className="h-6 w-6" />
-                </button>
-
-                <button className="hover:opacity-75" onClick={router.forward}>
-                  <ChevronRightCircleIcon className="h-6 w-6" />
-                </button>
+          <CustomDndContext>
+            <div className="flex flex-col justify-between h-screen">
+              <div className="hidden sm:block">
+                <SideBar />
               </div>
 
-              <Component {...pageProps} />
-            </div>
+              <div
+                className={classNames(
+                  "flex-auto pb-20",
+                  pathname !== "/studio" && "sm:ml-[266px]"
+                )}
+              >
+                <div className="flex gap-2 m-6">
+                  <button className="hover:opacity-75" onClick={router.back}>
+                    <ChevronLeftCircleIcon className="h-6 w-6" />
+                  </button>
 
-            <Player />
-          </div>
+                  <button className="hover:opacity-75" onClick={router.forward}>
+                    <ChevronRightCircleIcon className="h-6 w-6" />
+                  </button>
+                </div>
+
+                <Component {...pageProps} />
+              </div>
+
+              <Player />
+            </div>
+          </CustomDndContext>
         </PullToRefresh>
       </RecoilRoot>
     </SessionProvider>

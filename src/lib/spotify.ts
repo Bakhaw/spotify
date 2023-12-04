@@ -9,7 +9,12 @@ const spotifyApi = new SpotifyWebApi({
 });
 
 const scopes = [
+  // playlist
   "playlist-read-private",
+  "playlist-modify-public",
+  "playlist-modify-private",
+
+  // user
   "user-modify-playback-state",
   "user-library-modify",
   "user-library-read",
@@ -18,6 +23,8 @@ const scopes = [
   "user-read-playback-state",
   "user-top-read",
   "user-follow-read",
+
+  // other
   "streaming",
 ];
 

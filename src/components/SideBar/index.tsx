@@ -1,15 +1,14 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { ListMusicIcon } from "lucide-react";
 
 import routes from "@/lib/routes";
-import usePlaylists from "@/hooks/usePlaylists";
 
 import { Button } from "@/components/ui/button";
 
+import Playlists from "./Playlists";
+
 function SideBar() {
   const pathname = usePathname();
-  const playlists = usePlaylists();
 
   if (pathname === "/studio") return null;
 
@@ -43,24 +42,7 @@ function SideBar() {
             playlists
           </h2>
           <div className="space-y-2">
-            {playlists?.items.map((playlist) => (
-              <Link
-                className="block"
-                key={playlist.id}
-                href={`/playlist/${playlist.id}`}
-              >
-                <Button
-                  // variant={pathname === route.href ? "secondary" : "ghost"}
-                  size="sm"
-                  className="w-full justify-start"
-                >
-                  <div className="mr-2">
-                    <ListMusicIcon className="h-6 w-6" />
-                  </div>
-                  <span>{playlist.name}</span>
-                </Button>
-              </Link>
-            ))}
+            <Playlists />
           </div>
         </div>
       </div>

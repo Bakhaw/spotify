@@ -1,3 +1,4 @@
+import Draggable from "../Draggable";
 import Track from "../Track";
 
 interface TrackListProps {
@@ -25,11 +26,13 @@ const TrackList: React.FC<TrackListProps> = ({
             (track, index) =>
               track && (
                 <li key={track.id}>
-                  <Track
-                    order={showOrder ? index + 1 : null}
-                    showCover={showCover}
-                    track={track}
-                  />
+                  <Draggable id={track.id}>
+                    <Track
+                      order={showOrder ? index + 1 : null}
+                      showCover={showCover}
+                      track={track}
+                    />
+                  </Draggable>
                 </li>
               )
           )}

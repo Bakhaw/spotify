@@ -17,6 +17,7 @@ import Cover from "../Cover";
 import TrackLink from "../TrackLink";
 
 import { PlayerProps } from ".";
+import Draggable from "../Draggable";
 
 interface ClosedPlayerProps extends PlayerProps {
   onOpen: () => void;
@@ -33,14 +34,21 @@ const ClosedPlayer: React.FC<ClosedPlayerProps> = ({
 
   return (
     <div className="flex justify-between items-center w-full">
-      <div className="flex flex-1 justify-start items-center gap-3 h-full">
-        <Cover size="small" square src={track.album.images[0].url} />
+      <Draggable id={track.id}>
+        <div className="flex flex-1 justify-start items-center gap-3 h-full">
+          <Cover
+            alt={track.name}
+            size="small"
+            square
+            src={track.album.images[0].url}
+          />
 
-        <div className="max-w-[50vw] md:max-w-[30vw]">
-          <TrackLink track={track} />
-          <ArtistLink artists={track.artists} />
+          <div className="max-w-[50vw] md:max-w-[30vw]">
+            <TrackLink track={track} />
+            <ArtistLink artists={track.artists} />
+          </div>
         </div>
-      </div>
+      </Draggable>
 
       <ChevronUpIcon
         className="h-6 w-6 md:hidden"
