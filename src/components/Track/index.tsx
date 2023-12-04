@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import classNames from "classnames";
-
 import { PauseIcon, PlayIcon } from "lucide-react";
 
 import { currentTrackIdState, isPlayingState } from "@/atoms/trackAtom";
@@ -15,7 +14,6 @@ import LikeButton from "../LikeButton";
 import TrackLink from "../TrackLink";
 
 interface TrackProps {
-  coverSrc?: string;
   order?: number | null;
   showCover?: boolean; // default false;
   track: SpotifyApi.TrackObjectFull | SpotifyApi.TrackObjectSimplified;
@@ -92,7 +90,12 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
 
         {showCover && (
           <div className="h-[60px] w-[60px] mr-3 relative">
-            <Cover size="small" square src={currentTrack.album.images[0].url} />
+            <Cover
+              alt={currentTrack.name}
+              size="small"
+              square
+              src={currentTrack.album.images[0].url}
+            />
 
             <>
               {showPlayIcon && (

@@ -12,7 +12,12 @@ const Account: NextPage = () => {
   return (
     <div className="flex justify-between">
       <div className="flex flex-col grow items-center gap-4">
-        <Cover rounded size="large" src={data.user?.image} />
+        <Cover
+          alt={data.user?.name ?? "avatar"}
+          rounded
+          size="large"
+          src={data.user?.image}
+        />
         <h1 className="text-3xl">{data.user?.name}</h1>
       </div>
 

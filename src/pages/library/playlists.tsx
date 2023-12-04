@@ -18,6 +18,7 @@ function Playlists() {
           className="flex-grow max-w-fit overflow-hidden text-ellipsis whitespace-nowrap"
         >
           <Cover
+            alt={playlist.name}
             src={playlist.images.length > 0 ? playlist.images[0].url : null}
           />
           {playlist.name}

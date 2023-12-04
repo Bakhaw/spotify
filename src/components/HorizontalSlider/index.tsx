@@ -43,7 +43,7 @@ const HorizontalSlider: React.FC<HorizontalSliderProps> = ({
         {items.map((item) => (
           <SwiperSlide key={item.id}>
             <Link href={`/${type}/${item.id}`}>
-              <Cover src={item.images[0].url} />
+              <Cover alt={item.name} src={item.images[0].url} />
               <div>{item.name}</div>
             </Link>
           </SwiperSlide>

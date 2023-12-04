@@ -4,6 +4,7 @@ import classNames from "classnames";
 import CoverFallback from "../../assets/cover-fallback.svg";
 
 interface CoverProps {
+  alt: string;
   rounded?: boolean;
   size?: "small" | "medium" | "large"; // default: "medium"
   square?: boolean; // removes border-radius
@@ -11,6 +12,7 @@ interface CoverProps {
 }
 
 const Cover: React.FC<CoverProps> = ({
+  alt,
   rounded,
   size = "medium",
   square,
@@ -24,7 +26,7 @@ const Cover: React.FC<CoverProps> = ({
 
   return (
     <Image
-      alt="Cover"
+      alt={alt}
       className={classNames(
         `block object-cover rounded-3xl ${sizes[size]}`,
         rounded && "rounded-full",
