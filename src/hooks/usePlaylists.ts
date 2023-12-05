@@ -7,7 +7,7 @@ function usePlaylists() {
   const spotifyApi = useSpotify();
 
   const getPlaylists = useCallback(
-    () => spotifyApi.getUserPlaylists({ limit: 50 }),
+    () => spotifyApi.getUserPlaylists(),
     [spotifyApi]
   );
 
