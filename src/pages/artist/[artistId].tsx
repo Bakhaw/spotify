@@ -57,7 +57,7 @@ const ArtistDetails: NextPage = () => {
 
       <div className="flex flex-col justify-center items-center gap-2">
         <Cover
-          alt={artist?.name}
+          alt={`${artist?.name} cover`}
           rounded
           size="large"
           src={artist?.images[0].url}

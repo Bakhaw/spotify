@@ -95,7 +95,7 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
         {showCover && (
           <div className="h-[60px] w-[60px] mr-3 relative">
             <Cover
-              alt={currentTrack.name}
+              alt={`${currentTrack.name} cover`}
               size="small"
               square
               src={currentTrack.album.images[0].url}

@@ -37,7 +37,7 @@ const ClosedPlayer: React.FC<ClosedPlayerProps> = ({
         <Draggable id={`closed_player:${track.id}`}>
           <div className="flex flex-1 justify-start items-center gap-3 h-full">
             <Cover
-              alt={track.name}
+              alt={`${track.name} cover`}
               size="small"
               square
               src={track.album.images[0].url}
