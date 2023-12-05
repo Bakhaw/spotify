@@ -8,6 +8,8 @@ import useSpotify from "@/hooks/useSpotify";
 import Cover from "@/components/Cover";
 import HorizontalSlider from "@/components/HorizontalSlider";
 
+import MonthlyListeners from "./MonthlyListeners";
+
 const ArtistDetails: NextPage = () => {
   const {
     query: { artistId },
@@ -56,9 +58,8 @@ const ArtistDetails: NextPage = () => {
           src={artist?.images[0].url}
         />
         <h1 className="text-4xl font-bold">{artist?.name}</h1>
-        <h1 className="font-light">
-          {artist?.followers.total.toLocaleString()} followers
-        </h1>
+
+        {artist && <MonthlyListeners artistId={artist.id} />}
       </div>
 
       <div className="flex flex-col gap-12">
