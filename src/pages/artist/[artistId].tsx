@@ -51,9 +51,11 @@ const ArtistDetails: NextPage = () => {
 
   return (
     <div className="py-8 w-full">
-      <Head>
-        <title>music app - {artist?.name}</title>
-      </Head>
+      {artist && (
+        <Head>
+          <title>music app - {artist.name}</title>
+        </Head>
+      )}
 
       <div className="flex flex-col justify-center items-center gap-2">
         <Cover

@@ -32,6 +32,7 @@ const Cover: React.FC<CoverProps> = ({
         rounded && "rounded-full",
         square && "rounded-none"
       )}
+      priority
       src={src ?? CoverFallback}
       height={640}
       width={640}
