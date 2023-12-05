@@ -4,14 +4,13 @@ import type { AppProps } from "next/app";
 import { usePathname, useRouter } from "next/navigation";
 import { ThemeProvider } from "next-themes";
 import { RecoilRoot } from "recoil";
-import { ChevronLeftCircleIcon, ChevronRightCircleIcon } from "lucide-react";
 import classNames from "classnames";
 
+import AppHeader from "@/components/AppHeader";
 import CustomDndContext from "@/components/CustomDndContext";
 import Player from "@/components/Player";
 import SideBar from "@/components/SideBar";
 import { Toaster } from "@/components/ui/toaster";
-import ThemeToggle from "@/components/ThemeToggle";
 
 import "@/styles/globals.css";
 import "@/styles/vinyl.scss";
@@ -23,6 +22,8 @@ export default function App({ Component, pageProps }: AppProps) {
   async function onRefresh() {
     router.refresh();
   }
+
+  const fullScreenPages = ["/login", "/studio"];
 
   return (
     <SessionProvider session={pageProps.session}>
@@ -45,30 +46,11 @@ export default function App({ Component, pageProps }: AppProps) {
 
                 <div
                   className={classNames(
-                    "flex-auto pb-20",
-                    pathname !== "/studio" && "sm:ml-[266px]"
+                    "flex-auto pb-20 sm:ml-[266px]",
+                    fullScreenPages.includes(pathname) && "sm:ml-0"
                   )}
                 >
-                  <div className="flex justify-between items-center px-8 py-4">
-                    <div className="flex gap-2">
-                      <button
-                        className="hover:opacity-75"
-                        onClick={router.back}
-                      >
-                        <ChevronLeftCircleIcon className="h-6 w-6" />
-                      </button>
-
-                      <button
-                        className="hover:opacity-75"
-                        onClick={router.forward}
-                      >
-                        <ChevronRightCircleIcon className="h-6 w-6" />
-                      </button>
-                    </div>
-
-                    <ThemeToggle />
-                  </div>
-
+                  <AppHeader />
                   <Component {...pageProps} />
                 </div>
 

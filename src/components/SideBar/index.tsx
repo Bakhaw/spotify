@@ -10,7 +10,7 @@ import Playlists from "./Playlists";
 function SideBar() {
   const pathname = usePathname();
 
-  if (pathname === "/studio") return null;
+  if (pathname === "/studio" || pathname === "/login") return null;
 
   return (
     <div className="fixed top-0 overflow-x-hidden bottom-[80px] w-[266px]">
