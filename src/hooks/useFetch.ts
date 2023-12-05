@@ -11,6 +11,7 @@ interface Response<T> {
 
 type useFetchParams<T> = () => Promise<Response<T>>;
 
+// TODO better function return type (T | undefined ???)
 function useFetch<T>(callback: useFetchParams<T>, ...args: unknown[]): T {
   const { data: session } = useSession();
   const spotifyApi = useSpotify();
