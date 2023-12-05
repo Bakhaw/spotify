@@ -10,27 +10,29 @@ import {
 
 import useSpotify from "@/hooks/useSpotify";
 
+import { useToast } from "@/components/ui/use-toast";
+
 interface CustomDndContextProps {
   children: React.ReactNode;
 }
 
 const CustomDndContext: React.FC<CustomDndContextProps> = ({ children }) => {
-  const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 8,
-      },
-    })
-  );
-
   const spotifyApi = useSpotify();
-
+  const { toast } = useToast();
   const addTracksToPlaylist = useCallback(
     (overId: string, activeId: string) =>
       spotifyApi.addTracksToPlaylist(overId, [
         `spotify:track:${getActiveIdFromDraggable(activeId)}`,
       ]),
     [spotifyApi]
+  );
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    })
   );
 
   function getActiveIdFromDraggable(activeId: string) {
@@ -44,7 +46,7 @@ const CustomDndContext: React.FC<CustomDndContextProps> = ({ children }) => {
     console.log("handleDragStart", event);
   }
 
-  function handleDragEnd(event: DragEndEvent) {
+  async function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
 
     if (!over) return;
@@ -52,7 +54,10 @@ const CustomDndContext: React.FC<CustomDndContextProps> = ({ children }) => {
     const activeId = active.data.current?.id; // id from <Draggable />
     const overId = over.data.current?.id; // id from <Droppable />
 
-    addTracksToPlaylist(overId, activeId);
+    await addTracksToPlaylist(overId, activeId);
+    toast({
+      title: "Added to your playlist !",
+    });
   }
 
   return (

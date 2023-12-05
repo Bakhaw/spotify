@@ -9,6 +9,7 @@ import classNames from "classnames";
 import CustomDndContext from "@/components/CustomDndContext";
 import Player from "@/components/Player";
 import SideBar from "@/components/SideBar";
+import { Toaster } from "@/components/ui/toaster";
 
 import "@/styles/globals.css";
 import "@/styles/vinyl.scss";
@@ -59,6 +60,7 @@ export default function App({ Component, pageProps }: AppProps) {
               </div>
 
               <Player />
+              <Toaster />
             </div>
           </CustomDndContext>
         </PullToRefresh>
