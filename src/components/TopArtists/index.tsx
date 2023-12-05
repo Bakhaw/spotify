@@ -1,4 +1,10 @@
 import { useCallback, useState } from "react";
+
+import { TimeRange } from "@/types";
+import useFetch from "@/hooks/useFetch";
+import useSpotify from "@/hooks/useSpotify";
+
+import HorizontalSlider from "@/components/HorizontalSlider";
 import {
   Select,
   SelectContent,
@@ -7,11 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import useFetch from "@/hooks/useFetch";
-import useSpotify from "@/hooks/useSpotify";
-import { TimeRange } from "@/types";
-
-import HorizontalSlider from "../HorizontalSlider";
+import TopArtistsSkeleton from "./TopArtistsSkeleton";
 
 function TopArtists() {
   const [timeRange, setTimeRange] = useState<TimeRange>("long_term");
@@ -29,12 +31,14 @@ function TopArtists() {
     setTimeRange(timeRange);
   }
 
-  if (!topArtists) return null;
-
   return (
     <div className="flex flex-col gap-2">
       <div className="px-8 self-end">
-        <Select defaultValue={timeRange} onValueChange={onTimeRangeChange}>
+        <Select
+          defaultValue={timeRange}
+          onValueChange={onTimeRangeChange}
+          disabled={!topArtists}
+        >
           <SelectTrigger>
             <SelectValue />
           </SelectTrigger>
@@ -46,13 +50,16 @@ function TopArtists() {
         </Select>
       </div>
 
-      <HorizontalSlider
-        items={topArtists.items}
-        type="artist"
-        title="Top Artists"
-      />
+      {topArtists ? (
+        <HorizontalSlider
+          items={topArtists.items}
+          type="artist"
+          title="Top Artists"
+        />
+      ) : (
+        <TopArtistsSkeleton />
+      )}
     </div>
   );
 }
-
 export default TopArtists;

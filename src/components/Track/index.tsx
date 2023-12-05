@@ -9,10 +9,10 @@ import millisToMinutesAndSeconds from "@/lib/millisToMinutesAndSeconds";
 import useSpotify from "@/hooks/useSpotify";
 import useTrack from "@/hooks/useTrack";
 
-import ArtistLink from "../ArtistLink";
-import Cover from "../Cover";
-import LikeButton from "../LikeButton";
-import TrackLink from "../TrackLink";
+import ArtistLink from "@/components/ArtistLink";
+import Cover from "@/components/Cover";
+import LikeButton from "@/components/LikeButton";
+import TrackLink from "@/components/TrackLink";
 
 interface TrackProps {
   order?: number | null;
@@ -55,6 +55,7 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
 
   if (!currentTrack) return null;
 
+  // TODO fix theme (use shadcn components ?)
   return (
     <div
       className={classNames(

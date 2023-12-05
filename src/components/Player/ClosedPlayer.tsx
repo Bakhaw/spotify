@@ -1,5 +1,4 @@
 import { useRecoilValue } from "recoil";
-
 import {
   ChevronUpIcon,
   PauseIcon,
@@ -12,12 +11,12 @@ import {
 
 import { isPlayingState } from "@/atoms/trackAtom";
 
-import ArtistLink from "../ArtistLink";
-import Cover from "../Cover";
-import TrackLink from "../TrackLink";
+import ArtistLink from "@/components/ArtistLink";
+import Cover from "@/components/Cover";
+import Draggable from "@/components/Draggable";
+import TrackLink from "@/components/TrackLink";
 
 import { PlayerProps } from ".";
-import Draggable from "../Draggable";
 
 interface ClosedPlayerProps extends PlayerProps {
   onOpen: () => void;

@@ -4,12 +4,16 @@ import { ListMusicIcon } from "lucide-react";
 import usePlaylists from "@/hooks/usePlaylists";
 
 import { Button } from "@/components/ui/button";
-import Droppable from "../Droppable";
+import Droppable from "@/components/Droppable";
+
+import PlaylistsSkeleton from "./PlaylistsSkeleton";
 
 function Playlists() {
   const playlists = usePlaylists();
 
-  return playlists?.items.map((playlist) => (
+  if (!playlists) return <PlaylistsSkeleton />;
+
+  return playlists.items.map((playlist) => (
     <Droppable key={playlist.id} id={playlist.id}>
       <Link className="block" href={`/playlist/${playlist.id}`}>
         <Button

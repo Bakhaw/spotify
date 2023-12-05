@@ -11,7 +11,9 @@ import useFetch from "@/hooks/useFetch";
 import useSpotify from "@/hooks/useSpotify";
 import { TimeRange } from "@/types";
 
-import TrackList from "../TrackList";
+import TrackList from "@/components/TrackList";
+
+import TopTracksSkeleton from "./TopTracksSkeleton";
 
 function TopTracks() {
   const [timeRange, setTimeRange] = useState<TimeRange>("long_term");
@@ -29,12 +31,14 @@ function TopTracks() {
     setTimeRange(timeRange);
   }
 
-  if (!topTracks) return null;
-
   return (
     <div className="flex flex-col gap-2 p-8">
       <div className="self-end">
-        <Select defaultValue={timeRange} onValueChange={onTimeRangeChange}>
+        <Select
+          defaultValue={timeRange}
+          onValueChange={onTimeRangeChange}
+          disabled={!topTracks}
+        >
           <SelectTrigger>
             <SelectValue />
           </SelectTrigger>
@@ -46,7 +50,11 @@ function TopTracks() {
         </Select>
       </div>
 
-      <TrackList showCover title="top tracks" tracks={topTracks.items} />
+      {topTracks ? (
+        <TrackList showCover title="top tracks" tracks={topTracks.items} />
+      ) : (
+        <TopTracksSkeleton />
+      )}
     </div>
   );
 }
