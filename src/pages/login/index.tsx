@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import { Provider } from "next-auth/providers";
 import { getProviders, signIn } from "next-auth/react";
-import Head from "next/head";
+import { NextSeo } from "next-seo";
 
 interface LoginProps {
   providers: Provider[];
@@ -14,10 +14,7 @@ const Login: NextPage<LoginProps> = ({ providers }) => {
 
   return (
     <div className="flex items-center justify-center h-full">
-      <Head>
-        <title>music app - login</title>
-        <meta property="og:title" key="title" content="music app - login" />
-      </Head>
+      <NextSeo title="music app - login" description="music app - login" />
 
       {Object.values(providers).map((provider) => (
         <div key={provider.name}>

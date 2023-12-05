@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import Head from "next/head";
+import { NextSeo } from "next-seo";
 
 import useFetch from "@/hooks/useFetch";
 import useSpotify from "@/hooks/useSpotify";
@@ -27,14 +27,10 @@ const Album: NextPage = () => {
 
   return (
     <div className="flex flex-col gap-8 p-8">
-      <Head>
-        <title>music app - {album?.name}</title>
-        <meta
-          property="og:title"
-          key="title"
-          content={`music app - ${album?.name}`}
-        />
-      </Head>
+      <NextSeo
+        title={`music app - ${album?.name}`}
+        description={`music app - ${album?.name}`}
+      />
 
       <TrackListHeader album={album} />
       <TrackList showOrder tracks={album?.tracks.items} />

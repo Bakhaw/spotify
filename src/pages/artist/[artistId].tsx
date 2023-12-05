@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import Head from "next/head";
+import { NextSeo } from "next-seo";
 
 import useFetch from "@/hooks/useFetch";
 import useSpotify from "@/hooks/useSpotify";
@@ -52,14 +52,10 @@ const ArtistDetails: NextPage = () => {
   return (
     <div className="py-8 w-full">
       {artist && (
-        <Head>
-          <title>music app - {artist.name}</title>
-          <meta
-            property="og:title"
-            key="title"
-            content={`music app - ${artist.name}`}
-          />
-        </Head>
+        <NextSeo
+          title={`music app - ${artist.name}`}
+          description={`music app - ${artist.name}`}
+        />
       )}
 
       <div className="flex flex-col justify-center items-center gap-2">

@@ -1,16 +1,12 @@
 import { NextPage } from "next";
-import Head from "next/head";
+import { NextSeo } from "next-seo";
 
 import CustomLink from "@/components/CustomLink";
 
 const Library: NextPage = () => {
   return (
     <div className="flex flex-col gap-4 p-8">
-      <Head>
-        <title>music app - library</title>
-        <meta property="og:title" key="title" content="music app - library" />
-      </Head>
-
+      <NextSeo title="music app - library" description="music app - library" />
       <CustomLink href="/library/saved-tracks" label="saved tracks" />
       <CustomLink href="/library/playlists" label="playlists" />
     </div>

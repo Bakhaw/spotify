@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { NextPage } from "next";
 import { useSession } from "next-auth/react";
-import Head from "next/head";
+import { NextSeo } from "next-seo";
 import { useRecoilState } from "recoil";
 
 import { currentTrackIdState, isPlayingState } from "@/atoms/trackAtom";
@@ -46,10 +46,7 @@ const Studio: NextPage = () => {
 
   return (
     <div className="flex justify-center items-center h-full">
-      <Head>
-        <title>music app - studio</title>
-        <meta property="og:title" key="title" content="music app - studio" />
-      </Head>
+      <NextSeo title="music app - studio" description="music app - studio" />
 
       <Vinyl />
     </div>

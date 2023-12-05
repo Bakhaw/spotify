@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import { useSession } from "next-auth/react";
-import Head from "next/head";
+import { NextSeo } from "next-seo";
 
 import SignOut from "@/components/SignOut";
 import Cover from "@/components/Cover";
@@ -12,10 +12,7 @@ const Account: NextPage = () => {
 
   return (
     <div className="flex justify-between">
-      <Head>
-        <title>music app - profile</title>
-        <meta property="og:title" key="title" content="music app - profile" />
-      </Head>
+      <NextSeo title="music app - profile" description="music app - profile" />
 
       <div className="flex flex-col grow items-center gap-4">
         <Cover
