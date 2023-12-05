@@ -13,8 +13,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import TopArtistsSkeleton from "./TopArtistsSkeleton";
-
 function TopArtists() {
   const [timeRange, setTimeRange] = useState<TimeRange>("long_term");
 
@@ -50,15 +48,11 @@ function TopArtists() {
         </Select>
       </div>
 
-      {topArtists ? (
-        <HorizontalSlider
-          items={topArtists.items}
-          type="artist"
-          title="Top Artists"
-        />
-      ) : (
-        <TopArtistsSkeleton />
-      )}
+      <HorizontalSlider
+        items={topArtists?.items}
+        type="artist"
+        title="Top Artists"
+      />
     </div>
   );
 }

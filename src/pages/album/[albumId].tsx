@@ -21,12 +21,10 @@ const Album: NextPage = () => {
 
   const album = useFetch<SpotifyApi.SingleAlbumResponse>(getAlbum, [albumId]);
 
-  if (!album) return null;
-
   return (
     <div className="flex flex-col gap-8 p-8">
       <TrackListHeader album={album} />
-      <TrackList showOrder tracks={album.tracks.items} />
+      <TrackList showOrder tracks={album?.tracks.items} />
     </div>
   );
 };

@@ -29,10 +29,8 @@ const ArtistDetails: NextPage = () => {
     artistId,
   ]);
 
-  if (!artist || !projects) return null;
-
   const seen = new Set();
-  const removeDuplicatesAlbums = projects.items
+  const removeDuplicatesAlbums = projects?.items
     .filter((project) => project.album_group === "album")
     .filter((el) => {
       const duplicate = seen.has(el.name);
@@ -41,10 +39,10 @@ const ArtistDetails: NextPage = () => {
       return Boolean(!duplicate);
     });
 
-  const singles = projects.items.filter(
+  const singles = projects?.items.filter(
     (project) => project.album_group === "single"
   );
-  const appearsOn = projects.items.filter(
+  const appearsOn = projects?.items.filter(
     (project) => project.album_group === "appears_on"
   );
 
@@ -52,14 +50,14 @@ const ArtistDetails: NextPage = () => {
     <div className="py-8 w-full">
       <div className="flex flex-col justify-center items-center gap-2">
         <Cover
-          alt={artist.name}
+          alt={artist?.name}
           rounded
           size="large"
-          src={artist.images[0].url}
+          src={artist?.images[0].url}
         />
-        <h1 className="text-4xl font-bold">{artist.name}</h1>
+        <h1 className="text-4xl font-bold">{artist?.name}</h1>
         <h1 className="font-light">
-          {artist.followers.total.toLocaleString()} followers
+          {artist?.followers.total.toLocaleString()} followers
         </h1>
       </div>
 

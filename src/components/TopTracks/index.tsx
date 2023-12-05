@@ -1,4 +1,10 @@
 import { useCallback, useState } from "react";
+
+import { TimeRange } from "@/types";
+import useFetch from "@/hooks/useFetch";
+import useSpotify from "@/hooks/useSpotify";
+
+import TrackList from "@/components/TrackList";
 import {
   Select,
   SelectContent,
@@ -6,14 +12,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
-import useFetch from "@/hooks/useFetch";
-import useSpotify from "@/hooks/useSpotify";
-import { TimeRange } from "@/types";
-
-import TrackList from "@/components/TrackList";
-
-import TopTracksSkeleton from "./TopTracksSkeleton";
 
 function TopTracks() {
   const [timeRange, setTimeRange] = useState<TimeRange>("long_term");
@@ -50,11 +48,7 @@ function TopTracks() {
         </Select>
       </div>
 
-      {topTracks ? (
-        <TrackList showCover title="top tracks" tracks={topTracks.items} />
-      ) : (
-        <TopTracksSkeleton />
-      )}
+      <TrackList showCover title="top tracks" tracks={topTracks?.items} />
     </div>
   );
 }
