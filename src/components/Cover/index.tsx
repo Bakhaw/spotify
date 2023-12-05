@@ -5,6 +5,7 @@ import CoverFallback from "../../assets/cover-fallback.svg";
 
 interface CoverProps {
   alt: string;
+  priority?: boolean; // default: false
   rounded?: boolean;
   size?: "small" | "medium" | "large"; // default: "medium"
   square?: boolean; // removes border-radius
@@ -13,6 +14,7 @@ interface CoverProps {
 
 const Cover: React.FC<CoverProps> = ({
   alt,
+  priority,
   rounded,
   size = "medium",
   square,
@@ -32,7 +34,7 @@ const Cover: React.FC<CoverProps> = ({
         rounded && "rounded-full",
         square && "rounded-none"
       )}
-      priority
+      priority={priority}
       src={src ?? CoverFallback}
       height={640}
       width={640}

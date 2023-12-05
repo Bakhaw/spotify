@@ -42,10 +42,14 @@ const HorizontalSlider: React.FC<HorizontalSliderProps> = ({
             momentumBounce: false,
           }}
         >
-          {items.map((item) => (
+          {items.map((item, i) => (
             <SwiperSlide key={item.id}>
               <Link href={`/${type}/${item.id}`}>
-                <Cover alt={`${item.name} cover`} src={item.images[0].url} />
+                <Cover
+                  alt={`${item.name} cover`}
+                  priority={i === 0}
+                  src={item.images[0].url}
+                />
                 <div>{item.name}</div>
               </Link>
             </SwiperSlide>
