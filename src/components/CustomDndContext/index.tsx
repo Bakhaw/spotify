@@ -1,4 +1,5 @@
 import { useCallback } from "react";
+import Link from "next/link";
 import {
   DndContext,
   DragEndEvent,
@@ -10,6 +11,7 @@ import {
 
 import useSpotify from "@/hooks/useSpotify";
 
+import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 
 interface CustomDndContextProps {
@@ -56,7 +58,13 @@ const CustomDndContext: React.FC<CustomDndContextProps> = ({ children }) => {
 
     await addTracksToPlaylist(overId, activeId);
     toast({
+      action: (
+        <ToastAction altText="See changes">
+          <Link href={`/playlist/${overId}`}>See changes</Link>
+        </ToastAction>
+      ),
       title: "Added to your playlist !",
+      duration: 2200,
     });
   }
 

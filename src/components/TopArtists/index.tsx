@@ -35,8 +35,8 @@ function TopArtists() {
     <div className="flex flex-col gap-2">
       <div className="px-8 self-end">
         <Select defaultValue={timeRange} onValueChange={onTimeRangeChange}>
-          <SelectTrigger className="w-[120px] text-black">
-            <SelectValue className="text-black" />
+          <SelectTrigger>
+            <SelectValue />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="short_term">last month</SelectItem>

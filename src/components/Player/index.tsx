@@ -1,8 +1,10 @@
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useTheme } from "next-themes";
 import { useRecoilState } from "recoil";
 import { debounce } from "lodash";
+import classNames from "classnames";
 
 import { currentTrackIdState, isPlayingState } from "@/atoms/trackAtom";
 
@@ -20,6 +22,7 @@ export interface PlayerProps {
 }
 
 const Player: React.FC = () => {
+  const { theme } = useTheme();
   const router = useRouter();
   const { data: session } = useSession();
   const spotifyApi = useSpotify();
@@ -145,9 +148,14 @@ const Player: React.FC = () => {
     track,
   };
 
+  console.log("theme", theme);
+
   return (
     <div
-      className="fixed bottom-0 w-full px-8 py-2 bg-[#060606] z-10"
+      className={classNames(
+        "fixed bottom-0 w-full p-2 z-10",
+        theme === "dark" ? "bg-[#0F172A]" : "bg-[#F8FAFC]"
+      )}
       style={{
         height: showFullPlayer ? "100vh" : "80px",
         transition: "0.3s",

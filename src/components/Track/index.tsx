@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTheme } from "next-themes";
 import { useRecoilState } from "recoil";
 import classNames from "classnames";
 import { PauseIcon, PlayIcon } from "lucide-react";
@@ -20,6 +21,7 @@ interface TrackProps {
 }
 
 const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
+  const { theme } = useTheme();
   const spotifyApi = useSpotify();
   const currentTrack = useTrack(track.id);
   const [showPlayIcon, setShowIcon] = useState<boolean>(false);
@@ -56,7 +58,8 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
   return (
     <div
       className={classNames(
-        "flex justify-between items-center rounded-xl h-14 w-full bg-[#2d2e37] text-gray-300 overflow-hidden transition-colors hover:bg-[#666770] hover:text-white",
+        "flex justify-between items-center rounded-xl h-14 w-full overflow-hidden transition-colors hover:bg-[#666770] hover:text-white",
+        theme === "dark" ? "bg-[#2d2e37]" : "bg-[#F8FAFC]",
         currentTrack.id === currentTrackId && "bg-[#666770]"
       )}
       onMouseEnter={() => setShowIcon(true)}
