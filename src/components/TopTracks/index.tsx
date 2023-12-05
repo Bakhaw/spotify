@@ -29,6 +29,12 @@ function TopTracks() {
     setTimeRange(timeRange);
   }
 
+  const labels = {
+    short_term: "last month",
+    medium_term: "last 6 months",
+    long_term: "all time",
+  };
+
   return (
     <div className="flex flex-col gap-2 p-8">
       <div className="self-end">
@@ -37,7 +43,7 @@ function TopTracks() {
           onValueChange={onTimeRangeChange}
           disabled={!topTracks}
         >
-          <SelectTrigger>
+          <SelectTrigger aria-label={labels[timeRange]}>
             <SelectValue />
           </SelectTrigger>
           <SelectContent>

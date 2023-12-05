@@ -78,6 +78,7 @@ const ClosedPlayer: React.FC<ClosedPlayerProps> = ({
       <div className="hidden md:flex flex-1 justify-end items-center gap-3 h-full">
         <Volume1Icon className="h-6 w-6" role="button" />
         <input
+          disabled
           min={0}
           max={100}
           // value={volume}
