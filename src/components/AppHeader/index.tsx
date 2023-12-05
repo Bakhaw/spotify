@@ -17,7 +17,6 @@ function AppHeader() {
           aria-label="Navigate to the previous page"
           className="hover:opacity-75"
           onClick={router.back}
-          role="navigation"
         >
           <ChevronLeftCircleIcon className="h-6 w-6" />
         </button>
@@ -26,7 +25,6 @@ function AppHeader() {
           aria-label="Navigate to the next page"
           className="hover:opacity-75"
           onClick={router.forward}
-          role="navigation"
         >
           <ChevronRightCircleIcon className="h-6 w-6" />
         </button>
