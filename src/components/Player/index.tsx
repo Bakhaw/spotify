@@ -148,8 +148,6 @@ const Player: React.FC = () => {
     track,
   };
 
-  console.log("theme", theme);
-
   return (
     <div
       className={classNames(
