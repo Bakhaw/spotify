@@ -1,5 +1,6 @@
 import { NextPage } from "next";
 import { useSession } from "next-auth/react";
+import Head from "next/head";
 
 import SignOut from "@/components/SignOut";
 import Cover from "@/components/Cover";
@@ -11,6 +12,10 @@ const Account: NextPage = () => {
 
   return (
     <div className="flex justify-between">
+      <Head>
+        <title>music app - profile</title>
+      </Head>
+
       <div className="flex flex-col grow items-center gap-4">
         <Cover
           alt={data.user?.name ?? "avatar"}

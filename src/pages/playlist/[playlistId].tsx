@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 import millisToMinutesAndSeconds from "@/lib/millisToMinutesAndSeconds";
 
@@ -42,6 +43,10 @@ const Playlist: NextPage = () => {
 
   return (
     <div className="flex flex-col gap-8 p-8">
+      <Head>
+        <title>music app - {playlist?.name}</title>
+      </Head>
+
       <div className="flex flex-col md:flex-row items-center gap-6">
         <Cover alt={playlist.name} src={playlist.images?.[0]?.url} />
 

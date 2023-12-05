@@ -1,4 +1,5 @@
 import { useCallback } from "react";
+import Head from "next/head";
 
 import useFetch from "@/hooks/useFetch";
 import useSpotify from "@/hooks/useSpotify";
@@ -18,6 +19,10 @@ function SavedTracks() {
 
   return (
     <div className="p-8">
+      <Head>
+        <title>music app - saved tracks</title>
+      </Head>
+
       <TrackList showCover title="saved tracks" tracks={formattedSavedTracks} />
     </div>
   );

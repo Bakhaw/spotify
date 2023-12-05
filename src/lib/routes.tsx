@@ -28,7 +28,7 @@ const routes = [
     text: "studio (beta)",
   },
   {
-    href: "/account",
+    href: "/profile",
     icon: <User2Icon className="h-5 w-5" />,
     text: "profile",
   },

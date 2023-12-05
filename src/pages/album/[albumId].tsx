@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 import useFetch from "@/hooks/useFetch";
 import useSpotify from "@/hooks/useSpotify";
@@ -26,6 +27,10 @@ const Album: NextPage = () => {
 
   return (
     <div className="flex flex-col gap-8 p-8">
+      <Head>
+        <title>music app - {album?.name}</title>
+      </Head>
+
       <TrackListHeader album={album} />
       <TrackList showOrder tracks={album?.tracks.items} />
 

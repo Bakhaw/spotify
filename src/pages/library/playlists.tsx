@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Head from "next/head";
 
 import usePlaylists from "@/hooks/usePlaylists";
 
@@ -11,6 +12,10 @@ function Playlists() {
 
   return (
     <ul className="flex flex-wrap justify-center items-center gap-10 w-full p-8">
+      <Head>
+        <title>music app - playlists</title>
+      </Head>
+
       {playlists.items.map((playlist, index) => (
         <Link
           key={index}

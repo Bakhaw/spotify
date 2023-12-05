@@ -1,6 +1,7 @@
 import { NextPage } from "next";
 import { Provider } from "next-auth/providers";
 import { getProviders, signIn } from "next-auth/react";
+import Head from "next/head";
 
 interface LoginProps {
   providers: Provider[];
@@ -13,6 +14,10 @@ const Login: NextPage<LoginProps> = ({ providers }) => {
 
   return (
     <div className="flex items-center justify-center h-full">
+      <Head>
+        <title>music app - login</title>
+      </Head>
+
       {Object.values(providers).map((provider) => (
         <div key={provider.name}>
           <button
