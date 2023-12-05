@@ -13,11 +13,21 @@ function AppHeader() {
   return (
     <div className="flex justify-between items-center px-8 py-4">
       <div className="flex gap-2">
-        <button className="hover:opacity-75" onClick={router.back}>
+        <button
+          aria-label="Navigate to the previous page"
+          className="hover:opacity-75"
+          onClick={router.back}
+          role="navigation"
+        >
           <ChevronLeftCircleIcon className="h-6 w-6" />
         </button>
 
-        <button className="hover:opacity-75" onClick={router.forward}>
+        <button
+          aria-label="Navigate to the next page"
+          className="hover:opacity-75"
+          onClick={router.forward}
+          role="navigation"
+        >
           <ChevronRightCircleIcon className="h-6 w-6" />
         </button>
       </div>
