@@ -54,6 +54,11 @@ const ArtistDetails: NextPage = () => {
       {artist && (
         <Head>
           <title>music app - {artist.name}</title>
+          <meta
+            property="og:title"
+            key="title"
+            content={`music app - ${artist.name}`}
+          />
         </Head>
       )}
 

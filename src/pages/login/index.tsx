@@ -16,6 +16,7 @@ const Login: NextPage<LoginProps> = ({ providers }) => {
     <div className="flex items-center justify-center h-full">
       <Head>
         <title>music app - login</title>
+        <meta property="og:title" key="title" content="music app - login" />
       </Head>
 
       {Object.values(providers).map((provider) => (

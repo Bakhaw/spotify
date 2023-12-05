@@ -45,6 +45,11 @@ const Playlist: NextPage = () => {
     <div className="flex flex-col gap-8 p-8">
       <Head>
         <title>music app - {playlist?.name}</title>
+        <meta
+          property="og:title"
+          key="title"
+          content={`music app - ${playlist?.name}`}
+        />
       </Head>
 
       <div className="flex flex-col md:flex-row items-center gap-6">

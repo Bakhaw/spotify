@@ -29,6 +29,11 @@ const Album: NextPage = () => {
     <div className="flex flex-col gap-8 p-8">
       <Head>
         <title>music app - {album?.name}</title>
+        <meta
+          property="og:title"
+          key="title"
+          content={`music app - ${album?.name}`}
+        />
       </Head>
 
       <TrackListHeader album={album} />

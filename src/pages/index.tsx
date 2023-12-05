@@ -8,6 +8,7 @@ const Home: NextPage = () => (
   <div className="flex flex-col h-auto w-full">
     <Head>
       <title>music app - listen now</title>
+      <meta property="og:title" key="title" content="music app - listen now" />
     </Head>
 
     <TopArtists />

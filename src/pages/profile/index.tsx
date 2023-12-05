@@ -14,6 +14,7 @@ const Account: NextPage = () => {
     <div className="flex justify-between">
       <Head>
         <title>music app - profile</title>
+        <meta property="og:title" key="title" content="music app - profile" />
       </Head>
 
       <div className="flex flex-col grow items-center gap-4">

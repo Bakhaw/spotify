@@ -48,6 +48,7 @@ const Studio: NextPage = () => {
     <div className="flex justify-center items-center h-full">
       <Head>
         <title>music app - studio</title>
+        <meta property="og:title" key="title" content="music app - studio" />
       </Head>
 
       <Vinyl />

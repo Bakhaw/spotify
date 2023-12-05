@@ -8,6 +8,7 @@ const Library: NextPage = () => {
     <div className="flex flex-col gap-4 p-8">
       <Head>
         <title>music app - library</title>
+        <meta property="og:title" key="title" content="music app - library" />
       </Head>
 
       <CustomLink href="/library/saved-tracks" label="saved tracks" />
