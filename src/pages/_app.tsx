@@ -31,7 +31,7 @@ export default function App({ Component, pageProps }: AppProps) {
           onRefresh={onRefresh}
           pullDownThreshold={200}
           startInvisible
-          triggerHeight="auto"
+          triggerHeight={50}
         >
           <CustomDndContext>
             <div className="flex flex-col justify-between h-screen">

@@ -1,5 +1,12 @@
 import { useCallback } from "react";
-import { DndContext, DragEndEvent, DragStartEvent } from "@dnd-kit/core";
+import {
+  DndContext,
+  DragEndEvent,
+  DragStartEvent,
+  useSensor,
+  useSensors,
+  PointerSensor,
+} from "@dnd-kit/core";
 
 import useSpotify from "@/hooks/useSpotify";
 
@@ -8,6 +15,14 @@ interface CustomDndContextProps {
 }
 
 const CustomDndContext: React.FC<CustomDndContextProps> = ({ children }) => {
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    })
+  );
+
   const spotifyApi = useSpotify();
 
   const addTracksToPlaylist = useCallback(
@@ -26,7 +41,7 @@ const CustomDndContext: React.FC<CustomDndContextProps> = ({ children }) => {
 
   function handleDragStart(event: DragStartEvent) {
     const activeId = event.active.data.current?.id; // id from <Draggable />
-    console.log("handleDragStart", activeId);
+    console.log("handleDragStart", event);
   }
 
   function handleDragEnd(event: DragEndEvent) {
@@ -41,7 +56,11 @@ const CustomDndContext: React.FC<CustomDndContextProps> = ({ children }) => {
   }
 
   return (
-    <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
+    <DndContext
+      onDragEnd={handleDragEnd}
+      onDragStart={handleDragStart}
+      sensors={sensors}
+    >
       {children}
     </DndContext>
   );
