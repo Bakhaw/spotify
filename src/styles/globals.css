@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
  
+
+/* @layer base is used for shadcn components */
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -65,16 +67,6 @@
     --ring: 212.7 26.8% 83.9%;
   }
 }
- 
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-
 
 * {
   -webkit-tap-highlight-color: transparent !important;
@@ -86,18 +78,7 @@ body {
   background: #000;
 }
 
-/* Override "swiper" css */
-.swiper {
-  padding: 0 32px !important;
-}
-
-.swiper-slide {
-  width: 200px !important;
-}
-
-
 /* custom scrollbar */
-
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -113,4 +94,18 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #666770;
+}
+
+/* Override "swiper" */
+.swiper {
+  padding: 0 32px !important;
+}
+
+.swiper-slide {
+  width: 200px !important;
+}
+
+/* Override PTR (react-js-pull-to-refresh) */
+#ptr-container {
+  overflow: auto !important;
 }
