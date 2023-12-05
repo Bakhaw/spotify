@@ -34,21 +34,23 @@ const ClosedPlayer: React.FC<ClosedPlayerProps> = ({
 
   return (
     <div className="flex justify-between items-center w-full">
-      <Draggable id={track.id}>
-        <div className="flex flex-1 justify-start items-center gap-3 h-full">
-          <Cover
-            alt={track.name}
-            size="small"
-            square
-            src={track.album.images[0].url}
-          />
+      <div className="flex-1">
+        <Draggable id={`closed_player:${track.id}`}>
+          <div className="flex flex-1 justify-start items-center gap-3 h-full">
+            <Cover
+              alt={track.name}
+              size="small"
+              square
+              src={track.album.images[0].url}
+            />
 
-          <div className="max-w-[50vw] md:max-w-[30vw]">
-            <TrackLink track={track} />
-            <ArtistLink artists={track.artists} />
+            <div className="max-w-[50vw] md:max-w-[30vw]">
+              <TrackLink track={track} />
+              <ArtistLink artists={track.artists} />
+            </div>
           </div>
-        </div>
-      </Draggable>
+        </Draggable>
+      </div>
 
       <ChevronUpIcon
         className="h-6 w-6 md:hidden"

@@ -28,10 +28,10 @@ export default function App({ Component, pageProps }: AppProps) {
           pullDownContent={<div className="text-center">❤</div>}
           releaseContent={<div />}
           refreshContent={<div />}
-          pullDownThreshold={200}
           onRefresh={onRefresh}
-          triggerHeight={50}
-          startInvisible={true}
+          pullDownThreshold={200}
+          startInvisible
+          triggerHeight="auto"
         >
           <CustomDndContext>
             <div className="flex flex-col justify-between h-screen">
