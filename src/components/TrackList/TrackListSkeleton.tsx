@@ -7,7 +7,7 @@ function TrackListSkeleton() {
     <ul className="flex flex-col gap-6">
       {mockItems.map((d) => (
         <div key={d}>
-          <Skeleton className="flex justify-between items-center rounded-xl h-14 w-full transition-colors" />
+          <Skeleton className="flex justify-between items-center rounded-none h-14 w-full transition-colors" />
         </div>
       ))}
     </ul>
