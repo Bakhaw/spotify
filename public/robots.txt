@@ -1,9 +1,0 @@
-# *
-User-agent: *
-Allow: /
-
-# Host
-Host: https://fh-music.netlify.app/
-
-# Sitemaps
-Sitemap: https://fh-music.netlify.app/sitemap.xml
