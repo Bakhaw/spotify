@@ -28,7 +28,7 @@ function SideBar() {
                 size="sm"
                 variant={pathname === route.href ? "secondary" : "ghost"}
               >
-                <Link className="flex items-center" href={route.href}>
+                <Link className="flex items-center w-full" href={route.href}>
                   <div className="mr-2">{route.icon}</div>
                   <span>{route.text}</span>
                 </Link>

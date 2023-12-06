@@ -22,7 +22,7 @@ function Playlists() {
             <Button
               // variant={pathname === route.href ? "secondary" : "ghost"}
               size="lg"
-              className="flex justify-start gap-2 h-full w-full ml-2 p-0 bg-transparent hover:bg-[#666770]"
+              className="flex justify-start gap-2 h-full w-full ml-2 p-0 bg-transparent hover:bg-[#666770] hover:text-white"
             >
               <Cover
                 alt={`${playlist.name} cover`}

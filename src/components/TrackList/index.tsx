@@ -22,7 +22,7 @@ const TrackList: React.FC<TrackListProps> = ({
     <div>
       <h1 className="mb-4 text-3xl font-bold lowercase">{title}</h1>
 
-      <ul className="flex flex-col gap-6">
+      <ul className="flex flex-col gap-3">
         {tracks ? (
           tracks.map(
             (track, index) =>
