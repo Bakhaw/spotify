@@ -18,7 +18,7 @@ const Account: NextPage = () => {
         <Cover
           alt={data.user?.name ?? "avatar"}
           rounded
-          size="large"
+          size="small"
           src={data.user?.image}
         />
         <h1 className="text-3xl">{data.user?.name}</h1>

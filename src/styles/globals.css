@@ -1,9 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
 
-  /* @layer base is used for shadcn theming */
+/* @layer base is used for shadcn theming */
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -27,7 +26,7 @@
     --ring: 20 14.3% 4.1%;
     --radius: 0.3rem;
   }
- 
+
   .dark {
     --background: 20 14.3% 4.1%;
     --foreground: 60 9.1% 97.8%;
@@ -81,11 +80,20 @@ body {
 
 /* Override "swiper" */
 .swiper {
-  padding: 0 32px !important;
+  padding: 0 17px !important;
 }
 
 .swiper-slide {
   width: 200px !important;
+  padding: 10px 15px;
+  border-radius: 0.3rem;
+  margin: 0px !important;
+  margin-right: 0px !important;
+}
+
+.swiper-slide:hover {
+  background-color: rgba(102, 103, 112, 0.438);
+  transition: 0.5s all;
 }
 
 /* Override PTR (react-js-pull-to-refresh) */

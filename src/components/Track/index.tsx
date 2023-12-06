@@ -56,7 +56,7 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
 
   return (
     <Button
-      className="flex justify-between items-center h-14 w-full overflow-hidden p-0 hover:bg-[#666770] hover:text-white"
+      className="flex justify-between items-center h-14 w-full overflow-hidden p-0 rounded-none cursor-grab transition-all duration-500 hover:bg-[#666770] hover:text-white focus:cursor-grabbing"
       onMouseEnter={() => setShowIcon(true)}
       onMouseLeave={() => setShowIcon(false)}
       onDoubleClick={playSong}
@@ -96,7 +96,7 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
 
             <>
               {showPlayIcon && (
-                <div className="h-full w-full flex justify-center items-center top-0 absolute bg-black/90">
+                <div className="h-full w-full flex justify-center items-center top-0 absolute bg-black/90 ">
                   {currentTrack.id === currentTrackId && isPlaying ? (
                     <PauseIcon
                       className="h-5 w-5 cursor-pointer"

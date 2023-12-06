@@ -14,7 +14,6 @@ interface CoverProps {
 const Cover: React.FC<CoverProps> = ({
   alt,
   priority,
-  rounded,
   size = "medium",
   src,
 }) => {
@@ -28,10 +27,7 @@ const Cover: React.FC<CoverProps> = ({
   return (
     <Image
       alt={alt}
-      className={classNames(
-        `block object-cover rounded-md ${sizes[size]}`,
-        rounded && "rounded-full"
-      )}
+      className={classNames(`block object-cover ${sizes[size]}`)}
       priority={priority}
       src={src ?? CoverFallback}
       height={640}
