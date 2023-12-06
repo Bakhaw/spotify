@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Head from "next/head";
 
 import usePlaylists from "@/hooks/usePlaylists";
 
@@ -11,6 +12,10 @@ function Playlists() {
 
   return (
     <ul className="flex flex-wrap justify-center items-center gap-10 w-full p-8">
+      <Head>
+        <title>music app - playlists</title>
+      </Head>
+
       {playlists.items.map((playlist, index) => (
         <Link
           key={index}
@@ -18,7 +23,7 @@ function Playlists() {
           className="flex-grow max-w-fit overflow-hidden text-ellipsis whitespace-nowrap"
         >
           <Cover
-            alt={playlist.name}
+            alt={`${playlist.name} cover`}
             src={playlist.images.length > 0 ? playlist.images[0].url : null}
           />
           {playlist.name}

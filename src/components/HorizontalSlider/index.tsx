@@ -2,10 +2,11 @@ import Link from "next/link";
 import SwiperCore, { FreeMode, Keyboard, Mousewheel } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import Cover from "../Cover";
+import Cover from "@/components/Cover";
+
+import HorizontalSliderSkeleton from "./HorizontalSliderSkeleton";
 
 import "swiper/css";
-import isFullTrack from "@/lib/isFullTrack";
 
 SwiperCore.use([FreeMode, Keyboard, Mousewheel]);
 
@@ -23,32 +24,40 @@ const HorizontalSlider: React.FC<HorizontalSliderProps> = ({
   type,
   title,
 }) => {
-  if (items.length === 0) return null;
-
   return (
     <div className="w-full">
-      <h1 className="px-8 mb-4 text-3xl font-bold lowercase">{title}</h1>
+      {items?.length !== 0 && (
+        <h1 className="px-8 mb-4 text-3xl font-bold lowercase">{title}</h1>
+      )}
 
-      <Swiper
-        keyboard
-        slidesPerView="auto"
-        spaceBetween={20}
-        mousewheel={{ forceToAxis: true, sensitivity: 0.5 }}
-        freeMode={{
-          enabled: true,
-          sticky: false,
-          momentumBounce: false,
-        }}
-      >
-        {items.map((item) => (
-          <SwiperSlide key={item.id}>
-            <Link href={`/${type}/${item.id}`}>
-              <Cover alt={item.name} src={item.images[0].url} />
-              <div>{item.name}</div>
-            </Link>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+      {items ? (
+        <Swiper
+          keyboard
+          slidesPerView="auto"
+          spaceBetween={20}
+          mousewheel={{ forceToAxis: true, sensitivity: 0.5 }}
+          freeMode={{
+            enabled: true,
+            sticky: false,
+            momentumBounce: false,
+          }}
+        >
+          {items.map((item, i) => (
+            <SwiperSlide key={item.id}>
+              <Link href={`/${type}/${item.id}`}>
+                <Cover
+                  alt={`${item.name} cover`}
+                  priority={i === 0}
+                  src={item.images[0].url}
+                />
+                <div className="mt-1">{item.name}</div>
+              </Link>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      ) : (
+        <HorizontalSliderSkeleton />
+      )}
     </div>
   );
 };

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useRecoilState } from "recoil";
-import classNames from "classnames";
 import { PauseIcon, PlayIcon } from "lucide-react";
 
 import { currentTrackIdState, isPlayingState } from "@/atoms/trackAtom";
@@ -8,10 +7,12 @@ import millisToMinutesAndSeconds from "@/lib/millisToMinutesAndSeconds";
 import useSpotify from "@/hooks/useSpotify";
 import useTrack from "@/hooks/useTrack";
 
-import ArtistLink from "../ArtistLink";
-import Cover from "../Cover";
-import LikeButton from "../LikeButton";
-import TrackLink from "../TrackLink";
+import ArtistLink from "@/components/ArtistLink";
+import Cover from "@/components/Cover";
+import LikeButton from "@/components/LikeButton";
+import TrackLink from "@/components/TrackLink";
+
+import { Button } from "@/components/ui/button";
 
 interface TrackProps {
   order?: number | null;
@@ -54,11 +55,8 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
   if (!currentTrack) return null;
 
   return (
-    <div
-      className={classNames(
-        "flex justify-between items-center rounded-xl h-14 w-full bg-[#2d2e37] text-gray-300 overflow-hidden transition-colors hover:bg-[#666770] hover:text-white",
-        currentTrack.id === currentTrackId && "bg-[#666770]"
-      )}
+    <Button
+      className="flex justify-between items-center h-14 w-full overflow-hidden p-0 hover:bg-[#666770] hover:text-white"
       onMouseEnter={() => setShowIcon(true)}
       onMouseLeave={() => setShowIcon(false)}
       onDoubleClick={playSong}
@@ -91,9 +89,8 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
         {showCover && (
           <div className="h-[60px] w-[60px] mr-3 relative">
             <Cover
-              alt={currentTrack.name}
+              alt={`${currentTrack.name} cover`}
               size="small"
-              square
               src={currentTrack.album.images[0].url}
             />
 
@@ -130,7 +127,7 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
           {millisToMinutesAndSeconds(currentTrack.duration_ms)}
         </div>
       </div>
-    </div>
+    </Button>
   );
 };
 

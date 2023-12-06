@@ -1,12 +1,15 @@
 import { useCallback } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
+import { NextSeo } from "next-seo";
 
 import useFetch from "@/hooks/useFetch";
 import useSpotify from "@/hooks/useSpotify";
 
 import Cover from "@/components/Cover";
 import HorizontalSlider from "@/components/HorizontalSlider";
+
+import MonthlyListeners from "./MonthlyListeners";
 
 const ArtistDetails: NextPage = () => {
   const {
@@ -29,10 +32,8 @@ const ArtistDetails: NextPage = () => {
     artistId,
   ]);
 
-  if (!artist || !projects) return null;
-
   const seen = new Set();
-  const removeDuplicatesAlbums = projects.items
+  const removeDuplicatesAlbums = projects?.items
     .filter((project) => project.album_group === "album")
     .filter((el) => {
       const duplicate = seen.has(el.name);
@@ -41,26 +42,32 @@ const ArtistDetails: NextPage = () => {
       return Boolean(!duplicate);
     });
 
-  const singles = projects.items.filter(
+  const singles = projects?.items.filter(
     (project) => project.album_group === "single"
   );
-  const appearsOn = projects.items.filter(
+  const appearsOn = projects?.items.filter(
     (project) => project.album_group === "appears_on"
   );
 
   return (
     <div className="py-8 w-full">
+      {artist && (
+        <NextSeo
+          title={`music app - ${artist.name}`}
+          description={`music app - ${artist.name}`}
+        />
+      )}
+
       <div className="flex flex-col justify-center items-center gap-2">
         <Cover
-          alt={artist.name}
+          alt={`${artist?.name} cover`}
           rounded
           size="large"
-          src={artist.images[0].url}
+          src={artist?.images[0].url}
         />
-        <h1 className="text-4xl font-bold">{artist.name}</h1>
-        <h1 className="font-light">
-          {artist.followers.total.toLocaleString()} followers
-        </h1>
+        <h1 className="text-4xl font-bold">{artist?.name}</h1>
+
+        {artist && <MonthlyListeners artistId={artist.id} />}
       </div>
 
       <div className="flex flex-col gap-12">

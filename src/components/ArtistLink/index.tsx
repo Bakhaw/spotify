@@ -13,7 +13,7 @@ const ArtistLink: React.FC<ArtistLinkProps> = ({ artists, onClick }) => {
       {artists.map((artist, index) => (
         <li key={artist.id} className="flex whitespace-nowrap">
           <Link
-            className="block hover:underline"
+            className="block text-left hover:underline"
             href={`/artist/${artist.id}`}
             onClick={onClick}
           >

@@ -1,13 +1,17 @@
 import millisToMinutesAndSeconds from "@/lib/millisToMinutesAndSeconds";
 
-import ArtistLink from "../ArtistLink";
-import Cover from "../Cover";
+import ArtistLink from "@/components/ArtistLink";
+import Cover from "@/components/Cover";
+
+import TrackListHeaderSkeleton from "./TrackListHeaderSkeleton";
 
 interface TrackListHeaderProps {
   album: SpotifyApi.AlbumObjectFull;
 }
 
 const TrackListHeader: React.FC<TrackListHeaderProps> = ({ album }) => {
+  if (!album) return <TrackListHeaderSkeleton />;
+
   const duration = album.tracks.items.reduce(
     (acc, curr) => acc + curr.duration_ms,
     0
@@ -17,7 +21,7 @@ const TrackListHeader: React.FC<TrackListHeaderProps> = ({ album }) => {
 
   return (
     <div className="flex flex-col md:flex-row items-center gap-5">
-      <Cover alt={album.name} src={album.images[0].url} />
+      <Cover alt={`${album.name} cover`} src={album.images[0].url} />
 
       <div className="flex flex-col justify-between">
         <div>

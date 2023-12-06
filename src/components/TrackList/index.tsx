@@ -1,5 +1,7 @@
-import Draggable from "../Draggable";
-import Track from "../Track";
+import Draggable from "@/components/Draggable";
+import Track from "@/components/Track";
+
+import TrackListSkeleton from "./TrackListSkeleton";
 
 interface TrackListProps {
   showCover?: boolean; // default false
@@ -21,12 +23,12 @@ const TrackList: React.FC<TrackListProps> = ({
       <h1 className="mb-4 text-3xl font-bold lowercase">{title}</h1>
 
       <ul className="flex flex-col gap-6">
-        {tracks &&
+        {tracks ? (
           tracks.map(
             (track, index) =>
               track && (
                 <li key={track.id}>
-                  <Draggable id={track.id}>
+                  <Draggable id={`track_list:${track.id}`}>
                     <Track
                       order={showOrder ? index + 1 : null}
                       showCover={showCover}
@@ -35,7 +37,10 @@ const TrackList: React.FC<TrackListProps> = ({
                   </Draggable>
                 </li>
               )
-          )}
+          )
+        ) : (
+          <TrackListSkeleton />
+        )}
       </ul>
     </div>
   );

@@ -1,5 +1,4 @@
 import { useRecoilValue } from "recoil";
-
 import {
   ChevronUpIcon,
   PauseIcon,
@@ -12,12 +11,12 @@ import {
 
 import { isPlayingState } from "@/atoms/trackAtom";
 
-import ArtistLink from "../ArtistLink";
-import Cover from "../Cover";
-import TrackLink from "../TrackLink";
+import ArtistLink from "@/components/ArtistLink";
+import Cover from "@/components/Cover";
+import Draggable from "@/components/Draggable";
+import TrackLink from "@/components/TrackLink";
 
 import { PlayerProps } from ".";
-import Draggable from "../Draggable";
 
 interface ClosedPlayerProps extends PlayerProps {
   onOpen: () => void;
@@ -34,21 +33,22 @@ const ClosedPlayer: React.FC<ClosedPlayerProps> = ({
 
   return (
     <div className="flex justify-between items-center w-full">
-      <Draggable id={track.id}>
-        <div className="flex flex-1 justify-start items-center gap-3 h-full">
-          <Cover
-            alt={track.name}
-            size="small"
-            square
-            src={track.album.images[0].url}
-          />
+      <div className="flex-1">
+        <Draggable id={`closed_player:${track.id}`}>
+          <div className="flex flex-1 justify-start items-center gap-3 h-full">
+            <Cover
+              alt={`${track.name} cover`}
+              size="small"
+              src={track.album.images[0].url}
+            />
 
-          <div className="max-w-[50vw] md:max-w-[30vw]">
-            <TrackLink track={track} />
-            <ArtistLink artists={track.artists} />
+            <div className="max-w-[50vw] md:max-w-[30vw]">
+              <TrackLink track={track} />
+              <ArtistLink artists={track.artists} />
+            </div>
           </div>
-        </div>
-      </Draggable>
+        </Draggable>
+      </div>
 
       <ChevronUpIcon
         className="h-6 w-6 md:hidden"
@@ -77,6 +77,8 @@ const ClosedPlayer: React.FC<ClosedPlayerProps> = ({
       <div className="hidden md:flex flex-1 justify-end items-center gap-3 h-full">
         <Volume1Icon className="h-6 w-6" role="button" />
         <input
+          aria-label="Adjust the volume"
+          disabled
           min={0}
           max={100}
           // value={volume}

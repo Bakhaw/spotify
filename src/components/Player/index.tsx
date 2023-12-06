@@ -147,7 +147,7 @@ const Player: React.FC = () => {
 
   return (
     <div
-      className="fixed bottom-0 w-full px-8 py-2 bg-[#060606] z-10"
+      className="fixed bottom-0 w-full p-2 z-10 bg-primary"
       style={{
         height: showFullPlayer ? "100vh" : "80px",
         transition: "0.3s",

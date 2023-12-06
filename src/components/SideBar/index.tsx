@@ -10,7 +10,7 @@ import Playlists from "./Playlists";
 function SideBar() {
   const pathname = usePathname();
 
-  if (pathname === "/studio") return null;
+  if (pathname === "/studio" || pathname === "/login") return null;
 
   return (
     <div className="fixed top-0 overflow-x-hidden bottom-[80px] w-[266px]">
@@ -21,16 +21,18 @@ function SideBar() {
           </h2>
           <div className="space-y-1">
             {routes.map((route) => (
-              <Link className="block" key={route.text} href={route.href}>
-                <Button
-                  variant={pathname === route.href ? "secondary" : "ghost"}
-                  size="sm"
-                  className="w-full justify-start"
-                >
+              <Button
+                key={route.text}
+                className="w-full justify-start"
+                disabled={route.disabled}
+                size="sm"
+                variant={pathname === route.href ? "secondary" : "ghost"}
+              >
+                <Link className="flex items-center" href={route.href}>
                   <div className="mr-2">{route.icon}</div>
                   <span>{route.text}</span>
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             ))}
           </div>
         </div>

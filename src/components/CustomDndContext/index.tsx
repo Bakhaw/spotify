@@ -1,7 +1,18 @@
-import { useCallback, useState } from "react";
-import { DndContext, DragEndEvent, DragStartEvent } from "@dnd-kit/core";
+import { useCallback } from "react";
+import Link from "next/link";
+import {
+  DndContext,
+  DragEndEvent,
+  DragStartEvent,
+  useSensor,
+  useSensors,
+  PointerSensor,
+} from "@dnd-kit/core";
 
 import useSpotify from "@/hooks/useSpotify";
+
+import { ToastAction } from "@/components/ui/toast";
+import { useToast } from "@/components/ui/use-toast";
 
 interface CustomDndContextProps {
   children: React.ReactNode;
@@ -9,20 +20,35 @@ interface CustomDndContextProps {
 
 const CustomDndContext: React.FC<CustomDndContextProps> = ({ children }) => {
   const spotifyApi = useSpotify();
-  const [isDropped, setIsDropped] = useState(false);
-
+  const { toast } = useToast();
   const addTracksToPlaylist = useCallback(
     (overId: string, activeId: string) =>
-      spotifyApi.addTracksToPlaylist(overId, [`spotify:track:${activeId}`]),
+      spotifyApi.addTracksToPlaylist(overId, [
+        `spotify:track:${getActiveIdFromDraggable(activeId)}`,
+      ]),
     [spotifyApi]
   );
 
-  function handleDragStart(event: DragStartEvent) {
-    const activeId = event.active.data.current?.id; // id from <Draggable />
-    console.log("activeId", activeId);
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    })
+  );
+
+  function getActiveIdFromDraggable(activeId: string) {
+    // activeId from <Draggable /> looks like this --> closed_player:<track_id>
+    const id = activeId.split(":")[1];
+    return id;
   }
 
-  function handleDragEnd(event: DragEndEvent) {
+  function handleDragStart(event: DragStartEvent) {
+    const activeId = event.active.data.current?.id; // id from <Draggable />
+    console.log("handleDragStart", event);
+  }
+
+  async function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
 
     if (!over) return;
@@ -30,13 +56,24 @@ const CustomDndContext: React.FC<CustomDndContextProps> = ({ children }) => {
     const activeId = active.data.current?.id; // id from <Draggable />
     const overId = over.data.current?.id; // id from <Droppable />
 
-    console.log({ activeId, overId });
-
-    addTracksToPlaylist(overId, activeId);
+    await addTracksToPlaylist(overId, activeId);
+    toast({
+      action: (
+        <ToastAction altText="See changes">
+          <Link href={`/playlist/${overId}`}>See changes</Link>
+        </ToastAction>
+      ),
+      title: "Added to your playlist !",
+      duration: 2200,
+    });
   }
 
   return (
-    <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
+    <DndContext
+      onDragEnd={handleDragEnd}
+      onDragStart={handleDragStart}
+      sensors={sensors}
+    >
       {children}
     </DndContext>
   );
