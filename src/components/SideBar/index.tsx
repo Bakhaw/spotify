@@ -16,9 +16,6 @@ function SideBar() {
     <div className="fixed top-0 overflow-x-hidden bottom-[80px] w-[266px]">
       <div className="space-y-4 py-4">
         <div className="px-4 py-2">
-          <h2 className="mb-2 px-2 text-lg font-semibold tracking-tight">
-            discover
-          </h2>
           <div className="space-y-1">
             {routes.map((route) => (
               <Button
@@ -40,9 +37,6 @@ function SideBar() {
 
       <div className="space-y-4 py-4">
         <div className="px-4 py-2">
-          <h2 className="mb-2 px-2 text-lg font-semibold tracking-tight">
-            playlists
-          </h2>
           <div className="space-y-2">
             <Playlists />
           </div>

@@ -55,79 +55,87 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
   if (!currentTrack) return null;
 
   return (
-    <Button
-      className="flex justify-between items-center h-14 w-full overflow-hidden p-0 rounded-none cursor-grab transition-all duration-500 hover:bg-[#666770] hover:text-white focus:cursor-grabbing"
-      onMouseEnter={() => setShowIcon(true)}
-      onMouseLeave={() => setShowIcon(false)}
-      onDoubleClick={playSong}
-    >
-      <div className="flex justify-start items-center">
-        {order && (
-          <div className="text-center w-14 px-4">
-            {showPlayIcon ? (
-              <>
-                {currentTrack.id === currentTrackId && isPlaying ? (
-                  <PauseIcon
-                    className="h-5 w-5 cursor-pointer"
-                    onClick={pauseSong}
-                    role="button"
-                  />
-                ) : (
-                  <PlayIcon
-                    className="h-5 w-5 cursor-pointer"
-                    onClick={playSong}
-                    role="button"
-                  />
-                )}
-              </>
-            ) : (
-              <span>{order}</span>
-            )}
-          </div>
-        )}
-
-        {showCover && (
-          <div className="h-[60px] w-[60px] mr-3 relative">
-            <Cover
-              alt={`${currentTrack.name} cover`}
-              size="small"
-              src={currentTrack.album.images[0].url}
-            />
-
-            <>
-              {showPlayIcon && (
-                <div className="h-full w-full flex justify-center items-center top-0 absolute bg-black/90 ">
+    <div className="random">
+      <Button
+        className="flex justify-between items-center h-14 w-full overflow-hidden p-0 bg-transparent rounded-none cursor-grab transition-all duration-500 hover:bg-transparent hover:text-white focus:cursor-grabbing"
+        onMouseEnter={() => setShowIcon(true)}
+        onMouseLeave={() => setShowIcon(false)}
+        onDoubleClick={playSong}
+      >
+        <div className="flex justify-start items-center">
+          {order && (
+            <div className="text-center w-14 px-4">
+              {showPlayIcon ? (
+                <>
                   {currentTrack.id === currentTrackId && isPlaying ? (
                     <PauseIcon
                       className="h-5 w-5 cursor-pointer"
                       onClick={pauseSong}
+                      role="button"
                     />
                   ) : (
                     <PlayIcon
                       className="h-5 w-5 cursor-pointer"
                       onClick={playSong}
+                      role="button"
                     />
                   )}
+                </>
+              ) : currentTrackId === track.id && isPlaying ? (
+                <div className="music-bar">
+                  <span />
+                  <span />
+                  <span />
                 </div>
+              ) : (
+                <span>{order}</span>
               )}
-            </>
+            </div>
+          )}
+
+          {showCover && (
+            <div className="h-[60px] w-[60px] mr-3 relative">
+              <Cover
+                alt={`${currentTrack.name} cover`}
+                size="small"
+                src={currentTrack.album.images[0].url}
+              />
+
+              <>
+                {showPlayIcon && (
+                  <div className="h-full w-full flex justify-center items-center top-0 absolute bg-black/90 ">
+                    {currentTrack.id === currentTrackId && isPlaying ? (
+                      <PauseIcon
+                        className="h-5 w-5 cursor-pointer"
+                        onClick={pauseSong}
+                      />
+                    ) : (
+                      <PlayIcon
+                        className="h-5 w-5 cursor-pointer"
+                        onClick={playSong}
+                      />
+                    )}
+                  </div>
+                )}
+              </>
+            </div>
+          )}
+
+          <div className="flex flex-col max-w-[45vw] md:max-w-80">
+            <TrackLink track={currentTrack} />
+            <ArtistLink artists={currentTrack.artists} />
           </div>
-        )}
-
-        <div className="flex flex-col max-w-[45vw] md:max-w-80">
-          <TrackLink track={currentTrack} />
-          <ArtistLink artists={currentTrack.artists} />
         </div>
-      </div>
 
-      <div className="flex justify-between items-center gap-3 pr-4">
-        <LikeButton track={track} />
+        <div className="flex justify-between items-center gap-3 pr-4">
+          <LikeButton track={track} />
 
-        <div className="hidden md:block">
-          {millisToMinutesAndSeconds(currentTrack.duration_ms)}
+          <div className="hidden md:block">
+            {millisToMinutesAndSeconds(currentTrack.duration_ms)}
+          </div>
         </div>
-      </div>
-    </Button>
+      </Button>
+    </div>
   );
 };
 
