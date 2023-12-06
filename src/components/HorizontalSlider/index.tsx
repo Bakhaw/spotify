@@ -27,7 +27,7 @@ const HorizontalSlider: React.FC<HorizontalSliderProps> = ({
   return (
     <div className="w-full">
       {items?.length !== 0 && (
-        <h1 className="px-8 mb-4 text-3xl font-bold lowercase">{title}</h1>
+        <h1 className="px-8 mb-[6px] text-3xl font-bold lowercase">{title}</h1>
       )}
 
       {items ? (

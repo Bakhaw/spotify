@@ -60,7 +60,9 @@ const CustomDndContext: React.FC<CustomDndContextProps> = ({ children }) => {
     toast({
       action: (
         <ToastAction altText="See changes">
-          <Link href={`/playlist/${overId}`}>See changes</Link>
+          <Link href={`/playlist/${overId}`} className="text-xs">
+            See changes
+          </Link>
         </ToastAction>
       ),
       title: "Added to your playlist !",
