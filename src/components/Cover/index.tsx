@@ -7,8 +7,7 @@ interface CoverProps {
   alt: string;
   priority?: boolean; // default: false
   rounded?: boolean;
-  size?: "small" | "medium" | "large"; // default: "medium"
-  square?: boolean; // removes border-radius
+  size?: "xs" | "small" | "medium" | "large"; // default: "medium"
   src: string | null | undefined;
 }
 
@@ -17,10 +16,10 @@ const Cover: React.FC<CoverProps> = ({
   priority,
   rounded,
   size = "medium",
-  square,
   src,
 }) => {
   const sizes = {
+    xs: "h-[48px] w-[48px]",
     small: "h-[60px] w-[60px]",
     medium: "h-[200px] w-[200px]",
     large: "h-[300px] w-[300px]",
@@ -30,9 +29,8 @@ const Cover: React.FC<CoverProps> = ({
     <Image
       alt={alt}
       className={classNames(
-        `block object-cover rounded-3xl ${sizes[size]}`,
-        rounded && "rounded-full",
-        square && "rounded-none"
+        `block object-cover rounded-md ${sizes[size]}`,
+        rounded && "rounded-full"
       )}
       priority={priority}
       src={src ?? CoverFallback}

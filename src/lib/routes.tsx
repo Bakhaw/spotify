@@ -13,6 +13,7 @@ const routes = [
     text: "listen now",
   },
   {
+    disabled: true,
     href: "/search",
     icon: <SearchIcon className="h-5 w-5" />,
     text: "browse",

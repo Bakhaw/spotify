@@ -3,11 +3,6 @@ import SpotifyWebApi from "spotify-web-api-node";
 import config from "./config";
 import generateRandomString from "./generateRandomString";
 
-const spotifyApi = new SpotifyWebApi({
-  clientId: config.clientId,
-  clientSecret: config.clientSecret,
-});
-
 const scopes = [
   // playlist
   "playlist-read-private",
@@ -32,5 +27,10 @@ export const params = {
   scopes,
   state: generateRandomString(100),
 };
+
+const spotifyApi = new SpotifyWebApi({
+  clientId: config.clientId,
+  clientSecret: config.clientSecret,
+});
 
 export default spotifyApi;

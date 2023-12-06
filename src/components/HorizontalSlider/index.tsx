@@ -50,7 +50,7 @@ const HorizontalSlider: React.FC<HorizontalSliderProps> = ({
                   priority={i === 0}
                   src={item.images[0].url}
                 />
-                <div>{item.name}</div>
+                <div className="mt-1">{item.name}</div>
               </Link>
             </SwiperSlide>
           ))}

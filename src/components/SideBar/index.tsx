@@ -21,16 +21,18 @@ function SideBar() {
           </h2>
           <div className="space-y-1">
             {routes.map((route) => (
-              <Link className="block" key={route.text} href={route.href}>
-                <Button
-                  variant={pathname === route.href ? "secondary" : "ghost"}
-                  size="sm"
-                  className="w-full justify-start"
-                >
+              <Button
+                key={route.text}
+                className="w-full justify-start"
+                disabled={route.disabled}
+                size="sm"
+                variant={pathname === route.href ? "secondary" : "ghost"}
+              >
+                <Link className="flex items-center" href={route.href}>
                   <div className="mr-2">{route.icon}</div>
                   <span>{route.text}</span>
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             ))}
           </div>
         </div>

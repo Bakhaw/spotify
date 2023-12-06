@@ -39,7 +39,6 @@ const ClosedPlayer: React.FC<ClosedPlayerProps> = ({
             <Cover
               alt={`${track.name} cover`}
               size="small"
-              square
               src={track.album.images[0].url}
             />
 
