@@ -3,7 +3,7 @@ import { useRecoilState } from "recoil";
 import { PauseIcon, PlayIcon } from "lucide-react";
 
 import { currentTrackIdState, isPlayingState } from "@/atoms/trackAtom";
-import millisToMinutesAndSeconds from "@/lib/millisToMinutesAndSeconds";
+import millisToMinutesAndSecondsFormatted from "@/lib/millisToMinutesAndSecondsFormatted";
 import useSpotify from "@/hooks/useSpotify";
 import useTrack from "@/hooks/useTrack";
 
@@ -130,7 +130,7 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
         <LikeButton track={track} />
 
         <div className="hidden md:block">
-          {millisToMinutesAndSeconds(currentTrack.duration_ms)}
+          {millisToMinutesAndSecondsFormatted(currentTrack.duration_ms)}
         </div>
       </div>
     </Button>

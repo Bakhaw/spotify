@@ -1,6 +1,6 @@
 import useDominantColor from "@/hooks/useDominantColor";
 import generateRGBString from "@/lib/generateRGBString";
-import millisToMinutesAndSeconds from "@/lib/millisToMinutesAndSeconds";
+import millisToMinutesAndSecondsFormatted from "@/lib/millisToMinutesAndSecondsFormatted";
 
 import ArtistLink from "@/components/ArtistLink";
 import Cover from "@/components/Cover";
@@ -20,28 +20,35 @@ const TrackListHeader: React.FC<TrackListHeaderProps> = ({ album }) => {
     (acc, curr) => acc + curr.duration_ms,
     0
   );
-  const albumDuration = millisToMinutesAndSeconds(duration);
+
+  const albumDuration = millisToMinutesAndSecondsFormatted(duration);
   const albumReleaseDate = new Date(album.release_date).getFullYear();
 
   return (
     <div
-      className="flex flex-col md:flex-row items-center gap-5 p-10 rounded-t-md bg-gradient-secondary"
+      className="flex flex-col md:flex-row items-center gap-5 pt-20 px-3 pb-3 rounded-t-md bg-gradient-secondary sm:p-10"
       style={{ backgroundColor: generateRGBString(color) }}
     >
       <Cover alt={`${album.name} cover`} src={album.images[0].url} />
-      <div className="flex flex-col justify-between">
+      <div className="flex flex-col justify-between w-full gap-2 pl-4">
         <div>
-          <h1 className="capitalize">{album.album_type}</h1>
-          <h1 className="text-6xl font-bold mb-10">{album.name}</h1>
+          <h1 className="hidden capitalize sm:block">{album.album_type}</h1>
+          <h1 className="w-full text-3xl font-bold sm:mb-10 sm:text-6xl">
+            {album.name}
+          </h1>
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex-col gap-2">
           <ArtistLink artists={album.artists} />
-          <h1>{albumReleaseDate}</h1>
-          <h1>
-            {album.total_tracks} {album.total_tracks > 1 ? "tracks" : "track"}
-          </h1>
-          <h1>{albumDuration}</h1>
+          <div className="flex gap-1 text-white text-opacity-70 text-sm">
+            <span>{albumReleaseDate}</span>
+            <span>•</span>
+            <span>
+              {album.total_tracks} {album.total_tracks > 1 ? "tracks" : "track"}
+              ,
+            </span>
+            <span>{albumDuration}</span>
+          </div>
         </div>
       </div>
     </div>

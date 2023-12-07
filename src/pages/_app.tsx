@@ -25,6 +25,7 @@ export default function App({ Component, pageProps }: AppProps) {
   }
 
   const fullScreenPages = ["/login", "/studio"];
+  const isAlbumPage = pathname?.startsWith("/album");
   const isFullScreenPage = fullScreenPages.includes(pathname);
 
   return (
@@ -54,7 +55,12 @@ export default function App({ Component, pageProps }: AppProps) {
                 >
                   <AppHeader />
 
-                  <div className={classNames(!isFullScreenPage && "mt-20")}>
+                  <div
+                    className={classNames(
+                      !isFullScreenPage && "mt-10",
+                      isAlbumPage && "mt-0 sm:mt-10"
+                    )}
+                  >
                     <Component {...pageProps} />
                   </div>
                 </div>
