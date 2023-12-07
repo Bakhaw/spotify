@@ -28,19 +28,22 @@ const Album: NextPage = () => {
   const [r, g, b] = useDominantColor(album);
 
   return (
-    <div className="flex flex-col p-8">
+    <div className="flex flex-col zgap-4 p-8 pt-0">
       <NextSeo
         title={`music app - ${album?.name}`}
         description={`music app - ${album?.name}`}
       />
 
-      <TrackListHeader album={album} />
+      <div className="zpx-8">
+        <TrackListHeader album={album} />
+      </div>
+
       <div style={{ backgroundColor: `rgb(${r},${g},${b})` }} className="test">
         <TrackList showOrder tracks={album?.tracks.items} />
       </div>
 
       {album && (
-        <div className="px-8">
+        <div className="mt-4 px-8">
           <AlbumReleaseDate releaseDate={album.release_date} />
           <AlbumCopyrights copyrights={album.copyrights} />
         </div>
