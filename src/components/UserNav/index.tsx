@@ -6,18 +6,18 @@ import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { usePathname } from "next/navigation";
 
 function UserNav() {
   const { data } = useSession();
+  const pathname = usePathname();
 
-  if (!data) return null;
+  if (!data || pathname === "/studio") return null;
 
   async function handleLogoutButtonClick() {
     await signOut();
@@ -25,8 +25,6 @@ function UserNav() {
 
   const userImageSrc = data.user?.image ?? "/avatars/04.png";
   const userName = data.user?.name ?? "avatar";
-
-  console.log("data", data);
 
   return (
     <DropdownMenu>
