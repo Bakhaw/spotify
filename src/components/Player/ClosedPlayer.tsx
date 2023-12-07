@@ -33,7 +33,7 @@ const ClosedPlayer: React.FC<ClosedPlayerProps> = ({
           <div className="flex flex-1 justify-start items-center gap-3 h-full">
             <Cover
               alt={`${track.name} cover`}
-              size="small"
+              size="xs"
               src={track.album.images[0].url}
             />
 

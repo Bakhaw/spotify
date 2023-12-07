@@ -151,18 +151,21 @@ const Player: React.FC = () => {
 
   return (
     <div
-      className={classNames(
-        "fixed bottom-0 w-full p-2 z-10 bg-gradient-secondary",
-        isWhite(color) ? "text-black" : "#fff"
-      )}
+      className="fixed bottom-0 p-2 z-10 bg-transparent"
       style={{
-        backgroundColor: generateRGBString(color),
-
+        color: isWhite(color) ? "text-black" : "#fff",
         height: showFullPlayer ? "100vh" : "80px",
         transition: "0.3s",
+        width: showFullPlayer ? "100%" : "calc(100% - 7px)",
+        padding: showFullPlayer ? "0" : "0.5rem",
       }}
     >
-      <div className="flex justify-center items-center h-full w-full">
+      <div
+        className="flex justify-center items-center h-full w-full  bg-gradient-secondary p-4 rounded"
+        style={{
+          backgroundColor: generateRGBString(color),
+        }}
+      >
         {showFullPlayer ? (
           <OpenedPlayer
             onClose={() => setShowFullPlayer(false)}
