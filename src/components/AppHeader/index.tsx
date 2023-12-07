@@ -8,7 +8,7 @@ function AppHeader() {
   const router = useRouter();
   const pathname = usePathname();
 
-  if (pathname === "/login") return null;
+  if (pathname === "/login" || pathname?.includes("album")) return null;
 
   return (
     <div className="flex justify-between items-center px-8 py-4">

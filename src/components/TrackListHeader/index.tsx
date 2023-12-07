@@ -20,9 +20,8 @@ const TrackListHeader: React.FC<TrackListHeaderProps> = ({ album }) => {
   const albumReleaseDate = new Date(album.release_date).getFullYear();
 
   return (
-    <div className="flex flex-col md:flex-row items-center gap-5">
+    <div className="flex flex-col md:flex-row items-center gap-5 p-10 bg-[#1d1414] wee">
       <Cover alt={`${album.name} cover`} src={album.images[0].url} />
-
       <div className="flex flex-col justify-between">
         <div>
           <h1 className="capitalize">{album.album_type}</h1>

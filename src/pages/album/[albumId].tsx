@@ -26,14 +26,16 @@ const Album: NextPage = () => {
   const album = useFetch<SpotifyApi.SingleAlbumResponse>(getAlbum, [albumId]);
 
   return (
-    <div className="flex flex-col gap-8 p-8">
+    <div className="flex flex-col p-8">
       <NextSeo
         title={`music app - ${album?.name}`}
         description={`music app - ${album?.name}`}
       />
 
       <TrackListHeader album={album} />
-      <TrackList showOrder tracks={album?.tracks.items} />
+      <div className="test">
+        <TrackList showOrder tracks={album?.tracks.items} />
+      </div>
 
       {album && (
         <div>
