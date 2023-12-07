@@ -1,5 +1,10 @@
 import { useRecoilValue } from "recoil";
-import { ChevronUpIcon, Volume1Icon, Volume2Icon } from "lucide-react";
+import {
+  ChevronUpIcon,
+  Volume1Icon,
+  Volume2Icon,
+  ArrowUpRightSquare,
+} from "lucide-react";
 
 import { FaCirclePlay, FaCirclePause } from "react-icons/fa6";
 import { IoPlaySkipBack, IoPlaySkipForward } from "react-icons/io5";
@@ -37,9 +42,13 @@ const ClosedPlayer: React.FC<ClosedPlayerProps> = ({
               src={track.album.images[0].url}
             />
 
-            <div className="max-w-[50vw] md:max-w-[30vw]">
-              <TrackLink track={track} />
-              <ArtistLink artists={track.artists} />
+            <div className="display-arrowicon max-w-[50vw] md:max-w-[30vw]">
+              <div className="flex gap-3 transition-all hover:scale-110">
+                <TrackLink track={track} />
+              </div>
+              <div className="transition-all	hover:scale-110">
+                <ArtistLink artists={track.artists} />
+              </div>
             </div>
           </div>
         </Draggable>
@@ -53,32 +62,35 @@ const ClosedPlayer: React.FC<ClosedPlayerProps> = ({
 
       <div className="hidden md:flex flex-1 justify-center items-center gap-4 h-full">
         <IoPlaySkipBack
-          className="h-6 w-6"
+          className="h-6 w-6 transition-all	hover:scale-110"
           role="button"
           onClick={onBackwardButtonClick}
         />
         {isPlaying ? (
           <FaCirclePause
-            className="h-9 w-9"
+            className="h-9 w-9 transition-all	hover:scale-110"
             onClick={onTogglePlay}
             role="button"
           />
         ) : (
           <FaCirclePlay
-            className="h-9 w-9"
+            className="h-9 w-9 transition-all	hover:scale-110"
             onClick={onTogglePlay}
             role="button"
           />
         )}
         <IoPlaySkipForward
-          className="h-6 w-6"
+          className="h-6 w-6 transition-all	hover:scale-110"
           role="button"
           onClick={onForwardButtonClick}
         />
       </div>
 
       <div className="hidden md:flex flex-1 justify-end items-center gap-3 h-full">
-        <Volume1Icon className="h-6 w-6" role="button" />
+        <Volume1Icon
+          className="h-6 w-6 transition-all	hover:scale-110"
+          role="button"
+        />
         <input
           aria-label="Adjust the volume"
           disabled
@@ -88,7 +100,10 @@ const ClosedPlayer: React.FC<ClosedPlayerProps> = ({
           type="range"
           // onChange={onVolumeChange}
         />
-        <Volume2Icon className="h-6 w-6" role="button" />
+        <Volume2Icon
+          className="h-6 w-6 transition-all	hover:scale-110"
+          role="button"
+        />
       </div>
     </div>
   );

@@ -29,8 +29,8 @@ const Vinyl: React.FC = () => {
 
     if (!currentPlaybackState) return;
 
-    setCurrentTrackId(String(currentPlaybackState.item?.id));
-    setIsPlaying(currentPlaybackState.is_playing);
+    setCurrentTrackId(String(currentPlaybackState?.item?.id));
+    setIsPlaying(currentPlaybackState?.is_playing);
   };
 
   async function onPreviousButtonClick() {

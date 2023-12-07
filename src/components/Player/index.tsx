@@ -43,10 +43,10 @@ const Player: React.FC = () => {
 
     if (!currentPlaybackState) return;
 
-    setCurrentTrackId(String(currentPlaybackState.item?.id));
-    setProgressMs(Number(currentPlaybackState.progress_ms));
-    setVolume(Number(currentPlaybackState.device.volume_percent));
-    setIsPlaying(currentPlaybackState.is_playing);
+    setCurrentTrackId(String(currentPlaybackState?.item?.id));
+    setProgressMs(Number(currentPlaybackState?.progress_ms));
+    setVolume(Number(currentPlaybackState?.device.volume_percent));
+    setIsPlaying(currentPlaybackState?.is_playing);
 
     return currentPlaybackState;
   };
@@ -65,7 +65,7 @@ const Player: React.FC = () => {
     const { body: currentPlaybackState } =
       await spotifyApi.getMyCurrentPlaybackState();
 
-    if (currentPlaybackState.is_playing) {
+    if (currentPlaybackState?.is_playing) {
       spotifyApi.pause();
       setIsPlaying(false);
     } else {

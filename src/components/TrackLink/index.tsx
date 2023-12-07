@@ -8,7 +8,7 @@ interface TrackLinkProps {
 const TrackLink: React.FC<TrackLinkProps> = ({ onClick, track }) => (
   <div className="box-border">
     <Link
-      className="block overflow-hidden text-ellipsis text-left whitespace-nowrap hover:underline"
+      className="flex overflow-hidden text-ellipsis text-left whitespace-nowrap hover:underline"
       href={`/album/${track.album.id}`}
       onClick={onClick}
     >
