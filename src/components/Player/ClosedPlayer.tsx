@@ -31,11 +31,13 @@ const ClosedPlayer: React.FC<ClosedPlayerProps> = ({
       <div className="flex-1">
         <Draggable id={`closed_player:${track.id}`}>
           <div className="flex flex-1 justify-start items-center gap-3 h-full">
-            <Cover
-              alt={`${track.name} cover`}
-              size="xs"
-              src={track.album.images[0].url}
-            />
+            <div className="w-[48px]">
+              <Cover
+                alt={`${track.name} cover`}
+                size="full"
+                src={track.album.images[0].url}
+              />
+            </div>
 
             <div className="max-w-[50vw] md:max-w-[30vw]">
               <TrackLink track={track} />
