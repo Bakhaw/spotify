@@ -57,7 +57,7 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
 
   return (
     <Button
-      className="transition-all duration-500 flex justify-between items-center px-[6px] py-[2px] h-14 w-full overflow-hidden cursor-default bg-transparent hover:bg-[#66677070] hover:text-white"
+      className="transition-all duration-500 flex justify-between items-center p-0 min-h-[56px] h-full w-full overflow-hidden cursor-default bg-transparent hover:bg-[#66677070] hover:text-white"
       onMouseEnter={() => setShowIcon(true)}
       onMouseLeave={() => setShowIcon(false)}
       onDoubleClick={playSong}
