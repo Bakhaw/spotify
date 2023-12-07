@@ -39,13 +39,13 @@ const Album: NextPage = () => {
 
       <div
         style={{ backgroundColor: generateRGBString(color) }}
-        className="bg-gradient"
+        className="bg-gradient px-3 sm:px-0"
       >
         <TrackList showOrder tracks={album?.tracks.items} />
       </div>
 
       {album && (
-        <div className="mt-8">
+        <div className="my-8 px-7 sm:px-0">
           <AlbumReleaseDate releaseDate={album.release_date} />
           <AlbumCopyrights copyrights={album.copyrights} />
         </div>
