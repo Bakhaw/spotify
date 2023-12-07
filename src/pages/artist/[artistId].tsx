@@ -2,9 +2,11 @@ import { useCallback, useState } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { NextSeo } from "next-seo";
+import classNames from "classnames";
 
 import useFetch from "@/hooks/useFetch";
 import useSpotify from "@/hooks/useSpotify";
+import isWhite from "@/lib/isWhite";
 
 import Cover from "@/components/Cover";
 import HorizontalSlider from "@/components/HorizontalSlider";
@@ -13,7 +15,6 @@ import MonthlyListeners from "./MonthlyListeners";
 import generateRGBString from "@/lib/generateRGBString";
 import useDominantColor from "@/hooks/useDominantColor";
 import { Button } from "@/components/ui/button";
-import classNames from "classnames";
 
 const ArtistDetails: NextPage = () => {
   const {
@@ -79,7 +80,14 @@ const ArtistDetails: NextPage = () => {
           size="medium"
           src={artist?.images[0].url}
         />
-        <h1 className="text-3xl font-bold w-full">{artist?.name}</h1>
+        <h1
+          className={classNames(
+            "text-3xl font-bold w-full",
+            isWhite(color) ? "text-black" : "text-white"
+          )}
+        >
+          {artist?.name}
+        </h1>
 
         {artist && <MonthlyListeners artistId={artist.id} />}
       </div>
