@@ -1,6 +1,6 @@
-import useDominantColor from "@/hooks/useDominantColor";
+import formatMs from "@/lib/formatMs";
 import generateRGBString from "@/lib/generateRGBString";
-import millisToMinutesAndSecondsFormatted from "@/lib/millisToMinutesAndSecondsFormatted";
+import useDominantColor from "@/hooks/useDominantColor";
 
 import ArtistLink from "@/components/ArtistLink";
 import Cover from "@/components/Cover";
@@ -21,7 +21,7 @@ const TrackListHeader: React.FC<TrackListHeaderProps> = ({ album }) => {
     0
   );
 
-  const albumDuration = millisToMinutesAndSecondsFormatted(duration);
+  const albumDuration = formatMs(duration);
   const albumReleaseDate = new Date(album.release_date).getFullYear();
 
   return (
@@ -30,7 +30,7 @@ const TrackListHeader: React.FC<TrackListHeaderProps> = ({ album }) => {
       style={{ backgroundColor: generateRGBString(color) }}
     >
       <Cover alt={`${album.name} cover`} src={album.images[0].url} />
-      <div className="flex flex-col justify-between w-full gap-2 pl-4">
+      <div className="flex flex-col justify-between w-full gap-2 pl-4 text-white">
         <div>
           <h1 className="hidden capitalize sm:block">{album.album_type}</h1>
           <h1 className="w-full text-3xl font-bold sm:mb-10 sm:text-6xl">

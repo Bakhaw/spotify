@@ -14,6 +14,7 @@ import isWhite from "@/lib/isWhite";
 
 import ClosedPlayer from "./ClosedPlayer";
 import OpenedPlayer from "./OpenedPlayer";
+import classNames from "classnames";
 
 export interface PlayerProps {
   onBackwardButtonClick: () => void;
