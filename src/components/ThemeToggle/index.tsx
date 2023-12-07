@@ -3,6 +3,7 @@
 import * as React from "react";
 import { MoonIcon, SunIcon } from "lucide-react";
 import { useTheme } from "next-themes";
+import { usePathname } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -14,6 +15,9 @@ import {
 
 function ThemeToggle() {
   const { setTheme } = useTheme();
+  const pathname = usePathname();
+
+  if (pathname === "/studio") return null;
 
   return (
     <DropdownMenu>
