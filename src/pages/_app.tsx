@@ -25,6 +25,7 @@ export default function App({ Component, pageProps }: AppProps) {
   }
 
   const fullScreenPages = ["/login", "/studio"];
+  const isFullScreenPage = fullScreenPages.includes(pathname);
 
   return (
     <SessionProvider session={pageProps.session}>
@@ -47,8 +48,8 @@ export default function App({ Component, pageProps }: AppProps) {
 
                 <div
                   className={classNames(
-                    "flex-auto pb-20 sm:ml-[266px]",
-                    fullScreenPages.includes(pathname) && "sm:ml-0"
+                    "flex-auto pb-20",
+                    isFullScreenPage ? "sm:ml-0" : "sm:ml-[266px]"
                   )}
                 >
                   <AppHeader />
