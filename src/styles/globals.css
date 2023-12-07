@@ -167,17 +167,10 @@ body {
 }
 
 .test {
-  height: 100%;
-  padding-right: 2rem;
-  width: 100%;
-  padding: 2rem;
-  background-color: rgb(88, 96, 168) !important;
+  padding: 0 2rem;
   background-image: linear-gradient(rgba(0, 0, 0, 0.6) 0, #121212 20%);
 }
 
 .wee {
-  background-color: rgb(88, 96, 168) !important;
-  border-top-right-radius: 0.3rem;
-  border-top-left-radius: 0.3rem;
   background: linear-gradient(transparent 0, rgba(0, 0, 0, 0.5) 100%);
 }

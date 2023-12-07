@@ -12,6 +12,7 @@ import ArtistLink from "../ArtistLink";
 import TrackLink from "../TrackLink";
 
 import CoverFallback from "../../assets/cover-fallback.svg";
+import useDominantColor from "@/hooks/useDominantColor";
 
 const Vinyl: React.FC = () => {
   const spotifyApi = useSpotify();
@@ -76,6 +77,10 @@ const Vinyl: React.FC = () => {
     (vinyl) => vinyl.albumId === track?.album.id
   );
 
+  const [r, g, b] = useDominantColor(track?.album);
+
+  const rgb = `rgb(${r},${g},${b})`;
+
   const vinylColor = (fallbackColor: string) =>
     filteredVinyls.length > 0
       ? filteredVinyls[0].backgroundColor
@@ -114,16 +119,16 @@ const Vinyl: React.FC = () => {
           <div
             className="album-inside"
             style={{
-              background: vinylColor("#ffffff"),
-              boxShadow: `10px 0 15px 0 ${vinylColor("#ffffff")}55`,
-              WebkitBoxShadow: `10px 0 15px 0 ${vinylColor("#ffffff")}55`,
+              background: vinylColor(rgb),
+              boxShadow: `10px 0 15px 0 ${vinylColor("#ffffff")}35`,
+              WebkitBoxShadow: `10px 0 15px 0 ${vinylColor("#ffffff")}35`,
             }}
           ></div>
           <div
             className="vinyl"
             onClick={togglePlay}
             style={{
-              background: vinylColor("#000000"),
+              background: vinylColor(rgb),
             }}
           >
             {[...Array(32)].map((_, index) => (

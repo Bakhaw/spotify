@@ -11,6 +11,7 @@ import TrackListHeader from "@/components/TrackListHeader";
 
 import AlbumCopyrights from "./AlbumCopyrights";
 import AlbumReleaseDate from "./AlbumReleaseDate";
+import useDominantColor from "@/hooks/useDominantColor";
 
 const Album: NextPage = () => {
   const {
@@ -24,6 +25,7 @@ const Album: NextPage = () => {
   );
 
   const album = useFetch<SpotifyApi.SingleAlbumResponse>(getAlbum, [albumId]);
+  const [r, g, b] = useDominantColor(album);
 
   return (
     <div className="flex flex-col p-8">
@@ -33,7 +35,7 @@ const Album: NextPage = () => {
       />
 
       <TrackListHeader album={album} />
-      <div className="test">
+      <div style={{ backgroundColor: `rgb(${r},${g},${b})` }} className="test">
         <TrackList showOrder tracks={album?.tracks.items} />
       </div>
 
