@@ -5,7 +5,7 @@ const Logout: React.FC = () => {
     await signOut();
   }
 
-  return <button onClick={handleButtonClick}>Sign out</button>;
+  return <button onClick={handleButtonClick}>Log out</button>;
 };
 
 export default Logout;
