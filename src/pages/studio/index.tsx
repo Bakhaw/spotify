@@ -53,7 +53,7 @@ const Studio: NextPage = () => {
 
   return (
     <div
-      className="flex flex-col justify-center items-center h-screen bg-gradient-secondary"
+      className="flex flex-col justify-center items-center h-screen bg-gradient-secondary overflow-hidden"
       style={{
         backgroundColor: useAlbumColor ? generateRGBString(color) : "#000",
       }}

@@ -34,7 +34,6 @@ const HorizontalSlider: React.FC<HorizontalSliderProps> = ({
         <Swiper
           keyboard
           slidesPerView="auto"
-          spaceBetween={20}
           mousewheel={{ forceToAxis: true, sensitivity: 0.5 }}
           freeMode={{
             enabled: true,
