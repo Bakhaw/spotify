@@ -10,6 +10,7 @@ import useSpotify from "@/hooks/useSpotify";
 import useTrack from "@/hooks/useTrack";
 
 import Vinyl from "@/components/Vinyl";
+import useDominantColor from "@/hooks/useDominantColor";
 
 const Studio: NextPage = () => {
   const { data: session } = useSession();
@@ -44,8 +45,11 @@ const Studio: NextPage = () => {
     track,
   ]);
 
+  const [r, g, b] = useDominantColor(track?.album);
+  const rgb = `rgb(${r},${g},${b})`;
+
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex justify-center items-center h-screen bg-gradient">
       <NextSeo title="music app - studio" description="music app - studio" />
 
       <Vinyl />

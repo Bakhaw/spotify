@@ -26,8 +26,8 @@ const TrackListHeader: React.FC<TrackListHeaderProps> = ({ album }) => {
 
   return (
     <div
+      className="flex flex-col md:flex-row items-center gap-5 p-10 rounded-t-md bg-gradient-secondary"
       style={{ backgroundColor: `rgb(${r},${g},${b})` }}
-      className="flex flex-col md:flex-row items-center gap-5 p-10 rounded-t-md wee"
     >
       <Cover alt={`${album.name} cover`} src={album.images[0].url} />
       <div className="flex flex-col justify-between">

@@ -9,7 +9,7 @@ function AppHeader() {
   const router = useRouter();
   const pathname = usePathname();
 
-  if (pathname === "/login" || pathname?.includes("album")) return null;
+  if (pathname === "/login") return null;
 
   return (
     <div

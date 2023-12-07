@@ -38,12 +38,15 @@ const Album: NextPage = () => {
         <TrackListHeader album={album} />
       </div>
 
-      <div style={{ backgroundColor: `rgb(${r},${g},${b})` }} className="test">
+      <div
+        style={{ backgroundColor: `rgb(${r},${g},${b})` }}
+        className="bg-gradient"
+      >
         <TrackList showOrder tracks={album?.tracks.items} />
       </div>
 
       {album && (
-        <div className="mt-4 px-8">
+        <div className="mt-8">
           <AlbumReleaseDate releaseDate={album.release_date} />
           <AlbumCopyrights copyrights={album.copyrights} />
         </div>
