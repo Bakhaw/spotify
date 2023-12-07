@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import { useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 
-import SignOut from "@/components/SignOut";
+import Logout from "@/components/Logout";
 import Cover from "@/components/Cover";
 
 const Account: NextPage = () => {
@@ -25,7 +25,7 @@ const Account: NextPage = () => {
       </div>
 
       <div className="p-4">
-        <SignOut />
+        <Logout />
       </div>
     </div>
   );
