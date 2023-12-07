@@ -7,6 +7,7 @@ function useDominantColor(
   album?: SpotifyApi.AlbumObjectFull | SpotifyApi.AlbumObjectSimplified
 ) {
   const [dominantColors, setDominantColors] = useState<number[]>([]);
+
   useEffect(() => {
     if (!album) return;
     const image = new Image();
@@ -21,6 +22,7 @@ function useDominantColor(
       setDominantColors(colorPalette);
     };
   }, [album]);
+
   return dominantColors;
 }
 

@@ -13,8 +13,6 @@ interface TrackListHeaderProps {
 const TrackListHeader: React.FC<TrackListHeaderProps> = ({ album }) => {
   const [r, g, b] = useDominantColor(album);
 
-  console.log("dominantColors", useDominantColor(album));
-
   if (!album) return <TrackListHeaderSkeleton />;
 
   const duration = album.tracks.items.reduce(
