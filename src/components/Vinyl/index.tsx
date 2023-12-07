@@ -8,8 +8,8 @@ import { currentTrackIdState, isPlayingState } from "@/atoms/trackAtom";
 import useSpotify from "@/hooks/useSpotify";
 import useTrack from "@/hooks/useTrack";
 
-import ArtistLink from "../ArtistLink";
-import TrackLink from "../TrackLink";
+import ArtistLink from "@/components/ArtistLink";
+import TrackLink from "@/components/TrackLink";
 
 import CoverFallback from "../../assets/cover-fallback.svg";
 

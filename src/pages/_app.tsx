@@ -14,6 +14,7 @@ import { Toaster } from "@/components/ui/toaster";
 
 import "@/styles/globals.css";
 import "@/styles/vinyl.scss";
+import "@/styles/visualizer.scss";
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
