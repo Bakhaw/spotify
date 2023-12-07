@@ -29,15 +29,13 @@ const Album: NextPage = () => {
   const color = useDominantColor(album?.images[0].url);
 
   return (
-    <div className="flex flex-col zgap-4 p-8 pt-0">
+    <div className="flex flex-col gap-4 p-2 sm:p-8 pt-0">
       <NextSeo
         title={`music app - ${album?.name}`}
         description={`music app - ${album?.name}`}
       />
 
-      <div className="zpx-8">
-        <TrackListHeader album={album} />
-      </div>
+      <TrackListHeader album={album} />
 
       <div
         style={{ backgroundColor: generateRGBString(color) }}

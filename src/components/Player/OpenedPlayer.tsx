@@ -41,7 +41,10 @@ const OpenedPlayer: React.FC<OpenedPlayer> = ({
   const maxSeconds = Math.floor((track.duration_ms / 1000) % 60);
 
   return (
-    <div className="overflow-hidden flex flex-col justify-between items-center h-full w-full py-8">
+    <div
+      className="overflow-hidden flex flex-col justify-between items-center w-full py-8"
+      style={{ height: "100dvh" }}
+    >
       <ChevronDownIcon
         className="h-6 w-6 self-end"
         role="button"
