@@ -40,10 +40,10 @@ const ClosedPlayer: React.FC<ClosedPlayerProps> = ({
             </div>
 
             <div className="display-arrowicon max-w-[50vw] md:max-w-[30vw]">
-              <div className="flex gap-3 transition-all hover:scale-110">
+              <div className="font-bold flex gap-3 transition-all hover:scale-110 sm:font-normal">
                 <TrackLink track={track} />
               </div>
-              <div className="transition-all	hover:scale-110">
+              <div className="transition-all hover:scale-110 text-span text-xs">
                 <ArtistLink artists={track.artists} />
               </div>
             </div>
