@@ -1,6 +1,9 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { useRecoilValue } from "recoil";
+import classNames from "classnames";
 
+import { isPlayingState } from "@/atoms/trackAtom";
 import routes from "@/lib/routes";
 
 import { Button } from "@/components/ui/button";
@@ -9,11 +12,17 @@ import Playlists from "./Playlists";
 
 function SideBar() {
   const pathname = usePathname();
+  const isPlaying = useRecoilValue(isPlayingState);
 
   if (pathname === "/studio" || pathname === "/login") return null;
 
   return (
-    <div className="fixed top-0 overflow-x-hidden bottom-[80px] w-[266px]">
+    <div
+      className={classNames(
+        "fixed top-0 overflow-x-hidden w-[266px]",
+        isPlaying ? "bottom-[80px]" : "bottom-0"
+      )}
+    >
       <div className="space-y-4 py-4">
         <div className="px-4 py-2">
           <div className="space-y-1">

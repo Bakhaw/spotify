@@ -53,14 +53,17 @@ export default function App({ Component, pageProps }: AppProps) {
                     isFullScreenPage ? "sm:ml-0" : "sm:ml-[266px] pb-20"
                   )}
                 >
-                  <AppHeader />
-
                   <div
                     className={classNames(
-                      !isFullScreenPage && "mt-10",
-                      isAlbumPage && "mt-0 sm:mt-10"
+                      "mb-[68px]",
+                      isAlbumPage && "mb-0 sm:mb-[68px]",
+                      isFullScreenPage && "mb-0 sm:mb-0"
                     )}
                   >
+                    <AppHeader />
+                  </div>
+
+                  <div className="h-full">
                     <Component {...pageProps} />
                   </div>
                 </div>

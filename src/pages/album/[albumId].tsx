@@ -29,7 +29,7 @@ const Album: NextPage = () => {
   const color = useDominantColor(album?.images[0].url);
 
   return (
-    <div className="flex flex-col sm:p-8 pt-0">
+    <div className="flex flex-col sm:px-8 pt-0">
       <NextSeo
         title={`music app - ${album?.name}`}
         description={`music app - ${album?.name}`}

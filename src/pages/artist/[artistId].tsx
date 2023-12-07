@@ -10,8 +10,6 @@ import Cover from "@/components/Cover";
 import HorizontalSlider from "@/components/HorizontalSlider";
 
 import MonthlyListeners from "./MonthlyListeners";
-import generateRGBString from "@/lib/generateRGBString";
-import useDominantColor from "@/hooks/useDominantColor";
 
 const ArtistDetails: NextPage = () => {
   const {
@@ -50,8 +48,6 @@ const ArtistDetails: NextPage = () => {
   const appearsOn = projects?.items.filter(
     (project) => project.album_group === "appears_on"
   );
-
-  const colors = useDominantColor(artist?.images[0].url);
 
   return (
     <div className="px-8 w-full">
