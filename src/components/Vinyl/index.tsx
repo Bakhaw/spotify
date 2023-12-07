@@ -8,8 +8,8 @@ import { currentTrackIdState, isPlayingState } from "@/atoms/trackAtom";
 import useSpotify from "@/hooks/useSpotify";
 import useTrack from "@/hooks/useTrack";
 
-import ArtistLink from "../ArtistLink";
-import TrackLink from "../TrackLink";
+import ArtistLink from "@/components/ArtistLink";
+import TrackLink from "@/components/TrackLink";
 
 import CoverFallback from "../../assets/cover-fallback.svg";
 import useDominantColor from "@/hooks/useDominantColor";
@@ -124,6 +124,7 @@ const Vinyl: React.FC = () => {
               WebkitBoxShadow: `10px 0 15px 0 ${vinylColor("#ffffff")}35`,
             }}
           ></div>
+
           <div
             className="vinyl"
             onClick={togglePlay}

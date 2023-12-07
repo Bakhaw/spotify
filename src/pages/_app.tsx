@@ -14,6 +14,7 @@ import { Toaster } from "@/components/ui/toaster";
 
 import "@/styles/globals.css";
 import "@/styles/vinyl.scss";
+import "@/styles/visualizer.scss";
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -24,6 +25,7 @@ export default function App({ Component, pageProps }: AppProps) {
   }
 
   const fullScreenPages = ["/login", "/studio"];
+  const isFullScreenPage = fullScreenPages.includes(pathname);
 
   return (
     <SessionProvider session={pageProps.session}>
@@ -46,12 +48,15 @@ export default function App({ Component, pageProps }: AppProps) {
 
                 <div
                   className={classNames(
-                    "flex-auto pb-20 sm:ml-[266px]",
-                    fullScreenPages.includes(pathname) && "sm:ml-0"
+                    "flex-auto",
+                    isFullScreenPage ? "sm:ml-0" : "sm:ml-[266px] pb-20"
                   )}
                 >
                   <AppHeader />
-                  <Component {...pageProps} />
+
+                  <div className={classNames(!isFullScreenPage && "mt-20")}>
+                    <Component {...pageProps} />
+                  </div>
                 </div>
 
                 <Player />

@@ -6,7 +6,7 @@ import ColorThief from "colorthief";
 function useDominantColor(
   album?: SpotifyApi.AlbumObjectFull | SpotifyApi.AlbumObjectSimplified
 ) {
-  const [dominantColors, setDominantColors] = useState<string[]>([]);
+  const [dominantColors, setDominantColors] = useState<number[]>([]);
   useEffect(() => {
     if (!album) return;
     const image = new Image();
