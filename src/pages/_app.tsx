@@ -41,7 +41,7 @@ export default function App({ Component, pageProps }: AppProps) {
             triggerHeight={50}
           >
             <CustomDndContext>
-              <div className="flex flex-col justify-between h-[100dvh]">
+              <div className="flex flex-col justify-between h-screen">
                 <div className="hidden sm:block">
                   <SideBar />
                 </div>
