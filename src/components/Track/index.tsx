@@ -62,7 +62,7 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
       onMouseLeave={() => setShowIcon(false)}
       onDoubleClick={playSong}
     >
-      <div className="flex justify-start items-center">
+      <div className="flex justify-start items-center w-52">
         {order && (
           <div className="text-center w-14 px-4">
             {showPlayIcon ? (
@@ -126,7 +126,7 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
         </div>
       </div>
 
-      <div className="flex justify-between items-center gap-3 pr-4">
+      <div className="flex justify-center items-center pr-5">
         <LikeButton track={track} />
 
         <div className="hidden md:block">

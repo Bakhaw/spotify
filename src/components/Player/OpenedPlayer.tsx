@@ -52,11 +52,13 @@ const OpenedPlayer: React.FC<OpenedPlayer> = ({
       />
 
       <div className="flex flex-col justify-between items-center gap-12">
-        <Cover
-          alt={`${track.name} cover`}
-          size="large"
-          src={track.album.images[0].url}
-        />
+        <div className="drop-shadow-md">
+          <Cover
+            alt={`${track.name} cover`}
+            size="large"
+            src={track.album.images[0].url}
+          />
+        </div>
 
         <div className="flex flex-col gap-4 w-full">
           <div className="flex justify-between items-center w-full">

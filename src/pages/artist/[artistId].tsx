@@ -86,7 +86,7 @@ const ArtistDetails: NextPage = () => {
 
       <div
         style={{ backgroundColor: generateRGBString(color) }}
-        className="flex flex-col gap-12 bg-gradient pt-5"
+        className="flex flex-col gap-12 bg-gradient pt-5 pb-10"
       >
         <div className="flex gap-4 pl-3">
           <Button
