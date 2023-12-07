@@ -119,6 +119,7 @@ const Vinyl: React.FC = () => {
               WebkitBoxShadow: `10px 0 15px 0 ${vinylColor("#ffffff")}55`,
             }}
           ></div>
+
           <div
             className="vinyl"
             onClick={togglePlay}

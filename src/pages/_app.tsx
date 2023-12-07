@@ -48,12 +48,15 @@ export default function App({ Component, pageProps }: AppProps) {
 
                 <div
                   className={classNames(
-                    "flex-auto pb-20",
-                    isFullScreenPage ? "sm:ml-0" : "sm:ml-[266px]"
+                    "flex-auto",
+                    isFullScreenPage ? "sm:ml-0" : "sm:ml-[266px] pb-20"
                   )}
                 >
                   <AppHeader />
-                  <Component {...pageProps} />
+
+                  <div className={classNames(!isFullScreenPage && "mt-20")}>
+                    <Component {...pageProps} />
+                  </div>
                 </div>
 
                 <Player />

@@ -45,7 +45,7 @@ const Studio: NextPage = () => {
   ]);
 
   return (
-    <div className="flex justify-center items-center h-full">
+    <div className="flex justify-center items-center h-screen">
       <NextSeo title="music app - studio" description="music app - studio" />
 
       <Vinyl />

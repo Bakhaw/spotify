@@ -13,7 +13,7 @@ const Login: NextPage<LoginProps> = ({ providers }) => {
   }
 
   return (
-    <div className="flex items-center justify-center h-full">
+    <div className="flex items-center justify-center h-screen">
       <NextSeo title="music app - login" description="music app - login" />
 
       {Object.values(providers).map((provider) => (
