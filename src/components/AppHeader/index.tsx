@@ -1,9 +1,10 @@
 import React from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { ChevronLeftCircleIcon, ChevronRightCircleIcon } from "lucide-react";
+import classNames from "classnames";
 
 import ThemeToggle from "@/components/ThemeToggle";
-import classNames from "classnames";
+import UserNav from "@/components/UserNav";
 
 function AppHeader() {
   const router = useRouter();
@@ -36,7 +37,10 @@ function AppHeader() {
         </button>
       </div>
 
-      <ThemeToggle />
+      <div className="flex gap-2 justify-between items-center">
+        <ThemeToggle />
+        <UserNav />
+      </div>
     </div>
   );
 }
