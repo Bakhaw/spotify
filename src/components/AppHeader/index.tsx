@@ -16,7 +16,7 @@ function AppHeader() {
     <div
       className={classNames(
         "flex justify-between items-center px-8 py-4 left-0 right-0 absolute",
-        pathname !== "/studio" && "sm:left-[266px]"
+        pathname !== "/studio" && "sm:left-[90px] md:left-[266px]"
       )}
     >
       <div className="flex gap-2">

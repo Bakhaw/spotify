@@ -15,26 +15,28 @@ function Playlists() {
   if (!playlists) return <PlaylistsSkeleton />;
 
   return (
-    <ul className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3">
       {playlists.items.map((playlist) => (
         <Droppable key={playlist.id} id={playlist.id}>
-          <Link className="flex" href={`/playlist/${playlist.id}`}>
-            <Button
-              // variant={pathname === route.href ? "secondary" : "ghost"}
-              size="lg"
-              className="flex justify-start gap-2 h-full w-full ml-2 p-0 bg-transparent hover:bg-[#666770] hover:text-white"
+          <Button
+            className="flex justify-center gap-0 h-full p-0 bg-transparent hover:bg-[#666770] hover:text-white"
+            size="sm"
+          >
+            <Link
+              className="flex justify-center items-center gap-4 h-full w-[48px] md:w-[36px]"
+              href={`/playlist/${playlist.id}`}
             >
               <Cover
                 alt={`${playlist.name} cover`}
-                size="xs"
+                size="full"
                 src={playlist.images?.[0]?.url}
               />
-              <span>{playlist.name}</span>
-            </Button>
-          </Link>
+              <span className="hidden md:block">{playlist.name}</span>
+            </Link>
+          </Button>
         </Droppable>
       ))}
-    </ul>
+    </div>
   );
 }
 
