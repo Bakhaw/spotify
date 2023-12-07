@@ -1,10 +1,5 @@
 import { useRecoilValue } from "recoil";
-import {
-  ChevronUpIcon,
-  Volume1Icon,
-  Volume2Icon,
-  ArrowUpRightSquare,
-} from "lucide-react";
+import { ChevronUpIcon, Volume1Icon, Volume2Icon } from "lucide-react";
 
 import { FaCirclePlay, FaCirclePause } from "react-icons/fa6";
 import { IoPlaySkipBack, IoPlaySkipForward } from "react-icons/io5";
@@ -57,7 +52,7 @@ const ClosedPlayer: React.FC<ClosedPlayerProps> = ({
       </div>
 
       <ChevronUpIcon
-        className="h-6 w-6 md:hidden"
+        className="h-6 w-6 md:hidden transition-all	hover:scale-125"
         role="button"
         onClick={onOpen}
       />
