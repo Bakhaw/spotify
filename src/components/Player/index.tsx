@@ -151,7 +151,7 @@ const Player: React.FC = () => {
 
   return (
     <div
-      className="fixed bottom-0 w-full p-2 pb-6 sm:pb-0 z-10 bg-gradient-secondary"
+      className="fixed bottom-0 w-full p-2 z-10 bg-gradient-secondary"
       style={{
         backgroundColor: generateRGBString(color),
         color: isWhite(color) ? "#121212" : "#fff",
