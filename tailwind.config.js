@@ -16,12 +16,17 @@ module.exports = {
       },
     },
     extend: {
+      letterSpacing: {
+        span: "letter-spacing: -1px;",
+      },
       backgroundImage: {
-        gradient: "linear-gradient(rgba(0, 0, 0, 0.6) 0, #121212 20%)",
+        gradient:
+          "linear-gradient(var(--rgba-gradient) 0, var(--decay-gradient) 20%)",
         "gradient-secondary":
           "linear-gradient(transparent 0, rgba(0, 0, 0, 0.5) 100%)",
       },
       colors: {
+        span: "hsla(0,0%,100%,.7)",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

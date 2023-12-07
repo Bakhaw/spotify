@@ -10,8 +10,9 @@ const MonthlyListeners: React.FC<MonthlyListenersProps> = ({ artistId }) => {
   const getMonthlyListeners = async (artistId: string) => {
     const res = await fetch(`/api/monthlyListeners?artistId=${artistId}`);
     const { result } = await res.json();
+    const listenersWithoutComma = result.replace(/,/g, " ");
 
-    setMonthlyListeners(result);
+    setMonthlyListeners(listenersWithoutComma);
   };
 
   useEffect(() => {
@@ -19,7 +20,11 @@ const MonthlyListeners: React.FC<MonthlyListenersProps> = ({ artistId }) => {
     getMonthlyListeners(artistId);
   }, [artistId]);
 
-  return <span>{monthlyListeners}</span>;
+  return (
+    <span className="w-full text-sm text-span tracking-tighter">
+      {monthlyListeners}
+    </span>
+  );
 };
 
 export default MonthlyListeners;

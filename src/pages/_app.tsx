@@ -25,7 +25,10 @@ export default function App({ Component, pageProps }: AppProps) {
   }
 
   const fullScreenPages = ["/login", "/studio"];
-  const isAlbumPage = pathname?.startsWith("/album");
+  const fullStartWithPages = ["/album", "/artist"];
+  const isFullScreenPageResponsive = fullStartWithPages.some((page) =>
+    pathname?.startsWith(page)
+  );
   const isFullScreenPage = fullScreenPages.includes(pathname);
 
   return (
@@ -57,7 +60,7 @@ export default function App({ Component, pageProps }: AppProps) {
                     className={classNames(
                       isFullScreenPage
                         ? "mb-0 sm:mb-0"
-                        : isAlbumPage
+                        : isFullScreenPageResponsive
                         ? "mb-0 sm:mb-[68px]"
                         : "mb-[68px]"
                     )}

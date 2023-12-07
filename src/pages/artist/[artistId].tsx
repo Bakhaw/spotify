@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { NextSeo } from "next-seo";
@@ -10,6 +10,10 @@ import Cover from "@/components/Cover";
 import HorizontalSlider from "@/components/HorizontalSlider";
 
 import MonthlyListeners from "./MonthlyListeners";
+import generateRGBString from "@/lib/generateRGBString";
+import useDominantColor from "@/hooks/useDominantColor";
+import { Button } from "@/components/ui/button";
+import classNames from "classnames";
 
 const ArtistDetails: NextPage = () => {
   const {
@@ -49,8 +53,15 @@ const ArtistDetails: NextPage = () => {
     (project) => project.album_group === "appears_on"
   );
 
+  const color = useDominantColor(artist?.images[0].url);
+
+  const [currentFilter, setCurrentFilter] = useState<string>("albums");
+  const handleFilterClick = (filter: string) => {
+    setCurrentFilter(filter);
+  };
+
   return (
-    <div className="px-8 w-full">
+    <div className="w-full sm:px-8">
       {artist && (
         <NextSeo
           title={`music app - ${artist.name}`}
@@ -58,26 +69,66 @@ const ArtistDetails: NextPage = () => {
         />
       )}
 
-      <div className="flex flex-col justify-center items-center gap-2">
+      <div
+        className="flex flex-col justify-center items-center gap-2  bg-gradient-secondary pt-20 px-3 pb-3"
+        style={{ backgroundColor: generateRGBString(color) }}
+      >
         <Cover
           alt={`${artist?.name} cover`}
           rounded
-          size="large"
+          size="medium"
           src={artist?.images[0].url}
         />
-        <h1 className="text-4xl font-bold">{artist?.name}</h1>
+        <h1 className="text-3xl font-bold w-full">{artist?.name}</h1>
 
         {artist && <MonthlyListeners artistId={artist.id} />}
       </div>
 
-      <div className="flex flex-col gap-12">
-        <HorizontalSlider
-          items={removeDuplicatesAlbums}
-          type="album"
-          title="albums"
-        />
-        <HorizontalSlider items={singles} type="album" title="singles & ep" />
-        <HorizontalSlider items={appearsOn} type="album" title="appears on" />
+      <div
+        style={{ backgroundColor: generateRGBString(color) }}
+        className="flex flex-col gap-12 bg-gradient pt-5"
+      >
+        <div className="flex gap-4 pl-3">
+          <Button
+            onClick={() => handleFilterClick("albums")}
+            style={{
+              backgroundColor:
+                currentFilter === "albums" ? generateRGBString(color) : "",
+            }}
+            size="sm"
+            className={classNames(
+              "w-auto justify-start rounded-full text-xs",
+              currentFilter === "albums" && "text-white hover:bg-white"
+            )}
+          >
+            Albums
+          </Button>
+          <Button
+            size="sm"
+            style={{
+              backgroundColor:
+                currentFilter === "singles" ? generateRGBString(color) : "",
+            }}
+            className={classNames(
+              "w-auto justify-start rounded-full text-xs",
+              currentFilter === "singles" && "text-white hover:bg-white"
+            )}
+            onClick={() => handleFilterClick("singles")}
+          >
+            Singles & EP
+          </Button>
+        </div>
+        {currentFilter === "albums" && (
+          <HorizontalSlider
+            items={removeDuplicatesAlbums}
+            type="album"
+            title="Albums"
+          />
+        )}
+        {currentFilter === "singles" && (
+          <HorizontalSlider items={singles} type="album" title="Singles & EP" />
+        )}
+        <HorizontalSlider items={appearsOn} type="album" title="Appears On" />
       </div>
     </div>
   );

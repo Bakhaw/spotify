@@ -27,14 +27,15 @@ const HorizontalSlider: React.FC<HorizontalSliderProps> = ({
   return (
     <div className="w-full">
       {items?.length !== 0 && (
-        <h1 className="px-8 mb-[6px] text-3xl font-bold lowercase">{title}</h1>
+        <h1 className="pr-8 pl-3 mb-[6px] text-3xl font-bold lowercase">
+          {title}
+        </h1>
       )}
 
       {items ? (
         <Swiper
           keyboard
           slidesPerView="auto"
-          spaceBetween={20}
           mousewheel={{ forceToAxis: true, sensitivity: 0.5 }}
           freeMode={{
             enabled: true,
