@@ -3,7 +3,7 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { NextSeo } from "next-seo";
 
-import millisToMinutesAndSecondsFormatted from "@/lib/millisToMinutesAndSecondsFormatted";
+import formatMs from "@/lib/formatMs";
 
 import useFetch from "@/hooks/useFetch";
 import useSpotify from "@/hooks/useSpotify";
@@ -39,7 +39,7 @@ const Playlist: NextPage = () => {
     0
   );
 
-  const playlistDuration = millisToMinutesAndSecondsFormatted(duration);
+  const playlistDuration = formatMs(duration);
 
   return (
     <div className="flex flex-col gap-8 p-8">

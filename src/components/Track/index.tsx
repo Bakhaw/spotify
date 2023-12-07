@@ -3,7 +3,7 @@ import { useRecoilState } from "recoil";
 import { PauseIcon, PlayIcon } from "lucide-react";
 
 import { currentTrackIdState, isPlayingState } from "@/atoms/trackAtom";
-import millisToMinutesAndSecondsFormatted from "@/lib/millisToMinutesAndSecondsFormatted";
+import formatMs from "@/lib/formatMs";
 import useSpotify from "@/hooks/useSpotify";
 import useTrack from "@/hooks/useTrack";
 
@@ -62,7 +62,7 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
       onMouseLeave={() => setShowIcon(false)}
       onDoubleClick={playSong}
     >
-      <div className="flex justify-start items-center w-52">
+      <div className="flex justify-start items-center">
         {order && (
           <div className="text-center w-14 px-4">
             {showPlayIcon ? (
@@ -130,7 +130,7 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
         <LikeButton track={track} />
 
         <div className="hidden md:block">
-          {millisToMinutesAndSecondsFormatted(currentTrack.duration_ms)}
+          {formatMs(currentTrack.duration_ms, "clock")}
         </div>
       </div>
     </Button>

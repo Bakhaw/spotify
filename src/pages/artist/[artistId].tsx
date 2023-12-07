@@ -6,15 +6,13 @@ import classNames from "classnames";
 
 import useFetch from "@/hooks/useFetch";
 import useSpotify from "@/hooks/useSpotify";
-import isWhite from "@/lib/isWhite";
+import useDominantColor from "@/hooks/useDominantColor";
+import generateRGBString from "@/lib/generateRGBString";
 
 import Cover from "@/components/Cover";
 import HorizontalSlider from "@/components/HorizontalSlider";
-
-import MonthlyListeners from "./MonthlyListeners";
-import generateRGBString from "@/lib/generateRGBString";
-import useDominantColor from "@/hooks/useDominantColor";
 import { Button } from "@/components/ui/button";
+import MonthlyListeners from "./MonthlyListeners";
 
 const ArtistDetails: NextPage = () => {
   const {
@@ -80,14 +78,7 @@ const ArtistDetails: NextPage = () => {
           size="medium"
           src={artist?.images[0].url}
         />
-        <h1
-          className={classNames(
-            "text-3xl font-bold w-full",
-            isWhite(color) ? "text-black" : "text-white"
-          )}
-        >
-          {artist?.name}
-        </h1>
+        <h1 className="text-3xl font-bold w-full text-white">{artist?.name}</h1>
 
         {artist && <MonthlyListeners artistId={artist.id} />}
       </div>

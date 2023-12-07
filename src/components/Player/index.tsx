@@ -14,6 +14,7 @@ import isWhite from "@/lib/isWhite";
 
 import ClosedPlayer from "./ClosedPlayer";
 import OpenedPlayer from "./OpenedPlayer";
+import classNames from "classnames";
 
 export interface PlayerProps {
   onBackwardButtonClick: () => void;
@@ -150,10 +151,13 @@ const Player: React.FC = () => {
 
   return (
     <div
-      className="fixed bottom-0 w-full p-2 z-10 bg-gradient-secondary"
+      className={classNames(
+        "fixed bottom-0 w-full p-2 z-10 bg-gradient-secondary",
+        isWhite(color) ? "text-black" : "#fff"
+      )}
       style={{
         backgroundColor: generateRGBString(color),
-        color: isWhite(color) ? "text-black" : "#fff",
+
         height: showFullPlayer ? "100vh" : "80px",
         transition: "0.3s",
       }}
