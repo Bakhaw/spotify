@@ -6,23 +6,23 @@ const routes = [
   {
     href: "/",
     icon: <LuMusic2 className="h-4 w-4" />,
-    text: "listen now",
+    text: "Listen Now",
   },
   {
     disabled: true,
     href: "/search",
     icon: <HiOutlineSquares2X2 className="h-4 w-4" />,
-    text: "browse",
+    text: "Browse",
   },
   {
     href: "/library",
     icon: <LuLibrary className="h-5 w-5" />,
-    text: "library",
+    text: "Library",
   },
   {
     href: "/studio",
     icon: <PiVinylRecord className="h-5 w-5" />,
-    text: "studio (beta)",
+    text: "Studio",
   },
 ];
 

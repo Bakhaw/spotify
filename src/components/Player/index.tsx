@@ -137,7 +137,7 @@ const Player: React.FC = () => {
     }
   }, [router]);
 
-  const color = useDominantColor(track?.album);
+  const color = useDominantColor(track?.album.images[0].url);
   const [r, g, b] = color;
 
   if (router.asPath === "/studio" || !track) return null;
@@ -151,7 +151,7 @@ const Player: React.FC = () => {
 
   return (
     <div
-      className="fixed bottom-0 w-full p-2 pb-6 sm:pb-0 z-10"
+      className="fixed bottom-0 w-full p-2 pb-6 sm:pb-0 z-10 bg-gradient-secondary"
       style={{
         backgroundColor: generateRGBString(color),
         color: isWhite(color) ? "#121212" : "#fff",

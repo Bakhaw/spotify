@@ -26,7 +26,7 @@ const Album: NextPage = () => {
   );
 
   const album = useFetch<SpotifyApi.SingleAlbumResponse>(getAlbum, [albumId]);
-  const color = useDominantColor(album);
+  const color = useDominantColor(album?.images[0].url);
 
   return (
     <div className="flex flex-col zgap-4 p-8 pt-0">

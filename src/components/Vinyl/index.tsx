@@ -77,7 +77,7 @@ const Vinyl: React.FC = () => {
     (vinyl) => vinyl.albumId === track?.album.id
   );
 
-  const color = useDominantColor(track?.album);
+  const color = useDominantColor(track?.album.images[0].url);
   const rgb = generateRGBString(color);
 
   const vinylColor = (fallbackColor: string) =>

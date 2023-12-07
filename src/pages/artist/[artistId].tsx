@@ -10,6 +10,8 @@ import Cover from "@/components/Cover";
 import HorizontalSlider from "@/components/HorizontalSlider";
 
 import MonthlyListeners from "./MonthlyListeners";
+import generateRGBString from "@/lib/generateRGBString";
+import useDominantColor from "@/hooks/useDominantColor";
 
 const ArtistDetails: NextPage = () => {
   const {
@@ -49,8 +51,10 @@ const ArtistDetails: NextPage = () => {
     (project) => project.album_group === "appears_on"
   );
 
+  const colors = useDominantColor(artist?.images[0].url);
+
   return (
-    <div className="py-8 w-full">
+    <div className="px-8 w-full">
       {artist && (
         <NextSeo
           title={`music app - ${artist.name}`}
