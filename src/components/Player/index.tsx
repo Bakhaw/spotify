@@ -7,7 +7,10 @@ import { debounce } from "lodash";
 import { currentTrackIdState, isPlayingState } from "@/atoms/trackAtom";
 
 import useSpotify from "@/hooks/useSpotify";
+import useDominantColor from "@/hooks/useDominantColor";
 import useTrack from "@/hooks/useTrack";
+import generateRGBString from "@/lib/generateRGBString";
+import isWhite from "@/lib/isWhite";
 
 import ClosedPlayer from "./ClosedPlayer";
 import OpenedPlayer from "./OpenedPlayer";
@@ -29,7 +32,7 @@ const Player: React.FC = () => {
   const [_isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
   const track = useTrack(currentTrackId);
 
-  const [volume, setVolume] = useState(50);
+  const [volume, setVolume] = useState(20);
   const [progressMs, setProgressMs] = useState(0);
   const [showFullPlayer, setShowFullPlayer] = useState(false);
 
@@ -134,9 +137,10 @@ const Player: React.FC = () => {
     }
   }, [router]);
 
-  if (router.asPath === "/studio") return null;
+  const color = useDominantColor(track?.album);
+  const [r, g, b] = color;
 
-  if (!track) return null;
+  if (router.asPath === "/studio" || !track) return null;
 
   const playerProps: PlayerProps = {
     onBackwardButtonClick: onPreviousTrackClick,
@@ -147,8 +151,10 @@ const Player: React.FC = () => {
 
   return (
     <div
-      className="fixed bottom-0 w-full p-2 pb-6 sm:pb-0 z-10 bg-primary"
+      className="fixed bottom-0 w-full p-2 pb-6 sm:pb-0 z-10"
       style={{
+        backgroundColor: generateRGBString(color),
+        color: isWhite(color) ? "#121212" : "#fff",
         height: showFullPlayer ? "100vh" : "80px",
         transition: "0.3s",
       }}

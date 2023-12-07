@@ -3,16 +3,16 @@ import { useRecoilState } from "recoil";
 import classNames from "classnames";
 
 import vinylColors from "@/API/vinylColors";
-
 import { currentTrackIdState, isPlayingState } from "@/atoms/trackAtom";
 import useSpotify from "@/hooks/useSpotify";
 import useTrack from "@/hooks/useTrack";
+import useDominantColor from "@/hooks/useDominantColor";
+import generateRGBString from "@/lib/generateRGBString";
 
 import ArtistLink from "@/components/ArtistLink";
 import TrackLink from "@/components/TrackLink";
 
 import CoverFallback from "../../assets/cover-fallback.svg";
-import useDominantColor from "@/hooks/useDominantColor";
 
 const Vinyl: React.FC = () => {
   const spotifyApi = useSpotify();
@@ -77,9 +77,8 @@ const Vinyl: React.FC = () => {
     (vinyl) => vinyl.albumId === track?.album.id
   );
 
-  const [r, g, b] = useDominantColor(track?.album);
-
-  const rgb = `rgb(${r},${g},${b})`;
+  const color = useDominantColor(track?.album);
+  const rgb = generateRGBString(color);
 
   const vinylColor = (fallbackColor: string) =>
     filteredVinyls.length > 0

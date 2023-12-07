@@ -1,11 +1,3 @@
-import {
-  LibraryIcon,
-  MusicIcon,
-  SearchIcon,
-  SpeakerIcon,
-  User2Icon,
-} from "lucide-react";
-
 import { LuLibrary, LuMusic2 } from "react-icons/lu";
 import { HiOutlineSquares2X2 } from "react-icons/hi2";
 import { PiVinylRecord } from "react-icons/pi";

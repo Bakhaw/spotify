@@ -6,10 +6,10 @@ import { useRecoilState } from "recoil";
 import { LightbulbIcon, LightbulbOffIcon } from "lucide-react";
 
 import { currentTrackIdState, isPlayingState } from "@/atoms/trackAtom";
-
 import useDominantColor from "@/hooks/useDominantColor";
 import useSpotify from "@/hooks/useSpotify";
 import useTrack from "@/hooks/useTrack";
+import generateRGBString from "@/lib/generateRGBString";
 
 import Vinyl from "@/components/Vinyl";
 
@@ -48,24 +48,24 @@ const Studio: NextPage = () => {
     track,
   ]);
 
-  const [r, g, b] = useDominantColor(track?.album);
-  const rgb = `rgb(${r},${g},${b})`;
-
-  const [isDark, setIsDark] = useState(false);
+  const [useAlbumColor, setUseAlbumColor] = useState(true);
+  const color = useDominantColor(track?.album);
 
   return (
     <div
       className="flex flex-col justify-center items-center h-screen bg-gradient-secondary"
-      style={{ backgroundColor: isDark ? "#000" : rgb }}
+      style={{
+        backgroundColor: useAlbumColor ? generateRGBString(color) : "#000",
+      }}
     >
       <NextSeo title="music app - studio" description="music app - studio" />
 
       <Button
         size="icon"
         className="border absolute top-4 right-8"
-        onClick={() => setIsDark((isDark) => !isDark)}
+        onClick={() => setUseAlbumColor((useAlbumColor) => !useAlbumColor)}
       >
-        {isDark ? <LightbulbOffIcon /> : <LightbulbIcon />}
+        {useAlbumColor ? <LightbulbIcon /> : <LightbulbOffIcon />}
       </Button>
 
       <Vinyl />

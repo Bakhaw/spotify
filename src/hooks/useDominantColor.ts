@@ -1,12 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import ColorThief from "colorthief";
+import ColorThief, { Color } from "colorthief";
 
 function useDominantColor(
   album?: SpotifyApi.AlbumObjectFull | SpotifyApi.AlbumObjectSimplified
 ) {
-  const [dominantColors, setDominantColors] = useState<number[]>([]);
+  const [dominantColors, setDominantColors] = useState<Color>([0, 0, 0]);
 
   useEffect(() => {
     if (!album) return;
@@ -18,7 +18,6 @@ function useDominantColor(
       const colorThief = new ColorThief();
       const colorPalette = colorThief.getColor(image);
 
-      // Mettez à jour l'état avec la palette de couleurs
       setDominantColors(colorPalette);
     };
   }, [album]);
