@@ -61,9 +61,10 @@ const Studio: NextPage = () => {
       <NextSeo title="music app - studio" description="music app - studio" />
 
       <Button
-        size="icon"
         className="border absolute top-4 right-8"
         onClick={() => setUseAlbumColor((useAlbumColor) => !useAlbumColor)}
+        size="icon"
+        variant="ghost"
       >
         {useAlbumColor ? <LightbulbIcon /> : <LightbulbOffIcon />}
       </Button>
