@@ -5,23 +5,23 @@ import { PiVinylRecord } from "react-icons/pi";
 const routes = [
   {
     href: "/",
-    icon: <LuMusic2 className="h-4 w-4" />,
+    icon: <LuMusic2 className="h-6 w-6 md:h-4 md:w-4" />,
     text: "Listen Now",
   },
   {
     disabled: true,
     href: "/search",
-    icon: <HiOutlineSquares2X2 className="h-4 w-4" />,
+    icon: <HiOutlineSquares2X2 className="h-6 w-6 md:h-4 md:w-4" />,
     text: "Browse",
   },
   {
     href: "/library",
-    icon: <LuLibrary className="h-5 w-5" />,
+    icon: <LuLibrary className="h-6 w-6 md:h-5 md:w-5" />,
     text: "Library",
   },
   {
     href: "/studio",
-    icon: <PiVinylRecord className="h-5 w-5" />,
+    icon: <PiVinylRecord className="h-6 w-6 md:h-5 md:w-5" />,
     text: "Studio",
   },
 ];

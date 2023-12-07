@@ -53,7 +53,9 @@ export default function App({ Component, pageProps }: AppProps) {
                 <div
                   className={classNames(
                     "flex-auto",
-                    isFullScreenPage ? "sm:ml-0" : "sm:ml-[266px] pb-20"
+                    isFullScreenPage
+                      ? "sm:ml-0"
+                      : "sm:ml-[90px] md:ml-[266px] pb-20"
                   )}
                 >
                   <div

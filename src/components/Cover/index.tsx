@@ -7,7 +7,7 @@ interface CoverProps {
   alt: string;
   priority?: boolean; // default: false
   rounded?: boolean;
-  size?: "xs" | "small" | "medium" | "large"; // default: "medium"
+  size?: "full" | "small" | "medium" | "large"; // default: "medium"
   src: string | null | undefined;
 }
 
@@ -18,7 +18,7 @@ const Cover: React.FC<CoverProps> = ({
   src,
 }) => {
   const sizes = {
-    xs: "h-[48px] w-[48px]",
+    full: "h-full w-full",
     small: "h-[60px] w-[60px]",
     medium: "h-[200px] w-[200px]",
     large: "h-[300px] w-[300px]",
