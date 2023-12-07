@@ -12,7 +12,7 @@ interface TrackListHeaderProps {
 }
 
 const TrackListHeader: React.FC<TrackListHeaderProps> = ({ album }) => {
-  const color = useDominantColor(album);
+  const color = useDominantColor(album?.images[0].url);
 
   if (!album) return <TrackListHeaderSkeleton />;
 

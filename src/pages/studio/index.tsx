@@ -49,7 +49,7 @@ const Studio: NextPage = () => {
   ]);
 
   const [useAlbumColor, setUseAlbumColor] = useState(true);
-  const color = useDominantColor(track?.album);
+  const color = useDominantColor(track?.album.images[0].url);
 
   return (
     <div

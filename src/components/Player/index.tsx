@@ -137,7 +137,7 @@ const Player: React.FC = () => {
     }
   }, [router]);
 
-  const color = useDominantColor(track?.album);
+  const color = useDominantColor(track?.album.images[0].url);
   const [r, g, b] = color;
 
   if (router.asPath === "/studio" || !track) return null;
