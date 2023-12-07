@@ -57,7 +57,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
                   <div
                     className={classNames(
-                      !isFullScreenPage && "mt-10",
+                      !isFullScreenPage && "mt-0 sm:mt-10",
                       isAlbumPage && "mt-0 sm:mt-10"
                     )}
                   >
