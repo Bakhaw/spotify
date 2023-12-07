@@ -20,9 +20,19 @@ const Draggable: React.FC<DraggableProps> = ({ children, id }) => {
     : undefined;
 
   return (
-    <div ref={setNodeRef} style={style} {...listeners} {...attributes}>
-      {children}
-    </div>
+    <>
+      <div
+        className="hidden sm:block"
+        ref={setNodeRef}
+        style={style}
+        {...listeners}
+        {...attributes}
+      >
+        {children}
+      </div>
+
+      <div className="block sm:hidden">{children}</div>
+    </>
   );
 };
 
