@@ -16,7 +16,7 @@ function ThemeToggle() {
   const { setTheme } = useTheme();
   const pathname = usePathname();
 
-  if (pathname === "/studio" || pathname?.startsWith("/album")) return null;
+  if (pathname === "/studio") return null;
 
   return (
     <DropdownMenu>

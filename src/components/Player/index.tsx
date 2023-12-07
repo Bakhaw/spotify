@@ -153,7 +153,7 @@ const Player: React.FC = () => {
       className="fixed bottom-0 w-full p-2 z-10 bg-gradient-secondary"
       style={{
         backgroundColor: generateRGBString(color),
-        color: isWhite(color) ? "#121212" : "#fff",
+        color: isWhite(color) ? "text-black" : "#fff",
         height: showFullPlayer ? "100vh" : "80px",
         transition: "0.3s",
       }}
