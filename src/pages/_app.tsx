@@ -55,9 +55,11 @@ export default function App({ Component, pageProps }: AppProps) {
                 >
                   <div
                     className={classNames(
-                      "mb-[68px]",
-                      isAlbumPage && "mb-0 sm:mb-[68px]",
-                      isFullScreenPage && "mb-0 sm:mb-0"
+                      isFullScreenPage
+                        ? "mb-0 sm:mb-0"
+                        : isAlbumPage
+                        ? "mb-0 sm:mb-[68px]"
+                        : "mb-[68px]"
                     )}
                   >
                     <AppHeader />
