@@ -2,7 +2,6 @@ import { NextPage } from "next";
 import { useSession } from "next-auth/react";
 import { NextSeo } from "next-seo";
 
-import Logout from "@/components/Logout";
 import Cover from "@/components/Cover";
 
 const Account: NextPage = () => {
@@ -22,10 +21,6 @@ const Account: NextPage = () => {
           src={data.user?.image}
         />
         <h1 className="text-3xl">{data.user?.name}</h1>
-      </div>
-
-      <div className="p-4">
-        <Logout />
       </div>
     </div>
   );
