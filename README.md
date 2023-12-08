@@ -32,7 +32,7 @@ Here are the instructions that will guide you to install and use the project.
 
 ```sh
   cd spotify
-  npm install
+  pnpm install
 ```
 
 3. Don't forget to add your .env file otherwise the app is not going to work
@@ -40,7 +40,7 @@ Here are the instructions that will guide you to install and use the project.
 4. Start the development server
 
 ```sh
-  npm run dev
+  pnpm dev
 ```
 
 The project is now running at http://localhost:3000/
@@ -50,11 +50,11 @@ The project is now running at http://localhost:3000/
 1. Build the project in a production mode
 
 ```sh
- npm run build
+ pnpm build
 ```
 
 2. Run the project in production mode
 
 ```sh
- npm start
+ pnpm start
 ```
