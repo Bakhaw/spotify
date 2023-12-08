@@ -114,22 +114,22 @@ const Player: React.FC = () => {
     spotifyApi.seek(newProgressMs);
   }
 
-  // useEffect(() => {
-  //   if (!track) return;
+  useEffect(() => {
+    if (!track) return;
 
-  //   const intervalId = setInterval(() => {
-  //     setProgressMs((state) => {
-  //       if (state > track.duration_ms - 1000) {
-  //         getCurrentTrack();
-  //         return 0;
-  //       } else {
-  //         return state + 1000;
-  //       }
-  //     });
-  //   }, 1000);
+    const intervalId = setInterval(() => {
+      setProgressMs((state) => {
+        if (state > track.duration_ms - 1000) {
+          getCurrentTrack();
+          return 0;
+        } else {
+          return state + 1000;
+        }
+      });
+    }, 1000);
 
-  //   return () => clearInterval(intervalId);
-  // }, [track]);
+    return () => clearInterval(intervalId);
+  }, [track]);
 
   // player opened/closed handling
   useEffect(() => {
