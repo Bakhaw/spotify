@@ -5,6 +5,7 @@ import CoverFallback from "../../assets/cover-fallback.svg";
 
 interface CoverProps {
   alt: string;
+  additionalCss?: string;
   priority?: boolean; // default: false
   rounded?: boolean;
   size?: "full" | "small" | "medium" | "large"; // default: "medium"
@@ -13,6 +14,7 @@ interface CoverProps {
 
 const Cover: React.FC<CoverProps> = ({
   alt,
+  additionalCss,
   priority,
   size = "medium",
   src,
@@ -27,7 +29,7 @@ const Cover: React.FC<CoverProps> = ({
   return (
     <Image
       alt={alt}
-      className={classNames(`block object-cover ${sizes[size]}`)}
+      className={classNames(`block object-cover ${sizes[size]}`, additionalCss)}
       priority={priority}
       src={src ?? CoverFallback}
       height={640}
