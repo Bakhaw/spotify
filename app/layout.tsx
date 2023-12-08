@@ -6,6 +6,7 @@ import NextAuthProvider from "@/components/NextAuthProvider";
 
 import "@/app/styles/globals.css";
 import "@/app/styles/vinyl.scss";
+import "@/app/styles/visualizer.scss";
 
 const inter = Inter({ subsets: ["latin"] });
 
