@@ -23,7 +23,7 @@ function Playlists() {
             size="sm"
           >
             <Link
-              className="flex justify-center items-center gap-4 h-full w-[48px] md:w-[36px]"
+              className="flex justify-center items-center gap-4 h-full w-full md:justify-start md:w-[36px]"
               href={`/playlist/${playlist.id}`}
             >
               <Cover
