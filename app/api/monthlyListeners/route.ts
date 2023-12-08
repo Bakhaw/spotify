@@ -1,11 +1,9 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from "next/server";
 import { JSDOM } from "jsdom";
 
-const getMonthlyListeners = async (
-  req: NextApiRequest,
-  res: NextApiResponse
-) => {
-  const { artistId } = req.query;
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const artistId = searchParams.get("artistId");
 
   if (!artistId) throw new Error("monthlyListeners: artist id not provided");
 
@@ -19,7 +17,5 @@ const getMonthlyListeners = async (
     "[data-testid='monthly-listeners-label']"
   )?.textContent;
 
-  res.status(200).json({ result });
-};
-
-export default getMonthlyListeners;
+  return NextResponse.json({ result });
+}

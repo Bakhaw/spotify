@@ -7,7 +7,7 @@ interface MonthlyListenersProps {
 }
 
 const MonthlyListeners: React.FC<MonthlyListenersProps> = ({ artistId }) => {
-  const [monthlyListeners, setMonthlyListeners] = useState<string | null>();
+  const [monthlyListeners, setMonthlyListeners] = useState<string>();
 
   const getMonthlyListeners = async (artistId: string) => {
     const res = await fetch(`/api/monthlyListeners?artistId=${artistId}`);
@@ -18,7 +18,7 @@ const MonthlyListeners: React.FC<MonthlyListenersProps> = ({ artistId }) => {
   };
 
   useEffect(() => {
-    setMonthlyListeners(null);
+    setMonthlyListeners("");
     getMonthlyListeners(artistId);
   }, [artistId]);
 
