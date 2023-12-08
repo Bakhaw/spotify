@@ -8,16 +8,17 @@ WORKDIR /app
 COPY package*.json ./
 
 # Installez les dépendances
-RUN npm install --production
+RUN npm install -g pnpm
+RUN pnpm install
 
 # Copiez le reste des fichiers de l'application
 COPY . .
 
 # Construisez l'application Next.js
-RUN npm run build
+RUN pnpm run build
 
 # Exposez le port sur lequel l'application sera en cours d'exécution
 EXPOSE 7555
 
 # Démarrez l'application
-CMD ["npm", "start", "--", "-p", "7555"]
+CMD ["pnpm", "start", "7555"]

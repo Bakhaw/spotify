@@ -10,7 +10,7 @@ A Spotify clone, with some personal additions
 
 - Typescript v5
 
-- Next.js v13
+- Next.js v14
 
 - Tailwind CSS v3
 
