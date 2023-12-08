@@ -18,16 +18,16 @@ function Playlists() {
       {playlists.items.map((playlist) => (
         <Droppable key={playlist.id} id={playlist.id}>
           <Button
-            className="flex w-full h-full justify-start gap-0 p-0  sm:p-0 bg-transparent hover:bg-[#666770] hover:text-white"
+            className="flex w-full h-full justify-start gap-0 p-0  sm:p-0 bg-transparen"
             size="sm"
           >
             <Link
-              className="flex justify-center items-center gap-4 h-full w-full md:justify-start md:w-[36px]"
+              className="flex justify-center p-1 items-center gap-4 h-full w-full md:justify-start hover:bg-[#666770] hover:text-white"
               href={`/playlist/${playlist.id}`}
             >
               <Cover
                 alt={`${playlist.name} cover`}
-                size="full"
+                size="small"
                 src={playlist.images?.[0]?.url}
               />
               <span className="hidden md:block">{playlist.name}</span>
