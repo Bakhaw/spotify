@@ -68,7 +68,7 @@ export const authOptions: NextAuthOptions = {
         return {
           accessToken: account.access_token,
           refreshToken: account.refresh_token,
-          accessTokenExpires: account.expires_at * 1000,
+          accessTokenExpires: account.expires_at * 1000, // = 1 hour
           user,
         };
       }
