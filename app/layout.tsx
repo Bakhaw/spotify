@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { getServerSession } from "next-auth";
 
 import Layout from "@/components/Layout";
 import SessionProvider from "@/components/SessionProvider";
@@ -7,7 +8,6 @@ import SessionProvider from "@/components/SessionProvider";
 import "@/app/styles/globals.css";
 import "@/app/styles/vinyl.scss";
 import "@/app/styles/visualizer.scss";
-import { getServerSession } from "next-auth";
 
 const myFont = localFont({
   src: [
