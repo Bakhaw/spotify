@@ -14,18 +14,16 @@ import isWhite from "@/lib/isWhite";
 
 import ClosedPlayer from "./ClosedPlayer";
 import OpenedPlayer from "./OpenedPlayer";
+import useTimer from "@/hooks/useTimer";
 
 export interface PlayerProps {
   onBackwardButtonClick: () => void;
   onForwardButtonClick: () => void;
   onTogglePlay: () => void;
-  track: SpotifyApi.TrackObjectFull;
 }
 
 const Player: React.FC = () => {
-  const router = useRouter();
   const pathname = usePathname();
-  const { data: session } = useSession();
   const spotifyApi = useSpotify();
 
   const [currentTrackId, setCurrentTrackId] =
@@ -34,119 +32,64 @@ const Player: React.FC = () => {
   const track = useTrack(currentTrackId);
 
   const [volume, setVolume] = useState(20);
-  const [progressMs, setProgressMs] = useState(0);
+  // const [timer, setTimer] = useTimer();
   const [showFullPlayer, setShowFullPlayer] = useState(false);
 
-  const getCurrentTrack = async () => {
-    const { body: currentPlaybackState } =
-      await spotifyApi.getMyCurrentPlaybackState();
-
-    if (!currentPlaybackState) return;
-
-    setCurrentTrackId(String(currentPlaybackState?.item?.id));
-    setProgressMs(Number(currentPlaybackState?.progress_ms));
-    setVolume(Number(currentPlaybackState?.device.volume_percent));
-    setIsPlaying(currentPlaybackState?.is_playing);
-
-    return currentPlaybackState;
-  };
-
   async function onPreviousTrackClick() {
-    await spotifyApi.skipToPrevious();
-    await getCurrentTrack();
+    // await spotifyApi.skipToPrevious();
+    // await getCurrentTrack();
   }
 
   async function onNextTrackClick() {
-    await spotifyApi.skipToNext();
-    await getCurrentTrack();
+    // await spotifyApi.skipToNext();
+    // await getCurrentTrack();
   }
 
   async function togglePlay() {
-    const { body: currentPlaybackState } =
-      await spotifyApi.getMyCurrentPlaybackState();
-
-    if (currentPlaybackState?.is_playing) {
-      spotifyApi.pause();
-      setIsPlaying(false);
-    } else {
-      spotifyApi.play();
-      setIsPlaying(true);
-    }
+    // const { body: currentPlaybackState } =
+    //   await spotifyApi.getMyCurrentPlaybackState();
+    // if (currentPlaybackState?.is_playing) {
+    //   spotifyApi.pause();
+    //   setIsPlaying(false);
+    // } else {
+    //   spotifyApi.play();
+    //   setIsPlaying(true);
+    // }
   }
-
-  useEffect(() => {
-    if (spotifyApi.getAccessToken() && !currentTrackId) {
-      getCurrentTrack();
-    }
-  }, [
-    spotifyApi,
-    session,
-    currentTrackId,
-    setCurrentTrackId,
-    setIsPlaying,
-    track,
-  ]);
 
   // volume handling
-  function onVolumeChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setVolume(parseInt(e.target.value));
-  }
+  // function onVolumeChange(e: React.ChangeEvent<HTMLInputElement>) {
+  //   setVolume(parseInt(e.target.value));
+  // }
 
-  const debounceAdjustVolume = useCallback(
-    debounce((volume) => {
-      spotifyApi.setVolume(volume);
-    }, 300),
-    []
-  );
+  // const debounceAdjustVolume = useCallback(
+  //   debounce((volume) => {
+  //     spotifyApi.setVolume(volume);
+  //   }, 300),
+  //   []
+  // );
 
-  useEffect(() => {
-    if (spotifyApi.getAccessToken()) {
-      if (volume > 0 && volume < 100) {
-        debounceAdjustVolume(volume);
-      }
-    }
-  }, [spotifyApi, volume]);
-
-  // progressMs handling
-  function onProgressChange(e: ChangeEvent<HTMLInputElement>) {
-    const newProgressMs = Number(e.target.value);
-    setProgressMs(newProgressMs);
-    spotifyApi.seek(newProgressMs);
-  }
-
-  useEffect(() => {
-    if (!track) return;
-
-    const intervalId = setInterval(() => {
-      setProgressMs((state) => {
-        if (state > track.duration_ms - 1000) {
-          getCurrentTrack();
-          return 0;
-        } else {
-          return state + 1000;
-        }
-      });
-    }, 1000);
-
-    return () => clearInterval(intervalId);
-  }, [track]);
+  // useEffect(() => {
+  //   if (spotifyApi.getAccessToken()) {
+  //     if (volume > 0 && volume < 100) {
+  //       debounceAdjustVolume(volume);
+  //     }
+  //   }
+  // }, [spotifyApi, volume]);
 
   // player opened/closed handling
   useEffect(() => {
-    if (showFullPlayer) {
-      setShowFullPlayer(false);
-    }
-  }, [router]);
+    setShowFullPlayer(false);
+  }, [pathname]);
 
   const color = useDominantColor(track?.album.images[0].url);
 
-  if (pathname === "/login" || pathname === "/studio" || !track) return null;
+  if (pathname === "/login" || pathname === "/studio") return null;
 
   const playerProps: PlayerProps = {
     onBackwardButtonClick: onPreviousTrackClick,
     onForwardButtonClick: onNextTrackClick,
     onTogglePlay: togglePlay,
-    track,
   };
 
   return (
@@ -154,7 +97,7 @@ const Player: React.FC = () => {
       className="fixed bottom-0 p-2 z-10 bg-transparent"
       style={{
         color: isWhite(color) ? "text-black" : "#fff",
-        height: showFullPlayer ? "100vh" : "80px",
+        height: showFullPlayer ? "100vh" : "auto",
         transition: "0.3s",
         width: showFullPlayer ? "100%" : "calc(100% - 7px)",
         padding: showFullPlayer ? "0" : "0.5rem",
@@ -169,8 +112,6 @@ const Player: React.FC = () => {
         {showFullPlayer ? (
           <OpenedPlayer
             onClose={() => setShowFullPlayer(false)}
-            onProgressChange={onProgressChange}
-            progressMs={progressMs}
             {...playerProps}
           />
         ) : (

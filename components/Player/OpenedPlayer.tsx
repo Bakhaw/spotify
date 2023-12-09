@@ -1,6 +1,4 @@
-import { ChangeEvent } from "react";
 import { useRecoilValue } from "recoil";
-
 import {
   ChevronDownIcon,
   PauseIcon,
@@ -9,36 +7,32 @@ import {
   SkipForwardIcon,
 } from "lucide-react";
 
-import { isPlayingState } from "@/atoms/trackAtom";
+import { currentTrackIdState, isPlayingState } from "@/atoms/trackAtom";
+import useTrack from "@/hooks/useTrack";
 
-import ArtistLink from "../ArtistLink";
-import Cover from "../Cover";
-import LikeButton from "../LikeButton";
-import TrackLink from "../TrackLink";
+import ArtistLink from "@/components/ArtistLink";
+import Cover from "@/components/Cover";
+import LikeButton from "@/components/LikeButton";
+import TrackLink from "@/components/TrackLink";
 
 import { PlayerProps } from ".";
+import Timer from "./Timer";
 
 interface OpenedPlayer extends PlayerProps {
   onClose?: () => void;
-  onProgressChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  progressMs: number;
 }
 
 const OpenedPlayer: React.FC<OpenedPlayer> = ({
   onBackwardButtonClick,
   onClose,
   onForwardButtonClick,
-  onProgressChange,
   onTogglePlay,
-  progressMs,
-  track,
 }) => {
+  const currentTrackId = useRecoilValue(currentTrackIdState);
+  const track = useTrack(currentTrackId);
   const isPlaying = useRecoilValue(isPlayingState);
 
-  const currentMinutes = Math.floor((progressMs / 1000 / 60) << 0);
-  const currentSeconds = Math.floor((progressMs / 1000) % 60);
-  const maxMinutes = Math.floor((track.duration_ms / 1000 / 60) << 0);
-  const maxSeconds = Math.floor((track.duration_ms / 1000) % 60);
+  if (!track) return null;
 
   return (
     <div
@@ -71,22 +65,7 @@ const OpenedPlayer: React.FC<OpenedPlayer> = ({
           </div>
 
           <div className="flex flex-col">
-            <input
-              min={0}
-              max={track.duration_ms}
-              onChange={onProgressChange}
-              type="range"
-              value={progressMs}
-            />
-
-            <div className="flex justify-between items-center">
-              <span>
-                {currentMinutes}:{currentSeconds.toString().padStart(2, "0")}
-              </span>
-              <span>
-                {maxMinutes}:{maxSeconds.toString().padStart(2, "0")}
-              </span>
-            </div>
+            <Timer />
           </div>
 
           <div className="flex justify-center items-center gap-6 w-full">
