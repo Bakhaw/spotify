@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 
 import Layout from "@/components/Layout";
 import SessionProvider from "@/components/SessionProvider";
@@ -9,7 +9,30 @@ import "@/app/styles/vinyl.scss";
 import "@/app/styles/visualizer.scss";
 import { getServerSession } from "next-auth";
 
-const inter = Inter({ subsets: ["latin"] });
+const myFont = localFont({
+  src: [
+    {
+      path: "../fonts/CircularStd-Medium.ttf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../fonts/CircularStd-MediumItalic.ttf",
+      weight: "400",
+      style: "italic",
+    },
+    {
+      path: "../fonts/CircularStd-Bold.ttf",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../fonts/CircularStd-BoldItalic.ttf",
+      weight: "700",
+      style: "italic",
+    },
+  ],
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -25,7 +48,7 @@ async function RootLayout({ children }: Props) {
 
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={myFont.className}>
         <SessionProvider session={session}>
           <Layout>{children}</Layout>
         </SessionProvider>

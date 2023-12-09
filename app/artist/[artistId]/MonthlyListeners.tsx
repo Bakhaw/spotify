@@ -22,11 +22,7 @@ const MonthlyListeners: React.FC<MonthlyListenersProps> = ({ artistId }) => {
     getMonthlyListeners(artistId);
   }, [artistId]);
 
-  return (
-    <span className="w-full text-sm text-span tracking-tighter">
-      {monthlyListeners}
-    </span>
-  );
+  return <span className="w-full text-span ">{monthlyListeners}</span>;
 };
 
 export default MonthlyListeners;

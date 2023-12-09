@@ -70,7 +70,7 @@ const ArtistDetails: NextPage = () => {
           size="medium"
           src={artist?.images[0].url}
         />
-        <h1 className="text-3xl font-bold w-full text-white">{artist?.name}</h1>
+        <h1 className="text-7xl font-bold w-full text-white">{artist?.name}</h1>
 
         {artist && <MonthlyListeners artistId={artist.id} />}
       </div>
@@ -84,7 +84,7 @@ const ArtistDetails: NextPage = () => {
             onClick={() => handleFilterClick("albums")}
             style={{
               backgroundColor:
-                currentFilter === "albums" ? generateRGBString(color) : "",
+                currentFilter === "albums" ? generateRGBString(color, 0.7) : "",
             }}
             size="sm"
             className={classNames(
@@ -98,7 +98,9 @@ const ArtistDetails: NextPage = () => {
             size="sm"
             style={{
               backgroundColor:
-                currentFilter === "singles" ? generateRGBString(color) : "",
+                currentFilter === "singles"
+                  ? generateRGBString(color, 0.7)
+                  : "",
             }}
             className={classNames(
               "w-auto justify-start rounded-full text-xs",
