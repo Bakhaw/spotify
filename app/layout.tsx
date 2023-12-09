@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
 import Layout from "@/components/Layout";
-import NextAuthProvider from "@/components/NextAuthProvider";
+import SessionProvider from "@/components/SessionProvider";
 
 import "@/app/styles/globals.css";
 import "@/app/styles/vinyl.scss";
 import "@/app/styles/visualizer.scss";
+import { getServerSession } from "next-auth";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,13 +20,15 @@ type Props = {
   children?: React.ReactNode;
 };
 
-function RootLayout({ children }: Props) {
+async function RootLayout({ children }: Props) {
+  const session = await getServerSession();
+
   return (
     <html lang="en">
       <body className={inter.className}>
-        <NextAuthProvider>
+        <SessionProvider session={session}>
           <Layout>{children}</Layout>
-        </NextAuthProvider>
+        </SessionProvider>
       </body>
     </html>
   );

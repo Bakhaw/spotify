@@ -140,7 +140,7 @@ const Player: React.FC = () => {
 
   const color = useDominantColor(track?.album.images[0].url);
 
-  if (pathname === "/studio" || !track) return null;
+  if (pathname === "/login" || pathname === "/studio" || !track) return null;
 
   const playerProps: PlayerProps = {
     onBackwardButtonClick: onPreviousTrackClick,

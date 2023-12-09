@@ -4,7 +4,6 @@ import { NextRequest, NextResponse } from "next/server";
 export default async function middleware(req: NextRequest) {
   const token = await getToken({
     req,
-    secret: process.env.NEXT_PUBLIC_JWT_SECRET,
   });
 
   const { pathname, origin } = req.nextUrl;
@@ -19,5 +18,11 @@ export default async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/studio"],
+  matcher: [
+    "/",
+    "/library",
+    "/profile",
+    "/studio",
+    "/(artist|album|playlist|)/([^/.]*)",
+  ],
 };
