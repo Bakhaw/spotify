@@ -27,7 +27,7 @@ function Playlists() {
             >
               <Cover
                 alt={`${playlist.name} cover`}
-                size="small"
+                additionalCss="h-[40px] w-[40px]"
                 src={playlist.images?.[0]?.url}
               />
               <span className="hidden md:block">{playlist.name}</span>
