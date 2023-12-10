@@ -1,10 +1,10 @@
 "use client";
 
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { PauseIcon, PlayIcon } from "lucide-react";
 
-import { PlayerContext } from "@/context/PlayerContext";
-import { TimerContext } from "@/context/TimerContext";
+import { usePlayerContext } from "@/context/PlayerContext";
+import { useTimerContext } from "@/context/TimerContext";
 
 import formatMs from "@/lib/formatMs";
 import useSpotify from "@/hooks/useSpotify";
@@ -28,14 +28,19 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
   const [showPlayIcon, setShowIcon] = useState<boolean>(false);
   const currentTrack = useTrack(track.id);
 
-  const playerContext = useContext(PlayerContext);
-  const timerContext = useContext(TimerContext);
+  const {
+    currentPlaybackState,
+    hydratePlaybackState,
+    setCurrentPlaybackState,
+  } = usePlayerContext();
 
-  const currentTrackId = playerContext?.currentPlaybackState?.item?.id;
-  const isPlaying = playerContext?.currentPlaybackState?.is_playing;
+  const { setProgressMs } = useTimerContext();
+
+  const currentTrackId = currentPlaybackState?.item?.id;
+  const isPlaying = currentPlaybackState?.is_playing;
 
   function pauseSong() {
-    playerContext?.setCurrentPlaybackState((state) => {
+    setCurrentPlaybackState((state) => {
       if (!state) return null;
 
       return {
@@ -53,7 +58,7 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
     if (currentTrack.id === currentTrackId) {
       spotifyApi.play();
 
-      playerContext?.setCurrentPlaybackState((state) => {
+      setCurrentPlaybackState((state) => {
         if (!state) return null;
 
         return {
@@ -68,14 +73,12 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
         context_uri: currentTrack.album.uri,
         offset: { uri: currentTrack.uri },
         device_id:
-          playerContext?.currentPlaybackState?.device.id ??
-          String(devices.devices[0].id),
+          currentPlaybackState?.device.id ?? String(devices.devices[0].id),
       });
 
-      timerContext.setProgressMs(0);
-
       setTimeout(async () => {
-        await playerContext?.hydratePlaybackState();
+        await hydratePlaybackState();
+        setProgressMs(0);
       }, 1000);
     }
   }

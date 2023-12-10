@@ -1,28 +1,26 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-
-import { PlayerContext } from "@/context/PlayerContext";
-import useSpotify from "@/hooks/useSpotify";
 import { useSession } from "next-auth/react";
+
+import { usePlayerContext } from "@/context/PlayerContext";
+
+import useSpotify from "@/hooks/useSpotify";
 
 interface TimerContext {
   progressMs: number;
   setProgressMs: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export const TimerContext = createContext<TimerContext>({
-  progressMs: 0,
-  setProgressMs: () => {},
-});
+export const TimerContext = createContext<TimerContext | null>(null);
 
 function TimerContextProvider({ children }: { children: React.ReactNode }) {
   const spotifyApi = useSpotify();
   const { data: session } = useSession();
-  const playerContext = useContext(PlayerContext);
+  const { currentPlaybackState, hydratePlaybackState } = usePlayerContext();
 
   const [progressMs, setProgressMs] = useState<number>(
-    playerContext?.currentPlaybackState?.progress_ms ?? 0
+    currentPlaybackState?.progress_ms ?? 0
   );
 
   useEffect(() => {
@@ -40,14 +38,13 @@ function TimerContextProvider({ children }: { children: React.ReactNode }) {
   }, [spotifyApi, session]);
 
   useEffect(() => {
-    if (!playerContext || !playerContext.currentPlaybackState?.is_playing)
-      return;
+    if (!currentPlaybackState?.is_playing) return;
 
     const intervalId = setInterval(() => {
-      if (!playerContext.currentPlaybackState?.item) return;
+      if (!currentPlaybackState?.item) return;
 
-      if (progressMs > playerContext.currentPlaybackState.item.duration_ms) {
-        playerContext.hydratePlaybackState();
+      if (progressMs > currentPlaybackState.item.duration_ms) {
+        hydratePlaybackState();
         setProgressMs(0);
       } else {
         setProgressMs(progressMs + 1000);
@@ -55,7 +52,7 @@ function TimerContextProvider({ children }: { children: React.ReactNode }) {
     }, 1000);
 
     return () => clearInterval(intervalId);
-  }, [playerContext, progressMs]);
+  }, [progressMs]);
 
   return (
     <TimerContext.Provider
@@ -70,3 +67,13 @@ function TimerContextProvider({ children }: { children: React.ReactNode }) {
 }
 
 export default TimerContextProvider;
+
+export function useTimerContext() {
+  const timerContext = useContext(TimerContext);
+
+  if (!timerContext) {
+    throw new Error("TimerContext must be used within a TimerContextProvider");
+  }
+
+  return timerContext;
+}

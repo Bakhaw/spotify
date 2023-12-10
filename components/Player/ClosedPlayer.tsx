@@ -1,7 +1,6 @@
-import { useContext } from "react";
 import { ChevronUpIcon } from "lucide-react";
 
-import { PlayerContext } from "@/context/PlayerContext";
+import { usePlayerContext } from "@/context/PlayerContext";
 
 import useTrack from "@/hooks/useTrack";
 
@@ -15,8 +14,8 @@ interface ClosedPlayerProps {
 }
 
 const ClosedPlayer: React.FC<ClosedPlayerProps> = ({ onOpen }) => {
-  const playerContext = useContext(PlayerContext);
-  const track = useTrack(playerContext?.currentPlaybackState?.item?.id);
+  const { currentPlaybackState } = usePlayerContext();
+  const track = useTrack(currentPlaybackState?.item?.id);
 
   return (
     <div className="w-full">

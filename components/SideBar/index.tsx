@@ -1,9 +1,8 @@
-import { useContext } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import classNames from "classnames";
 
-import { PlayerContext } from "@/context/PlayerContext";
+import { usePlayerContext } from "@/context/PlayerContext";
 
 import routes from "@/lib/routes";
 
@@ -14,7 +13,7 @@ import Playlists from "./Playlists";
 
 function SideBar() {
   const pathname = usePathname();
-  const playerContext = useContext(PlayerContext);
+  const { currentPlaybackState } = usePlayerContext();
 
   if (pathname === "/studio" || pathname === "/login") return null;
 
@@ -22,7 +21,7 @@ function SideBar() {
     <div
       className={classNames(
         "fixed top-0 overflow-x-hidden sm:w-[96px] md:w-[266px] p-4",
-        playerContext?.currentPlaybackState ? "bottom-[80px]" : "bottom-0"
+        currentPlaybackState ? "bottom-[80px]" : "bottom-0"
       )}
     >
       <div className="flex flex-col gap-3 items-center justify-center md:items-start md:justify-start">

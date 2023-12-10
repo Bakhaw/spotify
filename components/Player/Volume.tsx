@@ -1,19 +1,18 @@
-import { useContext } from "react";
 import { debounce } from "lodash";
 import { Volume1Icon, Volume2Icon } from "lucide-react";
 
-import { PlayerContext } from "@/context/PlayerContext";
+import { usePlayerContext } from "@/context/PlayerContext";
 
 import useSpotify from "@/hooks/useSpotify";
 
 function Volume() {
   const spotifyApi = useSpotify();
-  const playerContext = useContext(PlayerContext);
+  const { currentPlaybackState, setCurrentPlaybackState } = usePlayerContext();
 
   function onVolumeChange(e: React.ChangeEvent<HTMLInputElement>) {
     const newVolume = parseInt(e.target.value);
 
-    playerContext?.setCurrentPlaybackState((state) => {
+    setCurrentPlaybackState((state) => {
       if (!state) return null;
 
       return {
@@ -36,7 +35,7 @@ function Volume() {
     spotifyApi.setVolume(volume);
   }, 300);
 
-  if (!playerContext?.currentPlaybackState?.device) return null;
+  if (!currentPlaybackState?.device) return null;
 
   return (
     <div className="flex justify-end items-center gap-3 h-full">
@@ -48,7 +47,7 @@ function Volume() {
         aria-label="Adjust the volume"
         min={0}
         max={100}
-        value={playerContext.currentPlaybackState.device.volume_percent ?? 0}
+        value={currentPlaybackState.device.volume_percent ?? 0}
         type="range"
         onChange={onVolumeChange}
       />

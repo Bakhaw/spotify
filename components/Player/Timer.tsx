@@ -1,8 +1,7 @@
-import { useContext } from "react";
 import { debounce } from "lodash";
 
-import { PlayerContext } from "@/context/PlayerContext";
-import { TimerContext } from "@/context/TimerContext";
+import { usePlayerContext } from "@/context/PlayerContext";
+import { useTimerContext } from "@/context/TimerContext";
 
 import useSpotify from "@/hooks/useSpotify";
 
@@ -10,15 +9,15 @@ import { Slider } from "@/components/ui/slider";
 
 function Timer() {
   const spotifyApi = useSpotify();
-  const playerContext = useContext(PlayerContext);
-  const timerContext = useContext(TimerContext);
+  const { currentPlaybackState } = usePlayerContext();
+  const { progressMs, setProgressMs } = useTimerContext();
 
   function onProgressChange(value: number[]) {
     const newProgressMs = value[0];
 
-    if (!newProgressMs || newProgressMs === timerContext?.progressMs) return;
+    if (!newProgressMs || newProgressMs === progressMs) return;
 
-    timerContext?.setProgressMs(newProgressMs);
+    setProgressMs(newProgressMs);
     spotifyApi.seek(newProgressMs);
   }
 
@@ -26,15 +25,15 @@ function Timer() {
     onProgressChange(value);
   }, 300);
 
-  if (!playerContext?.currentPlaybackState?.item) return null;
+  if (!currentPlaybackState?.item) return null;
 
-  const currentMinutes = Math.floor((timerContext.progressMs / 1000 / 60) << 0);
-  const currentSeconds = Math.floor((timerContext.progressMs / 1000) % 60);
+  const currentMinutes = Math.floor((progressMs / 1000 / 60) << 0);
+  const currentSeconds = Math.floor((progressMs / 1000) % 60);
   const maxMinutes = Math.floor(
-    (playerContext.currentPlaybackState.item.duration_ms / 1000 / 60) << 0
+    (currentPlaybackState.item.duration_ms / 1000 / 60) << 0
   );
   const maxSeconds = Math.floor(
-    (playerContext.currentPlaybackState.item.duration_ms / 1000) % 60
+    (currentPlaybackState.item.duration_ms / 1000) % 60
   );
 
   return (
@@ -45,9 +44,9 @@ function Timer() {
 
       <Slider
         min={0}
-        max={playerContext.currentPlaybackState.item.duration_ms}
+        max={currentPlaybackState.item.duration_ms}
         onValueChange={debounceOnProgressChange}
-        value={[timerContext.progressMs]}
+        value={[progressMs]}
       />
 
       <span>

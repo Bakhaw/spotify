@@ -4,6 +4,7 @@ import React, {
   Dispatch,
   SetStateAction,
   createContext,
+  useContext,
   useEffect,
   useState,
 } from "react";
@@ -56,3 +57,15 @@ function PlayerContextProvider({ children }: { children: React.ReactNode }) {
 }
 
 export default PlayerContextProvider;
+
+export function usePlayerContext() {
+  const playerContext = useContext(PlayerContext);
+
+  if (!playerContext) {
+    throw new Error(
+      "PlayerContext must be used within a PlayerContextProvider"
+    );
+  }
+
+  return playerContext;
+}

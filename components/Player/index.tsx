@@ -1,9 +1,9 @@
 "use client";
 
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-import { PlayerContext } from "@/context/PlayerContext";
+import { usePlayerContext } from "@/context/PlayerContext";
 
 import useDominantColor from "@/hooks/useDominantColor";
 import useTrack from "@/hooks/useTrack";
@@ -15,8 +15,8 @@ import OpenedPlayer from "./OpenedPlayer";
 
 const Player: React.FC = () => {
   const pathname = usePathname();
-  const playerContext = useContext(PlayerContext);
-  const track = useTrack(playerContext?.currentPlaybackState?.item?.id);
+  const { currentPlaybackState } = usePlayerContext();
+  const track = useTrack(currentPlaybackState?.item?.id);
 
   const [showFullPlayer, setShowFullPlayer] = useState(false);
 

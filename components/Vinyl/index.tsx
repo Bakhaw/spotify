@@ -1,10 +1,9 @@
-import { useContext } from "react";
 import Image from "next/image";
 import classNames from "classnames";
 import { IoPlaySkipBack, IoPlaySkipForward } from "react-icons/io5";
 import { FaPause, FaPlay } from "react-icons/fa6";
 
-import { PlayerContext } from "@/context/PlayerContext";
+import { usePlayerContext } from "@/context/PlayerContext";
 
 import useDominantColor from "@/hooks/useDominantColor";
 import useSpotify from "@/hooks/useSpotify";
@@ -22,8 +21,12 @@ import vinylColors from "./vinylColors";
 
 const Vinyl = () => {
   const spotifyApi = useSpotify();
-  const playerContext = useContext(PlayerContext);
-  const track = useTrack(playerContext?.currentPlaybackState?.item?.id);
+  const {
+    currentPlaybackState,
+    hydratePlaybackState,
+    setCurrentPlaybackState,
+  } = usePlayerContext();
+  const track = useTrack(currentPlaybackState?.item?.id);
 
   // this value is corresponding to .album-box .active .vinyl animation-delay property
   const activeVinylAnimationDelayProperty = 2600;
@@ -33,12 +36,12 @@ const Vinyl = () => {
 
     // set timeout is used to make sure the previous song has finished fetching
     setTimeout(async () => {
-      await playerContext?.hydratePlaybackState();
+      await hydratePlaybackState();
     }, activeVinylAnimationDelayProperty);
   }
 
   async function onNextButtonClick() {
-    playerContext?.setCurrentPlaybackState((state) => {
+    setCurrentPlaybackState((state) => {
       if (!state) return null;
 
       return {
@@ -51,19 +54,19 @@ const Vinyl = () => {
 
     // set timeout is used to make sure the next song has finished fetching
     setTimeout(async () => {
-      await playerContext?.hydratePlaybackState();
+      await hydratePlaybackState();
     }, 500);
   }
 
   async function togglePlay() {
-    if (playerContext?.currentPlaybackState?.is_playing) {
+    if (currentPlaybackState?.is_playing) {
       spotifyApi.pause();
 
       setTimeout(async () => {
-        await playerContext?.hydratePlaybackState();
+        await hydratePlaybackState();
       }, 500);
     } else {
-      playerContext?.setCurrentPlaybackState((state) => {
+      setCurrentPlaybackState((state) => {
         if (!state) return null;
 
         return {
@@ -98,7 +101,7 @@ const Vinyl = () => {
         id="album"
         className={classNames(
           "album-box",
-          playerContext?.currentPlaybackState?.is_playing && "active"
+          currentPlaybackState?.is_playing && "active"
         )}
       >
         <>
@@ -270,7 +273,7 @@ const Vinyl = () => {
               </div>
 
               <div className="flex justify-end ">
-                {playerContext?.currentPlaybackState?.is_playing ? (
+                {currentPlaybackState?.is_playing ? (
                   <Button size="sm" onClick={togglePlay}>
                     <FaPause />
                   </Button>
