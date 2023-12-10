@@ -32,7 +32,7 @@ const ClosedPlayer: React.FC<ClosedPlayerProps> = ({
 
   return (
     <div className="flex justify-between items-center w-full">
-      <div className="flex-1">
+      <div className="flex-1 w-full">
         {track && (
           <Draggable id={`closed_player:${track.id}`}>
             <div className="flex flex-1 justify-start items-center gap-3 h-full">
