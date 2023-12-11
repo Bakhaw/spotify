@@ -19,27 +19,24 @@ const ClosedPlayer: React.FC<ClosedPlayerProps> = ({ onOpen }) => {
 
   return (
     <div className="flex justify-between items-center w-full">
-      <div>
+      <div className="w-full">
         <CurrentTrack track={track} />
       </div>
 
-      <ChevronUpIcon
-        className="h-6 w-6 md:hidden transition-all	hover:scale-125"
-        role="button"
-        onClick={onOpen}
-      />
-
-      <div className="flex flex-col justify-center items-center">
-        <div className="hidden md:block">
-          <Controls />
-        </div>
-
-        <div className="hidden md:block">
-          <Timer />
-        </div>
+      <div className="block md:hidden">
+        <ChevronUpIcon
+          className="h-6 w-6 transition-all	hover:scale-125"
+          role="button"
+          onClick={onOpen}
+        />
       </div>
 
-      <div className="hidden md:block">
+      <div className="hidden md:flex w-full flex-grow flex-col justify-center items-center">
+        <Controls />
+        <Timer />
+      </div>
+
+      <div className="hidden md:block w-full">
         <Volume />
       </div>
     </div>

@@ -1,15 +1,19 @@
-import { ChangeEvent, useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 
 import { PlayerContext } from "@/context/PlayerContext";
 
 import useSpotify from "@/hooks/useSpotify";
 
+import { Slider } from "@/components/ui/slider";
+
 function Timer() {
   const spotifyApi = useSpotify();
   const playerContext = useContext(PlayerContext);
 
-  function onProgressChange(e: ChangeEvent<HTMLInputElement>) {
-    const newProgressMs = Number(e.target.value);
+  function onProgressChange(value: number[]) {
+    const newProgressMs = value[0];
+
+    console.log("onProgressChange", newProgressMs);
 
     if (
       !newProgressMs ||
@@ -75,18 +79,16 @@ function Timer() {
   );
 
   return (
-    <div className="flex justify-center items-center w-full gap-2">
+    <div className="flex justify-around w-[300px] lg:w-[500px] gap-2">
       <span>
         {currentMinutes}:{currentSeconds.toString().padStart(2, "0")}
       </span>
 
-      <input
-        className="w-full"
+      <Slider
         min={0}
         max={playerContext.currentPlaybackState.item.duration_ms}
-        onChange={onProgressChange}
-        type="range"
-        value={playerContext.currentPlaybackState.progress_ms}
+        onValueChange={onProgressChange}
+        value={[playerContext.currentPlaybackState.progress_ms]}
       />
 
       <span>
