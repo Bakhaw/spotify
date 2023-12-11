@@ -1,55 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { NextPage } from "next";
-import { useSession } from "next-auth/react";
-import { useRecoilState } from "recoil";
 import { LightbulbIcon, LightbulbOffIcon } from "lucide-react";
 
-import { currentTrackIdState, isPlayingState } from "@/atoms/trackAtom";
+import { PlayerContext } from "@/context/PlayerContext";
+
 import useDominantColor from "@/hooks/useDominantColor";
-import useSpotify from "@/hooks/useSpotify";
 import useTrack from "@/hooks/useTrack";
 import generateRGBString from "@/lib/generateRGBString";
 
 import Vinyl from "@/components/Vinyl";
-
 import { Button } from "@/components/ui/button";
 
 const Studio: NextPage = () => {
-  const { data: session } = useSession();
-  const spotifyApi = useSpotify();
-  const [currentTrackId, setCurrentTrackId] =
-    useRecoilState(currentTrackIdState);
-  const [_, setIsPlaying] = useRecoilState(isPlayingState);
-  const track = useTrack(currentTrackId);
-
-  useEffect(() => {
-    if (spotifyApi.getAccessToken() && !currentTrackId) {
-      const getCurrentTrack = async () => {
-        if (track) return;
-
-        const { body: currentPlaybackState } =
-          await spotifyApi.getMyCurrentPlaybackState();
-
-        if (!currentPlaybackState) return;
-
-        setIsPlaying(currentPlaybackState.is_playing);
-        setCurrentTrackId(String(currentPlaybackState.item?.id));
-      };
-
-      getCurrentTrack();
-    }
-  }, [
-    session,
-    spotifyApi,
-    currentTrackId,
-    setCurrentTrackId,
-    setIsPlaying,
-    track,
-  ]);
-
   const [useAlbumColor, setUseAlbumColor] = useState(true);
+  const playerContext = useContext(PlayerContext);
+
+  const track = useTrack(playerContext?.currentPlaybackState?.item?.id);
   const color = useDominantColor(track?.album.images[0].url);
 
   return (
