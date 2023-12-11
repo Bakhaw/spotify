@@ -48,7 +48,7 @@ const Player: React.FC = () => {
       }}
     >
       <div
-        className="flex justify-center items-center h-full w-full  bg-gradient-secondary p-4 rounded"
+        className="flex justify-center items-center h-full w-full  bg-gradient-secondary px-2 py-1 rounded"
         style={{
           backgroundColor: generateRGBString(color),
         }}
