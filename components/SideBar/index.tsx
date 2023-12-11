@@ -1,9 +1,10 @@
+import { useContext } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { useRecoilValue } from "recoil";
 import classNames from "classnames";
 
-import { isPlayingState } from "@/atoms/trackAtom";
+import { PlayerContext } from "@/context/PlayerContext";
+
 import routes from "@/lib/routes";
 
 import { Button } from "@/components/ui/button";
@@ -13,7 +14,7 @@ import Playlists from "./Playlists";
 
 function SideBar() {
   const pathname = usePathname();
-  const isPlaying = useRecoilValue(isPlayingState);
+  const playerContext = useContext(PlayerContext);
 
   if (pathname === "/studio" || pathname === "/login") return null;
 
@@ -21,7 +22,7 @@ function SideBar() {
     <div
       className={classNames(
         "fixed top-0 overflow-x-hidden sm:w-[96px] md:w-[266px] p-4",
-        isPlaying ? "bottom-[80px]" : "bottom-0"
+        playerContext?.currentPlaybackState ? "bottom-[80px]" : "bottom-0"
       )}
     >
       <div className="flex flex-col gap-3 items-center justify-center md:items-start md:justify-start">

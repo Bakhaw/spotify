@@ -1,11 +1,12 @@
+import { useContext, useEffect } from "react";
 import Image from "next/image";
-import { useRecoilState } from "recoil";
 import classNames from "classnames";
 
-import { currentTrackIdState, isPlayingState } from "@/atoms/trackAtom";
+import { PlayerContext } from "@/context/PlayerContext";
+
+import useDominantColor from "@/hooks/useDominantColor";
 import useSpotify from "@/hooks/useSpotify";
 import useTrack from "@/hooks/useTrack";
-import useDominantColor from "@/hooks/useDominantColor";
 import generateRGBString from "@/lib/generateRGBString";
 
 import ArtistLink from "@/components/ArtistLink";
@@ -15,58 +16,48 @@ import CoverFallback from "../../assets/cover-fallback.svg";
 
 import vinylColors from "./vinylColors";
 
-const Vinyl: React.FC = () => {
+const Vinyl = () => {
   const spotifyApi = useSpotify();
-  const [currentTrackId, setCurrentTrackId] =
-    useRecoilState(currentTrackIdState);
-
-  const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
-  const track = useTrack(currentTrackId);
-  // const track = mockTrack;
-
-  const getCurrentTrack = async () => {
-    const { body: currentPlaybackState } =
-      await spotifyApi.getMyCurrentPlaybackState();
-
-    if (!currentPlaybackState) return;
-
-    setCurrentTrackId(String(currentPlaybackState?.item?.id));
-    setIsPlaying(currentPlaybackState?.is_playing);
-  };
+  const playerContext = useContext(PlayerContext);
+  const track = useTrack(playerContext?.currentPlaybackState?.item?.id);
 
   async function onPreviousButtonClick() {
-    setIsPlaying(false);
-
     await spotifyApi.skipToPrevious();
 
     // set timeout is used to make sure the previous song has finished fetching
     setTimeout(async () => {
-      await getCurrentTrack();
-      setIsPlaying(true);
+      await playerContext?.hydratePlaybackState();
     }, 500);
   }
 
   async function onNextButtonClick() {
-    setIsPlaying(false);
-
     await spotifyApi.skipToNext();
 
     // set timeout is used to make sure the next song has finished fetching
     setTimeout(async () => {
-      await getCurrentTrack();
-      setIsPlaying(true);
+      await playerContext?.hydratePlaybackState();
     }, 500);
   }
 
   async function togglePlay() {
-    // this value is corresponding to .album-box .active .vinyl animation-delay property
-    const activeVinylAnimationDelayProperty = 2600;
-
-    if (isPlaying) {
+    if (playerContext?.currentPlaybackState?.is_playing) {
       spotifyApi.pause();
-      setIsPlaying(false);
+
+      setTimeout(async () => {
+        await playerContext?.hydratePlaybackState();
+      }, 500);
     } else {
-      setIsPlaying(true);
+      playerContext?.setCurrentPlaybackState((state) => {
+        if (!state) return null;
+
+        return {
+          ...state,
+          is_playing: true,
+        };
+      });
+
+      // this value is corresponding to .album-box .active .vinyl animation-delay property
+      const activeVinylAnimationDelayProperty = 2600;
 
       setTimeout(() => {
         spotifyApi.play();
@@ -88,11 +79,39 @@ const Vinyl: React.FC = () => {
 
   const trackImage = track?.album.images[0];
 
+  useEffect(() => {
+    if (
+      !playerContext?.currentPlaybackState ||
+      !playerContext?.currentPlaybackState.progress_ms ||
+      !playerContext?.currentPlaybackState.item
+    )
+      return;
+
+    if (
+      playerContext?.currentPlaybackState.progress_ms >
+      playerContext?.currentPlaybackState.item.duration_ms - 1000
+    ) {
+      playerContext?.setCurrentPlaybackState((state) => {
+        if (!state) return null;
+
+        return {
+          ...state,
+          is_playing: false,
+        };
+      });
+
+      playerContext?.hydratePlaybackState();
+    }
+  }, [playerContext]);
+
   return (
     <div className="music-box">
       <div
         id="album"
-        className={classNames("album-box", isPlaying && "active")}
+        className={classNames(
+          "album-box",
+          playerContext?.currentPlaybackState?.is_playing && "active"
+        )}
       >
         <>
           <div className="album-cover">
@@ -253,7 +272,9 @@ const Vinyl: React.FC = () => {
               </button>
 
               <button className="power-button" onClick={togglePlay}>
-                {isPlaying ? "PAUSE" : "PLAY"}
+                {playerContext?.currentPlaybackState?.is_playing
+                  ? "PAUSE"
+                  : "PLAY"}
               </button>
             </div>
           </div>

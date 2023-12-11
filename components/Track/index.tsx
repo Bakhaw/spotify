@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useRecoilState } from "recoil";
 import { PauseIcon, PlayIcon } from "lucide-react";
+
+import { PlayerContext } from "@/context/PlayerContext";
 
 import { currentTrackIdState, isPlayingState } from "@/atoms/trackAtom";
 import formatMs from "@/lib/formatMs";
@@ -14,7 +16,6 @@ import Cover from "@/components/Cover";
 import LikeButton from "@/components/LikeButton";
 import TrackLink from "@/components/TrackLink";
 import Visualizer from "@/components/Visualizer";
-
 import { Button } from "@/components/ui/button";
 
 interface TrackProps {
@@ -25,15 +26,25 @@ interface TrackProps {
 
 const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
   const spotifyApi = useSpotify();
-  const currentTrack = useTrack(track.id);
   const [showPlayIcon, setShowIcon] = useState<boolean>(false);
   const [currentTrackId, setCurrentTrackId] =
     useRecoilState(currentTrackIdState);
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
+  const currentTrack = useTrack(track.id);
+
+  const playerContext = useContext(PlayerContext);
 
   function pauseSong() {
+    playerContext?.setCurrentPlaybackState((state) => {
+      if (!state) return null;
+
+      return {
+        ...state,
+        is_playing: false,
+      };
+    });
+
     spotifyApi.pause();
-    setIsPlaying(false);
   }
 
   async function playSong() {
@@ -47,12 +58,15 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
       spotifyApi.play({
         context_uri: currentTrack.album.uri,
         offset: { uri: currentTrack.uri },
-        device_id: String(devices.devices[0].id),
+        device_id:
+          playerContext?.currentPlaybackState?.device.id ??
+          String(devices.devices[0].id),
       });
     }
 
-    setCurrentTrackId(currentTrack.id);
-    setIsPlaying(true);
+    setTimeout(async () => {
+      await playerContext?.hydratePlaybackState();
+    }, 1000);
   }
 
   if (!currentTrack) return null;
