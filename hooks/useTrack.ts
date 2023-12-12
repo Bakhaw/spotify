@@ -2,17 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { useRecoilValue } from "recoil";
-
-import { currentTrackIdState } from "@/atoms/trackAtom";
 
 import useSpotify from "./useSpotify";
 
 function useTrack(trackId?: string) {
-  const { data: session } = useSession();
   const spotifyApi = useSpotify();
+  const { data: session } = useSession();
 
-  const currentTrackId = useRecoilValue(currentTrackIdState);
   const [track, setTrack] = useState<SpotifyApi.TrackObjectFull>();
 
   useEffect(() => {
@@ -24,7 +20,7 @@ function useTrack(trackId?: string) {
 
       getTrack();
     }
-  }, [session, spotifyApi, currentTrackId, trackId]);
+  }, [session, spotifyApi, trackId]);
 
   return track;
 }

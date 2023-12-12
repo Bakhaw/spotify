@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import Image from "next/image";
 import classNames from "classnames";
 
@@ -78,31 +78,6 @@ const Vinyl = () => {
       : fallbackColor;
 
   const trackImage = track?.album.images[0];
-
-  useEffect(() => {
-    if (
-      !playerContext?.currentPlaybackState ||
-      !playerContext?.currentPlaybackState.progress_ms ||
-      !playerContext?.currentPlaybackState.item
-    )
-      return;
-
-    if (
-      playerContext?.currentPlaybackState.progress_ms >
-      playerContext?.currentPlaybackState.item.duration_ms - 1000
-    ) {
-      playerContext?.setCurrentPlaybackState((state) => {
-        if (!state) return null;
-
-        return {
-          ...state,
-          is_playing: false,
-        };
-      });
-
-      playerContext?.hydratePlaybackState();
-    }
-  }, [playerContext]);
 
   return (
     <div className="music-box">

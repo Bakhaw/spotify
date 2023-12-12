@@ -1,7 +1,8 @@
-import { useRecoilValue } from "recoil";
+import { useContext } from "react";
 import { ChevronDownIcon } from "lucide-react";
 
-import { currentTrackIdState } from "@/atoms/trackAtom";
+import { PlayerContext } from "@/context/PlayerContext";
+
 import useTrack from "@/hooks/useTrack";
 
 import ArtistLink from "@/components/ArtistLink";
@@ -9,16 +10,16 @@ import Cover from "@/components/Cover";
 import LikeButton from "@/components/LikeButton";
 import TrackLink from "@/components/TrackLink";
 
-import Timer from "./Timer";
 import Controls from "./Controls";
+import Timer from "./Timer";
 
 interface OpenedPlayer {
   onClose?: () => void;
 }
 
 const OpenedPlayer: React.FC<OpenedPlayer> = ({ onClose }) => {
-  const currentTrackId = useRecoilValue(currentTrackIdState);
-  const track = useTrack(currentTrackId);
+  const playerContext = useContext(PlayerContext);
+  const track = useTrack(playerContext?.currentPlaybackState?.item?.id);
 
   if (!track) return null;
 

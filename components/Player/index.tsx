@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
-import { useRecoilValue } from "recoil";
+"use client";
 
-import { currentTrackIdState } from "@/atoms/trackAtom";
+import { useContext, useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+
+import { PlayerContext } from "@/context/PlayerContext";
 
 import useDominantColor from "@/hooks/useDominantColor";
 import useTrack from "@/hooks/useTrack";
@@ -14,8 +15,8 @@ import OpenedPlayer from "./OpenedPlayer";
 
 const Player: React.FC = () => {
   const pathname = usePathname();
-  const currentTrackId = useRecoilValue(currentTrackIdState);
-  const track = useTrack(currentTrackId);
+  const playerContext = useContext(PlayerContext);
+  const track = useTrack(playerContext?.currentPlaybackState?.item?.id);
 
   const [showFullPlayer, setShowFullPlayer] = useState(false);
 
@@ -27,14 +28,13 @@ const Player: React.FC = () => {
     setShowFullPlayer(false);
   }
 
-  // player opened/closed handling
   useEffect(() => {
     closePlayer();
   }, [pathname]);
 
   const color = useDominantColor(track?.album.images[0].url);
 
-  if (pathname === "/login" || pathname === "/studio") return null;
+  if (pathname === "/login" || pathname === "/studio" || !track) return null;
 
   return (
     <div
@@ -48,7 +48,7 @@ const Player: React.FC = () => {
       }}
     >
       <div
-        className="flex justify-center items-center h-full w-full  bg-gradient-secondary px-2 py-1 rounded"
+        className="flex justify-center items-center h-full w-full bg-gradient-secondary rounded"
         style={{
           backgroundColor: generateRGBString(color),
         }}

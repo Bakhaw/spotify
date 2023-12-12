@@ -1,11 +1,13 @@
-import { useRecoilValue } from "recoil";
+import { useContext } from "react";
 import { ChevronUpIcon } from "lucide-react";
 
-import { currentTrackIdState } from "@/atoms/trackAtom";
+import { PlayerContext } from "@/context/PlayerContext";
+
 import useTrack from "@/hooks/useTrack";
 
 import Controls from "./Controls";
 import CurrentTrack from "./CurrentTrack";
+import DeviceSelector from "./DeviceSelector";
 import Timer from "./Timer";
 import Volume from "./Volume";
 
@@ -14,30 +16,33 @@ interface ClosedPlayerProps {
 }
 
 const ClosedPlayer: React.FC<ClosedPlayerProps> = ({ onOpen }) => {
-  const currentTrackId = useRecoilValue(currentTrackIdState);
-  const track = useTrack(currentTrackId);
+  const playerContext = useContext(PlayerContext);
+  const track = useTrack(playerContext?.currentPlaybackState?.item?.id);
 
   return (
-    <div className="flex justify-between items-center w-full">
-      <div className="w-full">
-        <CurrentTrack track={track} />
-      </div>
+    <div className="w-full">
+      <div className="flex items-center justify-between w-full p-2">
+        <div className="w-full">
+          <CurrentTrack track={track} />
+        </div>
 
-      <div className="block md:hidden">
-        <ChevronUpIcon
-          className="h-6 w-6 transition-all	hover:scale-125"
-          role="button"
-          onClick={onOpen}
-        />
-      </div>
+        <div className="block md:hidden">
+          <ChevronUpIcon
+            className="h-6 w-6 transition-all	hover:scale-125"
+            role="button"
+            onClick={onOpen}
+          />
+        </div>
 
-      <div className="hidden md:flex w-full flex-grow flex-col justify-center items-center">
-        <Controls />
-        <Timer />
-      </div>
+        <div className="hidden md:flex w-full flex-grow flex-col justify-center items-center">
+          <Controls />
 
-      <div className="hidden md:block w-full">
-        <Volume />
+          <Timer />
+        </div>
+
+        <div className="hidden md:block w-full">
+          <Volume />
+        </div>
       </div>
     </div>
   );

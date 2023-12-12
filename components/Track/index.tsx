@@ -1,12 +1,11 @@
 "use client";
 
 import { useContext, useState } from "react";
-import { useRecoilState } from "recoil";
 import { PauseIcon, PlayIcon } from "lucide-react";
 
 import { PlayerContext } from "@/context/PlayerContext";
+import { TimerContext } from "@/context/TimerContext";
 
-import { currentTrackIdState, isPlayingState } from "@/atoms/trackAtom";
 import formatMs from "@/lib/formatMs";
 import useSpotify from "@/hooks/useSpotify";
 import useTrack from "@/hooks/useTrack";
@@ -27,12 +26,13 @@ interface TrackProps {
 const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
   const spotifyApi = useSpotify();
   const [showPlayIcon, setShowIcon] = useState<boolean>(false);
-  const [currentTrackId, setCurrentTrackId] =
-    useRecoilState(currentTrackIdState);
-  const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
   const currentTrack = useTrack(track.id);
 
   const playerContext = useContext(PlayerContext);
+  const timerContext = useContext(TimerContext);
+
+  const currentTrackId = playerContext?.currentPlaybackState?.item?.id;
+  const isPlaying = playerContext?.currentPlaybackState?.is_playing;
 
   function pauseSong() {
     playerContext?.setCurrentPlaybackState((state) => {
@@ -52,6 +52,15 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
 
     if (currentTrack.id === currentTrackId) {
       spotifyApi.play();
+
+      playerContext?.setCurrentPlaybackState((state) => {
+        if (!state) return null;
+
+        return {
+          ...state,
+          is_playing: true,
+        };
+      });
     } else {
       const { body: devices } = await spotifyApi.getMyDevices();
 
@@ -62,11 +71,13 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
           playerContext?.currentPlaybackState?.device.id ??
           String(devices.devices[0].id),
       });
-    }
 
-    setTimeout(async () => {
-      await playerContext?.hydratePlaybackState();
-    }, 1000);
+      timerContext.setProgressMs(0);
+
+      setTimeout(async () => {
+        await playerContext?.hydratePlaybackState();
+      }, 500);
+    }
   }
 
   if (!currentTrack) return null;
