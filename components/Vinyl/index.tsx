@@ -1,7 +1,8 @@
 import { useContext } from "react";
 import Image from "next/image";
 import classNames from "classnames";
-import { FaBackward, FaForward, FaPause, FaPlay } from "react-icons/fa6";
+import { IoPlaySkipBack, IoPlaySkipForward } from "react-icons/io5";
+import { FaPause, FaPlay } from "react-icons/fa6";
 
 import { PlayerContext } from "@/context/PlayerContext";
 
@@ -26,8 +27,6 @@ const Vinyl = () => {
 
   // this value is corresponding to .album-box .active .vinyl animation-delay property
   const activeVinylAnimationDelayProperty = 2600;
-
-  console.log("Vinyl");
 
   async function onPreviousButtonClick() {
     await spotifyApi.skipToPrevious();
@@ -258,15 +257,15 @@ const Vinyl = () => {
             <div className="flex justify-between items-center w-full gap-2 absolute bottom-0 p-2">
               <div className="flex justify-between items-start gap-1">
                 <Button size="sm" onClick={onPreviousButtonClick}>
-                  <FaBackward />
+                  <IoPlaySkipBack />
                 </Button>
 
                 <Button size="sm" onClick={onNextButtonClick}>
-                  <FaForward />
+                  <IoPlaySkipForward />
                 </Button>
               </div>
 
-              <div className="w-full">
+              <div className="w-full text-sm">
                 <Timer />
               </div>
 
