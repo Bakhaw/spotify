@@ -7,7 +7,6 @@ import useTrack from "@/hooks/useTrack";
 
 import Controls from "./Controls";
 import CurrentTrack from "./CurrentTrack";
-import DeviceSelector from "./DeviceSelector";
 import Timer from "./Timer";
 import Volume from "./Volume";
 
