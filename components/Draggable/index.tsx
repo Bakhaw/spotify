@@ -22,7 +22,7 @@ const Draggable: React.FC<DraggableProps> = ({ children, id }) => {
   return (
     <>
       <div
-        className="hidden sm:block"
+        className="hidden sm:block active:border"
         ref={setNodeRef}
         style={style}
         {...listeners}
