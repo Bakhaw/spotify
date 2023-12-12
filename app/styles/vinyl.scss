@@ -33,7 +33,7 @@ $nbSpire: round($intVinylSize/15);
     }
 
     #turntable {
-      svg {
+      .turntable-arm {
         animation-name: start-play;
         animation-duration: 2s;
         animation-delay: 0.5s;
@@ -200,7 +200,7 @@ $nbSpire: round($intVinylSize/15);
   overflow: hidden;
   background-color: #363636;
 
-  svg {
+  .turntable-arm {
     position: relative;
     z-index: 3;
     transition: 0.7s;
@@ -218,8 +218,8 @@ $nbSpire: round($intVinylSize/15);
     border: 2px solid #000;
     background: #202020;
     position: absolute;
-    left: 8px;
-    bottom: 8px;
+    left: 0;
+    bottom: 0;
     padding: 2px 6px;
     font-size: 12px;
   }
@@ -228,8 +228,8 @@ $nbSpire: round($intVinylSize/15);
     border: 2px solid #000;
     background: #202020;
     position: absolute;
-    left: 48px;
-    bottom: 8px;
+    left: 40px;
+    bottom: 0;
     padding: 2px 6px;
     font-size: 12px;
   }
@@ -238,8 +238,8 @@ $nbSpire: round($intVinylSize/15);
     border: 2px solid #000;
     background: #202020;
     position: absolute;
-    right: 8px;
-    bottom: 8px;
+    right: 0;
+    bottom: 0;
     padding: 2px 6px;
     font-size: 12px;
   }

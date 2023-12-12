@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import Image from "next/image";
 import classNames from "classnames";
+import { FaBackward, FaForward, FaPause, FaPlay } from "react-icons/fa6";
 
 import { PlayerContext } from "@/context/PlayerContext";
 
@@ -11,6 +12,8 @@ import generateRGBString from "@/lib/generateRGBString";
 
 import ArtistLink from "@/components/ArtistLink";
 import TrackLink from "@/components/TrackLink";
+import Timer from "@/components/Player/Timer";
+import { Button } from "@/components/ui/button";
 
 import CoverFallback from "../../assets/cover-fallback.svg";
 
@@ -21,16 +24,30 @@ const Vinyl = () => {
   const playerContext = useContext(PlayerContext);
   const track = useTrack(playerContext?.currentPlaybackState?.item?.id);
 
+  // this value is corresponding to .album-box .active .vinyl animation-delay property
+  const activeVinylAnimationDelayProperty = 2600;
+
+  console.log("Vinyl");
+
   async function onPreviousButtonClick() {
     await spotifyApi.skipToPrevious();
 
     // set timeout is used to make sure the previous song has finished fetching
     setTimeout(async () => {
       await playerContext?.hydratePlaybackState();
-    }, 500);
+    }, activeVinylAnimationDelayProperty);
   }
 
   async function onNextButtonClick() {
+    playerContext?.setCurrentPlaybackState((state) => {
+      if (!state) return null;
+
+      return {
+        ...state,
+        is_playing: false,
+      };
+    });
+
     await spotifyApi.skipToNext();
 
     // set timeout is used to make sure the next song has finished fetching
@@ -55,9 +72,6 @@ const Vinyl = () => {
           is_playing: true,
         };
       });
-
-      // this value is corresponding to .album-box .active .vinyl animation-delay property
-      const activeVinylAnimationDelayProperty = 2600;
 
       setTimeout(() => {
         spotifyApi.play();
@@ -144,7 +158,11 @@ const Vinyl = () => {
             ></div>
           </div>
           <div id="turntable">
-            <svg viewBox="0 0 211 246" xmlSpace="preserve">
+            <svg
+              className="turntable-arm"
+              viewBox="0 0 211 246"
+              xmlSpace="preserve"
+            >
               <g>
                 <polygon
                   id="bar"
@@ -237,20 +255,32 @@ const Vinyl = () => {
               </g>
             </svg>
 
-            <div>
-              <button className="prev-button" onClick={onPreviousButtonClick}>
-                {`<<`}
-              </button>
+            <div className="flex justify-between items-center w-full gap-2 absolute bottom-0 p-2">
+              <div className="flex justify-between items-start gap-1">
+                <Button size="sm" onClick={onPreviousButtonClick}>
+                  <FaBackward />
+                </Button>
 
-              <button className="next-button" onClick={onNextButtonClick}>
-                {`>>`}
-              </button>
+                <Button size="sm" onClick={onNextButtonClick}>
+                  <FaForward />
+                </Button>
+              </div>
 
-              <button className="power-button" onClick={togglePlay}>
-                {playerContext?.currentPlaybackState?.is_playing
-                  ? "PAUSE"
-                  : "PLAY"}
-              </button>
+              <div className="w-full">
+                <Timer />
+              </div>
+
+              <div className="flex justify-end ">
+                {playerContext?.currentPlaybackState?.is_playing ? (
+                  <Button size="sm" onClick={togglePlay}>
+                    <FaPause />
+                  </Button>
+                ) : (
+                  <Button size="sm" onClick={togglePlay}>
+                    <FaPlay />
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
         </>

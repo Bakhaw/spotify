@@ -38,7 +38,7 @@ function Timer() {
   );
 
   return (
-    <div className="flex justify-around w-[300px] lg:w-[500px] gap-2">
+    <div className="flex justify-around w-[300px] lg:w-full gap-2">
       <span>
         {currentMinutes}:{currentSeconds.toString().padStart(2, "0")}
       </span>
