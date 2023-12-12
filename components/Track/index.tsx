@@ -76,7 +76,7 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
 
       setTimeout(async () => {
         await playerContext?.hydratePlaybackState();
-      }, 500);
+      }, 1000);
     }
   }
 
@@ -145,7 +145,10 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
         )}
 
         <div className="flex flex-col max-w-[45vw] md:max-w-80">
-          <TrackLink track={currentTrack} />
+          <TrackLink
+            isActive={currentTrack.id === currentTrackId}
+            track={currentTrack}
+          />
 
           <span className="font-light">
             <ArtistLink artists={currentTrack.artists} />

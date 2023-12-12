@@ -100,16 +100,3 @@ body {
 #ptr-container {
   overflow: auto !important;
 }
-
-.slider-box:hover .slider-thumb {
-  display: block;
-  background-color: white;
-}
-
-.slider-box:hover .slider-range {
-  background-color: #1db954;
-}
-
-.slider-thumb {
-  display: none;
-}

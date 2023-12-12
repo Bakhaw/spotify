@@ -25,6 +25,7 @@ module.exports = {
           "linear-gradient(transparent 0, rgba(0, 0, 0, 0.5) 100%)",
       },
       colors: {
+        "green-primary": "#1db954",
         span: "hsla(0,0%,100%,.7)",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
