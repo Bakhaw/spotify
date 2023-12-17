@@ -6,18 +6,17 @@ import { PauseIcon, PlayIcon } from "lucide-react";
 import { usePlayerContext } from "@/context/PlayerContext";
 import { useTimerContext } from "@/context/TimerContext";
 
-import formatMs from "@/lib/formatMs";
 import useSpotify from "@/hooks/useSpotify";
 import useTrack from "@/hooks/useTrack";
 
-import ArtistLink from "@/components/ArtistLink";
 import Cover from "@/components/Cover";
-import LikeButton from "@/components/LikeButton";
-import TrackLink from "@/components/TrackLink";
 import Visualizer from "@/components/Visualizer";
 import { Button } from "@/components/ui/button";
 
-interface TrackProps {
+import TrackActions from "./TrackActions";
+import TrackDetails from "./TrackDetails";
+
+export interface TrackProps {
   order?: number | null;
   showCover?: boolean; // default false;
   track: SpotifyApi.TrackObjectFull | SpotifyApi.TrackObjectSimplified;
@@ -147,25 +146,10 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
           </div>
         )}
 
-        <div className="flex flex-col max-w-[45vw] md:max-w-80">
-          <TrackLink
-            isActive={currentTrack.id === currentTrackId}
-            track={currentTrack}
-          />
-
-          <span className="font-light">
-            <ArtistLink artists={currentTrack.artists} />
-          </span>
-        </div>
+        <TrackDetails track={currentTrack} />
       </div>
 
-      <div className="flex justify-center items-center pr-5">
-        <LikeButton track={track} />
-
-        <div className="hidden md:block">
-          {formatMs(currentTrack.duration_ms, "clock")}
-        </div>
-      </div>
+      <TrackActions track={currentTrack} />
     </Button>
   );
 };

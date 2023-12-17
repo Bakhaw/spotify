@@ -24,7 +24,7 @@ const ClosedPlayer: React.FC<ClosedPlayerProps> = ({ onOpen }) => {
           <CurrentTrack track={track} />
         </div>
 
-        <div className="block md:hidden">
+        <div className="block md:hidden pr-3">
           <ChevronUpIcon
             className="h-6 w-6 transition-all	hover:scale-125"
             role="button"

@@ -27,7 +27,7 @@ function TimerContextProvider({ children }: { children: React.ReactNode }) {
     const initProgressMs = async () => {
       const { body } = await spotifyApi.getMyCurrentPlaybackState();
 
-      if (!body.progress_ms) return;
+      if (!body || !body.progress_ms) return;
 
       setProgressMs(body.progress_ms);
     };

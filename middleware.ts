@@ -1,5 +1,5 @@
-import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
+import { getToken } from "next-auth/jwt";
 
 export default async function middleware(req: NextRequest) {
   const token = await getToken({
@@ -13,8 +13,11 @@ export default async function middleware(req: NextRequest) {
   }
 
   if (!token && pathname !== "/login") {
+    req.cookies.clear();
     return NextResponse.redirect(`${origin}/login`);
   }
+
+  return NextResponse.next();
 }
 
 export const config = {

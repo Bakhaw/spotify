@@ -24,7 +24,7 @@ const OpenedPlayer: React.FC<OpenedPlayer> = ({ onClose }) => {
 
   return (
     <div
-      className="overflow-hidden flex flex-col justify-between items-center w-full py-8"
+      className="overflow-hidden flex flex-col justify-between items-center w-full p-5"
       style={{ height: "100dvh" }}
     >
       <ChevronDownIcon
