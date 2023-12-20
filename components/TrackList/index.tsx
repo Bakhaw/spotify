@@ -4,6 +4,7 @@ import Track from "@/components/Track";
 import TrackListSkeleton from "./TrackListSkeleton";
 
 interface TrackListProps {
+  showAlbumName?: boolean; // default true
   showCover?: boolean; // default false
   showOrder?: boolean; // default false
   title?: string;
@@ -13,6 +14,7 @@ interface TrackListProps {
 }
 
 const TrackList: React.FC<TrackListProps> = ({
+  showAlbumName = true,
   showCover = false,
   showOrder = false,
   title,
@@ -31,6 +33,7 @@ const TrackList: React.FC<TrackListProps> = ({
                   <Draggable id={`track_list:${track.id}`}>
                     <Track
                       order={showOrder ? index + 1 : null}
+                      showAlbumName={showAlbumName}
                       showCover={showCover}
                       track={track}
                     />

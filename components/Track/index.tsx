@@ -15,11 +15,17 @@ import TrackDetails from "./TrackDetails";
 
 export interface TrackProps {
   order?: number | null;
+  showAlbumName?: boolean; // default true
   showCover?: boolean;
   track: SpotifyApi.TrackObjectFull | SpotifyApi.TrackObjectSimplified;
 }
 
-const Track: React.FC<TrackProps> = ({ order, showCover, track }) => {
+const Track: React.FC<TrackProps> = ({
+  order,
+  showAlbumName = true,
+  showCover,
+  track,
+}) => {
   const [showPlayIcon, setShowIcon] = useState<boolean>(false);
   const currentTrack = useTrack(track.id);
   const { playSong } = usePlaybackControls();
@@ -52,11 +58,14 @@ const Track: React.FC<TrackProps> = ({ order, showCover, track }) => {
           <TrackDetails track={currentTrack} />
         </div>
 
-        <span className="hidden lg:block text-left w-full hover:underline">
-          <Link href={`/album/${currentTrack.album.id}`}>
-            {currentTrack.album.name}
-          </Link>
-        </span>
+        {showAlbumName && (
+          <span className="hidden lg:block text-left w-full hover:underline">
+            <Link href={`/album/${currentTrack.album.id}`}>
+              {currentTrack.album.name}
+            </Link>
+          </span>
+        )}
+
         <TrackActions track={currentTrack} />
       </div>
     </Button>

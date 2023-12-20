@@ -35,7 +35,11 @@ const Album: NextPage = () => {
         style={{ backgroundColor: generateRGBString(color) }}
         className="bg-gradient px-3 sm:px-0"
       >
-        <TrackList showOrder tracks={album?.tracks.items} />
+        <TrackList
+          showAlbumName={false}
+          showOrder
+          tracks={album?.tracks.items}
+        />
       </div>
 
       {album && (
