@@ -8,12 +8,12 @@ interface TrackActionsProps {
 
 const TrackActions: React.FC<TrackActionsProps> = ({ track }) => {
   return (
-    <div className="flex justify-center items-center pr-5">
+    <div className="flex justify-center items-center gap-2 px-4">
       <LikeButton track={track} />
 
-      <div className="hidden md:block">
+      <span className="hidden md:block">
         {formatMs(track.duration_ms, "clock")}
-      </div>
+      </span>
     </div>
   );
 };

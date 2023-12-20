@@ -48,7 +48,10 @@ function SideBar() {
         <DropdownMenuSeparator />
       </div>
 
-      <Playlists />
+      <div className="space-y-2">
+        <h1>Playlists</h1>
+        <Playlists />
+      </div>
     </div>
   );
 }

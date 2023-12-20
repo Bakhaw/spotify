@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { PauseIcon, PlayIcon } from "lucide-react";
+import Link from "next/link";
 
 import { usePlayerContext } from "@/context/PlayerContext";
 import { useTimerContext } from "@/context/TimerContext";
@@ -9,20 +9,19 @@ import { useTimerContext } from "@/context/TimerContext";
 import useSpotify from "@/hooks/useSpotify";
 import useTrack from "@/hooks/useTrack";
 
-import Cover from "@/components/Cover";
-import Visualizer from "@/components/Visualizer";
 import { Button } from "@/components/ui/button";
 
+import CoverWithPlayButton from "./CoverWithPlayButton";
+import PlaybackControls from "./PlaybackControls";
 import TrackActions from "./TrackActions";
 import TrackDetails from "./TrackDetails";
 
 export interface TrackProps {
   order?: number | null;
-  showCover?: boolean; // default false;
   track: SpotifyApi.TrackObjectFull | SpotifyApi.TrackObjectSimplified;
 }
 
-const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
+const Track: React.FC<TrackProps> = ({ order, track }) => {
   const spotifyApi = useSpotify();
   const [showPlayIcon, setShowIcon] = useState<boolean>(false);
   const currentTrack = useTrack(track.id);
@@ -36,20 +35,6 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
   const { setProgressMs } = useTimerContext();
 
   const currentTrackId = currentPlaybackState?.item?.id;
-  const isPlaying = currentPlaybackState?.is_playing;
-
-  function pauseSong() {
-    setCurrentPlaybackState((state) => {
-      if (!state) return null;
-
-      return {
-        ...state,
-        is_playing: false,
-      };
-    });
-
-    spotifyApi.pause();
-  }
 
   async function playSong() {
     if (!currentTrack) return;
@@ -91,65 +76,30 @@ const Track: React.FC<TrackProps> = ({ order, showCover = false, track }) => {
       onMouseLeave={() => setShowIcon(false)}
       onDoubleClick={playSong}
     >
-      <div className="flex justify-start items-center">
-        {order && (
-          <div className="text-center w-14 px-4">
-            {showPlayIcon ? (
-              <>
-                {currentTrack.id === currentTrackId && isPlaying ? (
-                  <PauseIcon
-                    className="h-5 w-5 cursor-pointer"
-                    onClick={pauseSong}
-                    role="button"
-                  />
-                ) : (
-                  <PlayIcon
-                    className="h-5 w-5 cursor-pointer"
-                    onClick={playSong}
-                    role="button"
-                  />
-                )}
-              </>
-            ) : currentTrackId === track.id && isPlaying ? (
-              <Visualizer />
-            ) : (
-              <span>{order}</span>
-            )}
-          </div>
-        )}
+      <div className="flex justify-between items-center w-full">
+        <div className="flex justify-start items-center w-full">
+          <PlaybackControls
+            order={order}
+            track={track}
+            showPlayIcon={showPlayIcon}
+          />
 
-        {showCover && (
-          <div className="h-[60px] w-[60px] mr-3 relative">
-            <Cover
-              alt={`${currentTrack.name} cover`}
-              size="small"
-              src={currentTrack.album.images[0].url}
-            />
+          <CoverWithPlayButton
+            order={order}
+            track={track}
+            showPlayIcon={showPlayIcon}
+          />
 
-            <>
-              {showPlayIcon && (
-                <div className="h-full w-full flex justify-center items-center top-0 absolute bg-black/90 ">
-                  {currentTrack.id === currentTrackId && isPlaying ? (
-                    <PauseIcon
-                      className="h-5 w-5 cursor-pointer"
-                      onClick={pauseSong}
-                    />
-                  ) : (
-                    <PlayIcon
-                      className="h-5 w-5 cursor-pointer"
-                      onClick={playSong}
-                    />
-                  )}
-                </div>
-              )}
-            </>
-          </div>
-        )}
+          <TrackDetails track={currentTrack} />
+        </div>
 
-        <TrackDetails track={currentTrack} />
+        <span className="hidden lg:block text-left w-full hover:underline">
+          <Link href={`/album/${currentTrack.album.id}`}>
+            {currentTrack.album.name}
+          </Link>
+        </span>
+        <TrackActions track={currentTrack} />
       </div>
-
-      <TrackActions track={currentTrack} />
     </Button>
   );
 };
