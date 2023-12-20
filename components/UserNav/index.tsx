@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -11,7 +12,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { usePathname } from "next/navigation";
 
 function UserNav() {
   const { data } = useSession();
@@ -23,8 +23,7 @@ function UserNav() {
     await signOut();
   }
 
-  const userImageSrc = data.user?.image ?? "/avatars/04.png";
-  const userName = data.user?.name ?? "avatar";
+  if (!data.user) return null;
 
   return (
     <DropdownMenu>
@@ -35,7 +34,10 @@ function UserNav() {
           size="sm"
         >
           <Avatar className="h-8 w-8">
-            <AvatarImage src={userImageSrc} alt={userName} />
+            <AvatarImage
+              src={data.user.image ?? ""}
+              alt={data.user.name ?? ""}
+            />
             <AvatarFallback>me</AvatarFallback>
           </Avatar>
         </Button>
@@ -43,7 +45,7 @@ function UserNav() {
       <DropdownMenuContent className="w-16" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">{userName}</p>
+            <p className="text-sm font-medium leading-none">{data.user.name}</p>
             <p className="text-xs leading-none text-muted-foreground">
               @{data.user?.name}
             </p>
