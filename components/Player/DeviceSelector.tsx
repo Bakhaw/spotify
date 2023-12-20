@@ -1,22 +1,92 @@
-import { useCallback, useContext } from "react";
+import { useCallback } from "react";
+import { LuMonitorSpeaker } from "react-icons/lu";
 
-import { PlayerContext } from "@/context/PlayerContext";
+import { usePlayerContext } from "@/context/PlayerContext";
 
 import useFetch from "@/hooks/useFetch";
 import useSpotify from "@/hooks/useSpotify";
 
+import Visualizer from "@/components/Visualizer";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+
 function DeviceSelector() {
-  const playerContext = useContext(PlayerContext);
   const spotifyApi = useSpotify();
+  const { currentPlaybackState, hydratePlaybackState } = usePlayerContext();
 
   const getDevices = useCallback(() => spotifyApi.getMyDevices(), [spotifyApi]);
 
   const devices = useFetch<SpotifyApi.UserDevicesResponse>(getDevices);
 
+  async function onDeviceClick(device: SpotifyApi.UserDevice) {
+    if (
+      typeof device.id !== "string" ||
+      currentPlaybackState?.device.id === device.id
+    )
+      return;
+
+    await spotifyApi.transferMyPlayback([device.id]);
+
+    setTimeout(async () => {
+      await hydratePlaybackState();
+    }, 500);
+  }
+
+  if (!devices || !devices.devices) return null;
+
+  const sortedDevices = devices.devices.filter(
+    (device) => currentPlaybackState?.device.id !== device.id
+  );
+
+  if (!currentPlaybackState?.device) return null;
+
   return (
-    <div className="text-right bg-green-500 w-full px-4 py-1 text-sm text-black">
-      Currently listening on {playerContext?.currentPlaybackState?.device.name}
-    </div>
+    <>
+      <Popover>
+        <PopoverTrigger>
+          <LuMonitorSpeaker
+            className="h-6 w-6 transition-all	hover:scale-110"
+            role="button"
+          />
+        </PopoverTrigger>
+        <PopoverContent className="flex flex-col justify-between gap-4 text-sm">
+          <div className="space-y-2">
+            <div className="flex justify-start items-center gap-2">
+              <span className="h-2 w-2 bg-red-600 rounded-full" />
+              <span>Current device</span>
+            </div>
+
+            <div
+              className="flex justify-start items-center gap-2 cursor-pointer bg-green-primary/10 rounded-md px-2 py-1 text-sm text-green-primary"
+              onClick={() => onDeviceClick(currentPlaybackState.device)}
+            >
+              <Visualizer />
+              <span>{currentPlaybackState.device.name}</span>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <span>Select another device</span>
+            {sortedDevices.map((device) => (
+              <div
+                key={device.id}
+                className="flex justify-start items-center gap-2 cursor-pointer rounded-md px-2 py-1 text-sm hover:bg-green-primary/10 hover:text-green-primary transition-all"
+                onClick={() => onDeviceClick(device)}
+              >
+                <span>{device.name}</span>
+              </div>
+            ))}
+          </div>
+        </PopoverContent>
+      </Popover>
+      {/* 
+      <div className="absolute bottom-0 left-[8px] right-[8px] rounded-md text-right bg-green-500 px-4 py-1 text-xs text-black">
+        Currently listening on {currentPlaybackState?.device.name}
+      </div> */}
+    </>
   );
 }
 

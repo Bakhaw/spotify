@@ -6,6 +6,7 @@ import useTrack from "@/hooks/useTrack";
 
 import Controls from "./Controls";
 import CurrentTrack from "./CurrentTrack";
+import DeviceSelector from "./DeviceSelector";
 import Timer from "./Timer";
 import Volume from "./Volume";
 
@@ -38,7 +39,8 @@ const ClosedPlayer: React.FC<ClosedPlayerProps> = ({ onOpen }) => {
           <Timer />
         </div>
 
-        <div className="hidden md:block w-full">
+        <div className="hidden md:flex justify-end items-center gap-4 w-full">
+          <DeviceSelector />
           <Volume />
         </div>
       </div>
