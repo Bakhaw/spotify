@@ -1,9 +1,8 @@
 import { PauseIcon, PlayIcon } from "lucide-react";
 
 import { usePlayerContext } from "@/context/PlayerContext";
-import { useTimerContext } from "@/context/TimerContext";
 
-import useSpotify from "@/hooks/useSpotify";
+import usePlaybackControls from "@/hooks/usePlaybackControls";
 import useTrack from "@/hooks/useTrack";
 
 import Visualizer from "@/components/Visualizer";
@@ -19,62 +18,12 @@ const PlaybackControls: React.FC<PlaybackControlsProps> = ({
   showPlayIcon,
   track,
 }) => {
-  const spotifyApi = useSpotify();
-
-  const {
-    setCurrentPlaybackState,
-    currentPlaybackState,
-    hydratePlaybackState,
-  } = usePlayerContext();
-  const { setProgressMs } = useTimerContext();
+  const { currentPlaybackState } = usePlayerContext();
+  const { pauseSong, playSong } = usePlaybackControls();
 
   const isPlaying = currentPlaybackState?.is_playing;
   const currentTrackId = currentPlaybackState?.item?.id;
   const currentTrack = useTrack(track.id);
-
-  function pauseSong() {
-    setCurrentPlaybackState((state) => {
-      if (!state) return null;
-
-      return {
-        ...state,
-        is_playing: false,
-      };
-    });
-
-    spotifyApi.pause();
-  }
-
-  async function playSong() {
-    if (!currentTrack) return;
-
-    if (currentTrack.id === currentTrackId) {
-      spotifyApi.play();
-
-      setCurrentPlaybackState((state) => {
-        if (!state) return null;
-
-        return {
-          ...state,
-          is_playing: true,
-        };
-      });
-    } else {
-      const { body: devices } = await spotifyApi.getMyDevices();
-
-      spotifyApi.play({
-        context_uri: currentTrack.album.uri,
-        offset: { uri: currentTrack.uri },
-        device_id:
-          currentPlaybackState?.device.id ?? String(devices.devices[0].id),
-      });
-
-      setTimeout(async () => {
-        await hydratePlaybackState();
-        setProgressMs(0);
-      }, 1000);
-    }
-  }
 
   if (!order || !currentTrack) return null;
 
@@ -91,7 +40,7 @@ const PlaybackControls: React.FC<PlaybackControlsProps> = ({
           ) : (
             <PlayIcon
               className="h-5 w-5 cursor-pointer"
-              onClick={playSong}
+              onClick={() => playSong(currentTrack)}
               role="button"
             />
           )}

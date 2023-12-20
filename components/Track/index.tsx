@@ -3,10 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 
-import { usePlayerContext } from "@/context/PlayerContext";
-import { useTimerContext } from "@/context/TimerContext";
-
-import useSpotify from "@/hooks/useSpotify";
+import usePlaybackControls from "@/hooks/usePlaybackControls";
 import useTrack from "@/hooks/useTrack";
 
 import { Button } from "@/components/ui/button";
@@ -18,54 +15,14 @@ import TrackDetails from "./TrackDetails";
 
 export interface TrackProps {
   order?: number | null;
+  showCover?: boolean;
   track: SpotifyApi.TrackObjectFull | SpotifyApi.TrackObjectSimplified;
 }
 
-const Track: React.FC<TrackProps> = ({ order, track }) => {
-  const spotifyApi = useSpotify();
+const Track: React.FC<TrackProps> = ({ order, showCover, track }) => {
   const [showPlayIcon, setShowIcon] = useState<boolean>(false);
   const currentTrack = useTrack(track.id);
-
-  const {
-    currentPlaybackState,
-    hydratePlaybackState,
-    setCurrentPlaybackState,
-  } = usePlayerContext();
-
-  const { setProgressMs } = useTimerContext();
-
-  const currentTrackId = currentPlaybackState?.item?.id;
-
-  async function playSong() {
-    if (!currentTrack) return;
-
-    if (currentTrack.id === currentTrackId) {
-      spotifyApi.play();
-
-      setCurrentPlaybackState((state) => {
-        if (!state) return null;
-
-        return {
-          ...state,
-          is_playing: true,
-        };
-      });
-    } else {
-      const { body: devices } = await spotifyApi.getMyDevices();
-
-      spotifyApi.play({
-        context_uri: currentTrack.album.uri,
-        offset: { uri: currentTrack.uri },
-        device_id:
-          currentPlaybackState?.device.id ?? String(devices.devices[0].id),
-      });
-
-      setTimeout(async () => {
-        await hydratePlaybackState();
-        setProgressMs(0);
-      }, 1000);
-    }
-  }
+  const { playSong } = usePlaybackControls();
 
   if (!currentTrack) return null;
 
@@ -74,7 +31,7 @@ const Track: React.FC<TrackProps> = ({ order, track }) => {
       className="transition-all duration-500 flex justify-between items-center p-0 min-h-[56px] h-full w-full overflow-hidden cursor-default bg-transparent hover:bg-[#66677070] hover:text-white"
       onMouseEnter={() => setShowIcon(true)}
       onMouseLeave={() => setShowIcon(false)}
-      onDoubleClick={playSong}
+      onDoubleClick={() => playSong(currentTrack)}
     >
       <div className="flex justify-between items-center w-full">
         <div className="flex justify-start items-center w-full">
@@ -84,11 +41,13 @@ const Track: React.FC<TrackProps> = ({ order, track }) => {
             showPlayIcon={showPlayIcon}
           />
 
-          <CoverWithPlayButton
-            order={order}
-            track={track}
-            showPlayIcon={showPlayIcon}
-          />
+          {showCover && (
+            <CoverWithPlayButton
+              order={order}
+              track={track}
+              showPlayIcon={showPlayIcon}
+            />
+          )}
 
           <TrackDetails track={currentTrack} />
         </div>
