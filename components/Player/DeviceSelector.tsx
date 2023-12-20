@@ -55,7 +55,7 @@ function DeviceSelector() {
         <PopoverContent className="flex flex-col justify-between gap-4 text-sm">
           <div className="space-y-2">
             <div className="flex justify-start items-center gap-2">
-              <span className="h-2 w-2 bg-red-600 rounded-full" />
+              <span className="h-2 w-2 bg-red-600 rounded-full animate-pulse" />
               <span>Current device</span>
             </div>
 
@@ -68,18 +68,20 @@ function DeviceSelector() {
             </div>
           </div>
 
-          <div className="space-y-2">
-            <span>Select another device</span>
-            {sortedDevices.map((device) => (
-              <div
-                key={device.id}
-                className="flex justify-start items-center gap-2 cursor-pointer rounded-md px-2 py-1 text-sm hover:bg-green-primary/10 hover:text-green-primary transition-all"
-                onClick={() => onDeviceClick(device)}
-              >
-                <span>{device.name}</span>
-              </div>
-            ))}
-          </div>
+          {sortedDevices.length > 0 && (
+            <div className="space-y-2">
+              <span>Select another device</span>
+              {sortedDevices.map((device) => (
+                <div
+                  key={device.id}
+                  className="flex justify-start items-center gap-2 cursor-pointer rounded-md px-2 py-1 text-sm hover:bg-green-primary/10 hover:text-green-primary transition-all"
+                  onClick={() => onDeviceClick(device)}
+                >
+                  <span>{device.name}</span>
+                </div>
+              ))}
+            </div>
+          )}
         </PopoverContent>
       </Popover>
       {/* 

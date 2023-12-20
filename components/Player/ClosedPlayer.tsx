@@ -39,7 +39,7 @@ const ClosedPlayer: React.FC<ClosedPlayerProps> = ({ onOpen }) => {
           <Timer />
         </div>
 
-        <div className="hidden md:flex justify-end items-center gap-4 w-full">
+        <div className="hidden md:flex justify-end items-center gap-2 w-full">
           <DeviceSelector />
           <Volume />
         </div>
