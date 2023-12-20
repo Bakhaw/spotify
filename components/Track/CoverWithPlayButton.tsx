@@ -26,7 +26,7 @@ const CoverWithPlayButton: React.FC<CoverWithPlayButtonProps> = ({
 
   const { pauseSong, playSong } = usePlaybackControls();
 
-  if (!currentTrack || !isPlaying) return null;
+  if (!currentTrack) return null;
 
   return (
     <div className="h-[60px] w-[60px] mr-3 relative">
