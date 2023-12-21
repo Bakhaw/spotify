@@ -18,7 +18,7 @@ const Login = () => {
       {Object.values(providers).map((provider) => (
         <div key={provider.name}>
           <button
-            className="bg-[#3D3ABC] hover:bg-[#2f2e60] transition-all w-72 h-12 rounded-3xl"
+            className="text-black bg-green-primary hover:bg-green-primary/90 transition-all w-72 h-12 rounded-3xl"
             onClick={() => handleLoginButtonClick(provider)}
           >
             Login with {provider.name}

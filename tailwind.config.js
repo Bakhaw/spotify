@@ -26,6 +26,7 @@ module.exports = {
       },
       colors: {
         "green-primary": "#1db954",
+        black: "#191414",
         span: "hsla(0,0%,100%,.7)",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
