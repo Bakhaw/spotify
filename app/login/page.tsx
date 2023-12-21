@@ -1,3 +1,5 @@
+"use client";
+
 import { ClientSafeProvider, signIn } from "next-auth/react";
 
 import useProviders from "@/hooks/useProviders";
