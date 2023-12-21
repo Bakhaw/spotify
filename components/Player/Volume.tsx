@@ -5,12 +5,14 @@ import { usePlayerContext } from "@/context/PlayerContext";
 
 import useSpotify from "@/hooks/useSpotify";
 
+import { Slider } from "@/components/ui/slider";
+
 function Volume() {
   const spotifyApi = useSpotify();
   const { currentPlaybackState, setCurrentPlaybackState } = usePlayerContext();
 
-  function onVolumeChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const newVolume = parseInt(e.target.value);
+  function onVolumeChange(value: number[]) {
+    const newVolume = value[0];
 
     setCurrentPlaybackState((state) => {
       if (!state) return null;
@@ -35,25 +37,26 @@ function Volume() {
     spotifyApi.setVolume(volume);
   }, 300);
 
+  function toggleMuteVolume() {
+    if (currentPlaybackState?.device.volume_percent === 0) {
+    }
+    spotifyApi.setVolume(0);
+  }
+
   if (!currentPlaybackState?.device) return null;
 
   return (
-    <div className="flex justify-end items-center gap-3 h-full">
+    <div className="flex justify-end items-center gap-3 w-[160px] h-full">
       <Volume1Icon
-        className="h-6 w-6 transition-all	hover:scale-110"
+        onClick={toggleMuteVolume}
+        className="h-8 w-8 transition-all hover:scale-110"
         role="button"
       />
-      <input
-        aria-label="Adjust the volume"
+      <Slider
         min={0}
         max={100}
-        value={currentPlaybackState.device.volume_percent ?? 0}
-        type="range"
-        onChange={onVolumeChange}
-      />
-      <Volume2Icon
-        className="h-6 w-6 transition-all	hover:scale-110"
-        role="button"
+        onValueChange={onVolumeChange}
+        value={[currentPlaybackState.device.volume_percent ?? 0]}
       />
     </div>
   );

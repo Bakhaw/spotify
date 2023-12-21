@@ -1,4 +1,6 @@
+import Link from "next/link";
 import { ChevronUpIcon } from "lucide-react";
+import { AiOutlineArrowsAlt } from "react-icons/ai";
 
 import { usePlayerContext } from "@/context/PlayerContext";
 
@@ -42,6 +44,10 @@ const ClosedPlayer: React.FC<ClosedPlayerProps> = ({ onOpen }) => {
         <div className="hidden md:flex justify-end items-center gap-2 w-full">
           <DeviceSelector />
           <Volume />
+          <AiOutlineArrowsAlt
+            className="h-6 w-6 transition-all hover:scale-110"
+            role="button"
+          />
         </div>
       </div>
     </div>
