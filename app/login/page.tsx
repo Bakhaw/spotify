@@ -3,12 +3,15 @@
 import { ClientSafeProvider, signIn } from "next-auth/react";
 
 import useProviders from "@/hooks/useProviders";
+import { useRouter } from "next/navigation";
 
 const Login = () => {
   const providers = useProviders();
+  const router = useRouter();
 
   function handleLoginButtonClick(provider: ClientSafeProvider) {
-    signIn(provider.id, { callbackUrl: "/" });
+    signIn(provider.id);
+    router.replace("/");
   }
 
   if (!providers) return null;
