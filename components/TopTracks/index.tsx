@@ -56,7 +56,12 @@ function TopTracks() {
         </Select>
       </div>
 
-      <TrackList showCover title="top tracks" tracks={topTracks?.items} />
+      <TrackList
+        showCover
+        showVisualizer
+        title="top tracks"
+        tracks={topTracks?.items}
+      />
     </div>
   );
 }

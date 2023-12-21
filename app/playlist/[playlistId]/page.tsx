@@ -61,7 +61,7 @@ const Playlist: NextPage = () => {
         </div>
       </div>
 
-      <TrackList showOrder showCover tracks={formattedPlaylist.tracks.items} />
+      <TrackList showCover showOrder tracks={formattedPlaylist.tracks.items} />
     </div>
   );
 };

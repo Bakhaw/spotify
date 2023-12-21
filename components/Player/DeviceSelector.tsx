@@ -63,7 +63,7 @@ function DeviceSelector() {
               className="flex justify-start items-center gap-2 cursor-pointer bg-green-primary/10 rounded-md px-2 py-1 text-sm text-green-primary"
               onClick={() => onDeviceClick(currentPlaybackState.device)}
             >
-              <Visualizer />
+              {currentPlaybackState?.is_playing && <Visualizer />}
               <span>{currentPlaybackState.device.name}</span>
             </div>
           </div>

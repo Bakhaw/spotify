@@ -17,6 +17,7 @@ export interface TrackProps {
   order?: number | null;
   showAlbumName?: boolean; // default true
   showCover?: boolean;
+  showVisualizer?: boolean; // default false
   track: SpotifyApi.TrackObjectFull | SpotifyApi.TrackObjectSimplified;
 }
 
@@ -24,6 +25,7 @@ const Track: React.FC<TrackProps> = ({
   order,
   showAlbumName = true,
   showCover,
+  showVisualizer,
   track,
 }) => {
   const [showPlayIcon, setShowIcon] = useState<boolean>(false);
@@ -55,7 +57,7 @@ const Track: React.FC<TrackProps> = ({
             />
           )}
 
-          <TrackDetails track={currentTrack} />
+          <TrackDetails showVisualizer={showVisualizer} track={currentTrack} />
         </div>
 
         {showAlbumName && (

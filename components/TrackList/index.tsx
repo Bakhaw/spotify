@@ -7,6 +7,7 @@ interface TrackListProps {
   showAlbumName?: boolean; // default true
   showCover?: boolean; // default false
   showOrder?: boolean; // default false
+  showVisualizer?: boolean; // default false
   title?: string;
   tracks:
     | (SpotifyApi.TrackObjectFull | null)[]
@@ -17,6 +18,7 @@ const TrackList: React.FC<TrackListProps> = ({
   showAlbumName = true,
   showCover = false,
   showOrder = false,
+  showVisualizer = false,
   title,
   tracks,
 }) => {
@@ -35,6 +37,7 @@ const TrackList: React.FC<TrackListProps> = ({
                       order={showOrder ? index + 1 : null}
                       showAlbumName={showAlbumName}
                       showCover={showCover}
+                      showVisualizer={showVisualizer}
                       track={track}
                     />
                   </Draggable>
