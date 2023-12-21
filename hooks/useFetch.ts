@@ -20,14 +20,14 @@ function useFetch<T>(callback: useFetchParams<T>, ...args: unknown[]): T {
   const [data, setData] = useState<any>();
 
   useEffect(() => {
-    if (spotifyApi.getAccessToken()) {
-      const fetchData = async () => {
-        const data = await callback();
-        setData(data.body);
-      };
+    if (!spotifyApi.getAccessToken()) return;
 
-      fetchData();
-    }
+    const fetchData = async () => {
+      const data = await callback();
+      setData(data.body);
+    };
+
+    fetchData();
   }, [session, spotifyApi, callback, argsRef]);
 
   return data;
