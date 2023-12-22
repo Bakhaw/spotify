@@ -1,5 +1,4 @@
 import Image from "next/image";
-import classNames from "classnames";
 import { IoPlaySkipBack, IoPlaySkipForward } from "react-icons/io5";
 import { FaPause, FaPlay } from "react-icons/fa6";
 
@@ -8,7 +7,9 @@ import { usePlayerContext } from "@/context/PlayerContext";
 import useDominantColor from "@/hooks/useDominantColor";
 import useSpotify from "@/hooks/useSpotify";
 import useTrack from "@/hooks/useTrack";
+
 import generateRGBString from "@/lib/generateRGBString";
+import { cn } from "@/lib/utils";
 
 import ArtistLink from "@/components/ArtistLink";
 import TrackLink from "@/components/TrackLink";
@@ -99,7 +100,7 @@ const Vinyl = () => {
     <div className="music-box">
       <div
         id="album"
-        className={classNames(
+        className={cn(
           "album-box",
           currentPlaybackState?.is_playing && "active"
         )}

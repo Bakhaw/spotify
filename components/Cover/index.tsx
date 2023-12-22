@@ -1,5 +1,6 @@
 import Image from "next/image";
-import classNames from "classnames";
+
+import { cn } from "@/lib/utils";
 
 import CoverFallback from "../../assets/cover-fallback.svg";
 
@@ -29,7 +30,7 @@ const Cover: React.FC<CoverProps> = ({
   return (
     <Image
       alt={alt}
-      className={classNames(`block object-cover ${sizes[size]}`, additionalCss)}
+      className={cn(`block object-cover ${sizes[size]}`, additionalCss)}
       priority={priority}
       src={src ?? CoverFallback}
       height={640}

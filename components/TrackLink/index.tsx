@@ -1,5 +1,6 @@
 import Link from "next/link";
-import classNames from "classnames";
+
+import { cn } from "@/lib/utils";
 
 interface TrackLinkProps {
   isActive?: boolean;
@@ -10,7 +11,7 @@ interface TrackLinkProps {
 const TrackLink: React.FC<TrackLinkProps> = ({ isActive, onClick, track }) => (
   <div className="box-border">
     <Link
-      className={classNames(
+      className={cn(
         "flex overflow-hidden text-ellipsis text-left whitespace-nowrap hover:underline",
         isActive && "text-green-primary"
       )}

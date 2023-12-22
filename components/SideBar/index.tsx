@@ -1,10 +1,10 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import classNames from "classnames";
 
 import { usePlayerContext } from "@/context/PlayerContext";
 
 import routes from "@/lib/routes";
+import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
 import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
@@ -19,7 +19,7 @@ function SideBar() {
 
   return (
     <div
-      className={classNames(
+      className={cn(
         "fixed top-0 overflow-x-hidden sm:w-[96px] md:w-[266px] p-4",
         currentPlaybackState ? "bottom-[80px]" : "bottom-0"
       )}

@@ -3,16 +3,19 @@
 import { useCallback, useState } from "react";
 import { NextPage } from "next";
 import { useParams } from "next/navigation";
-import classNames from "classnames";
 
 import useFetch from "@/hooks/useFetch";
 import useSpotify from "@/hooks/useSpotify";
 import useDominantColor from "@/hooks/useDominantColor";
+
 import generateRGBString from "@/lib/generateRGBString";
+import { cn } from "@/lib/utils";
 
 import Cover from "@/components/Cover";
 import HorizontalSlider from "@/components/HorizontalSlider";
+
 import { Button } from "@/components/ui/button";
+
 import MonthlyListeners from "./MonthlyListeners";
 
 const ArtistDetails: NextPage = () => {
@@ -87,7 +90,7 @@ const ArtistDetails: NextPage = () => {
                 currentFilter === "albums" ? generateRGBString(color, 0.7) : "",
             }}
             size="sm"
-            className={classNames(
+            className={cn(
               "w-auto justify-start rounded-full text-xs",
               currentFilter === "albums" && "text-white hover:bg-white"
             )}
@@ -102,7 +105,7 @@ const ArtistDetails: NextPage = () => {
                   ? generateRGBString(color, 0.7)
                   : "",
             }}
-            className={classNames(
+            className={cn(
               "w-auto justify-start rounded-full text-xs",
               currentFilter === "singles" && "text-white hover:bg-white"
             )}

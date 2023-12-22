@@ -1,7 +1,8 @@
 import React from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { ChevronLeftCircleIcon, ChevronRightCircleIcon } from "lucide-react";
-import classNames from "classnames";
+
+import { cn } from "@/lib/utils";
 
 import ThemeToggle from "@/components/ThemeToggle";
 import UserNav from "@/components/UserNav";
@@ -14,7 +15,7 @@ function AppHeader() {
 
   return (
     <div
-      className={classNames(
+      className={cn(
         "flex justify-between items-center px-8 py-4 left-0 right-0 absolute",
         pathname !== "/studio" && "sm:left-[90px] md:left-[266px]"
       )}

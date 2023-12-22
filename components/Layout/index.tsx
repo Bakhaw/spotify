@@ -1,7 +1,8 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import classNames from "classnames";
+
+import { cn } from "@/lib/utils";
 
 import AppHeader from "@/components/AppHeader";
 import Player from "@/components/Player";
@@ -28,13 +29,13 @@ function Layout({ children }: { children: React.ReactNode }) {
         </div>
 
         <div
-          className={classNames(
+          className={cn(
             "flex-auto",
             isFullScreenPage ? "sm:ml-0" : "sm:ml-[90px] md:ml-[266px] pb-20"
           )}
         >
           <div
-            className={classNames(
+            className={cn(
               isFullScreenPage
                 ? "mb-0 sm:mb-0"
                 : isFullScreenPageResponsive
