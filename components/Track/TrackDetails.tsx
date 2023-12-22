@@ -15,11 +15,12 @@ const TrackDetails: React.FC<TrackDetailsProps> = ({
   const { currentPlaybackState } = usePlayerContext();
   const currentTrackId = currentPlaybackState?.item?.id;
   const isTrackActive = track.id === currentTrackId;
+  const isPlaying = currentPlaybackState?.is_playing;
 
   return (
     <div className="flex flex-col max-w-[45vw] md:max-w-80">
       <div className="flex gap-2">
-        {showVisualizer && isTrackActive && <Visualizer />}
+        {showVisualizer && isTrackActive && isPlaying && <Visualizer />}
         <TrackLink isActive={isTrackActive} track={track} />
       </div>
 
