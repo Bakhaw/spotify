@@ -5,13 +5,15 @@ import { cn } from "@/lib/utils";
 interface DroppableProps {
   children: React.ReactNode;
   id: string;
+  name: string;
 }
 
-const Droppable: React.FC<DroppableProps> = ({ children, id }) => {
+const Droppable: React.FC<DroppableProps> = ({ children, id, name }) => {
   const { isOver, setNodeRef } = useDroppable({
     id: `droppable-${id}`,
     data: {
       id,
+      name,
     },
   });
 

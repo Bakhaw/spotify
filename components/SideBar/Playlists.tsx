@@ -16,7 +16,7 @@ function Playlists() {
   return (
     <div className="flex flex-col gap-2">
       {playlists.items.map((playlist) => (
-        <Droppable key={playlist.id} id={playlist.id}>
+        <Droppable key={playlist.id} id={playlist.id} name={playlist.name}>
           <Button
             className="flex w-full h-full justify-start gap-0 p-0 sm:p-0 bg-transparent"
             size="sm"

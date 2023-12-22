@@ -18,7 +18,7 @@ import useSpotify from "@/hooks/useSpotify";
 import useTrack from "@/hooks/useTrack";
 
 import Cover from "@/components/Cover";
-import TrackAlreadyInPlaylist from "@/components/shared/dialogs/TrackAlreadyInPlaylist";
+import Dialog from "@/components/Dialog";
 import addToPlaylistToast from "@/components/shared/toasts/addToPlaylist";
 
 import { useToast } from "@/components/ui/use-toast";
@@ -126,11 +126,16 @@ function DragOverlayWrapper() {
         document.body
       )}
 
-      <TrackAlreadyInPlaylist
-        onSubmit={onDialogSubmit}
-        open={isDialogOpen}
-        setOpen={setIsDialogOpen}
-      />
+      {overItem && (
+        <Dialog
+          onSubmit={onDialogSubmit}
+          open={isDialogOpen}
+          setOpen={setIsDialogOpen}
+          description={`Your playlist « ${overItem.data.current?.name} » already contain this track`}
+          submitButtonText="Add anyway"
+          title="Already added !"
+        />
+      )}
     </>
   );
 }
