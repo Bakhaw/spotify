@@ -1,8 +1,7 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { createPortal } from "react-dom";
-import Link from "next/link";
 import {
   Active,
   defaultDropAnimation,
@@ -10,6 +9,7 @@ import {
   DragOverlay,
   DragStartEvent,
   DropAnimation,
+  Over,
   useDndMonitor,
 } from "@dnd-kit/core";
 import { snapCenterToCursor } from "@dnd-kit/modifiers";
@@ -18,35 +18,35 @@ import useSpotify from "@/hooks/useSpotify";
 import useTrack from "@/hooks/useTrack";
 
 import Cover from "@/components/Cover";
+import TrackAlreadyInPlaylist from "@/components/shared/dialogs/TrackAlreadyInPlaylist";
+import addToPlaylistToast from "@/components/shared/toasts/addToPlaylist";
 
-import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 
 function DragOverlayWrapper() {
   const spotifyApi = useSpotify();
   const { toast } = useToast();
 
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [draggedItem, setDraggedItem] = useState<Active | null>(null);
+  const [overItem, setOverItem] = useState<Over | null>(null);
 
-  function getIdFromDraggable(id: string) {
-    if (!id) return;
-
-    // id from <Draggable /> looks like this --> closed_player:<track_id>
-    return id.split(":")[1];
+  function getIdFromDraggable(draggableId: string) {
+    // draggableId from <Draggable /> looks like this --> "closed_player:<track_id>"
+    return draggableId?.split(":")[1];
   }
 
   const track = useTrack(getIdFromDraggable(draggedItem?.data?.current?.id));
 
-  const addTracksToPlaylist = useCallback(
-    (overId: string, id: string) =>
-      spotifyApi.addTracksToPlaylist(overId, [
-        `spotify:track:${getIdFromDraggable(id)}`,
-      ]),
-    [spotifyApi]
-  );
-
   function handleDragStart(event: DragStartEvent) {
     setDraggedItem(event?.active);
+  }
+
+  async function addTracksToPlaylist(playlistId: string, trackId: string) {
+    spotifyApi.getAccessToken();
+    await spotifyApi.addTracksToPlaylist(playlistId, [
+      `spotify:track:${trackId}`,
+    ]);
   }
 
   async function handleDragEnd(event: DragEndEvent) {
@@ -54,20 +54,24 @@ function DragOverlayWrapper() {
 
     if (!over) return;
 
-    const activeId = active.data.current?.id; // id from <Draggable />
-    const overId = over.data.current?.id; // id from <Droppable />
+    setOverItem(over);
 
-    await addTracksToPlaylist(overId, activeId);
-    toast({
-      action: (
-        <ToastAction altText="See changes">
-          <Link href={`/playlist/${overId}`} className="text-xs">
-            See changes
-          </Link>
-        </ToastAction>
-      ),
-      title: "Added to your playlist !",
-      duration: 2200,
+    const trackId = getIdFromDraggable(active.data.current?.id); // id from <Draggable />
+    const playlistId = over.data.current?.id; // id from <Droppable />
+
+    if (!trackId || !playlistId) return;
+
+    spotifyApi.getPlaylistTracks(playlistId).then(({ body }) => {
+      const tracksIds = body.items.map((item) => item.track?.id);
+
+      // means the song is already in the playlist
+      if (tracksIds.includes(trackId)) {
+        setIsDialogOpen(true);
+      } else {
+        addTracksToPlaylist(playlistId, trackId);
+
+        toast(addToPlaylistToast(playlistId));
+      }
     });
   }
 
@@ -85,25 +89,49 @@ function DragOverlayWrapper() {
     ...defaultDropAnimation,
   };
 
-  if (!draggedItem || !track) return null;
+  function onDialogSubmit() {
+    if (!track || !overItem?.data.current) return;
 
-  return createPortal(
-    <DragOverlay dropAnimation={dropAnimation} modifiers={[snapCenterToCursor]}>
-      <div className="flex gap-2 items-center text-sm rounded-md ring-2 ring-green-primary bg-black/80 p-2 w-max cursor-grabbing">
-        <Cover
-          alt="cover"
-          additionalCss="h-[36px] w-[36px]"
-          src={track.album.images[0].url}
-        />
+    const playlistId = overItem.data.current.id;
+    addTracksToPlaylist(playlistId, track.id);
 
-        <div className="space-x-1">
-          <span>{track.artists[0].name}</span>
-          <span>-</span>
-          <span>{track.name}</span>
-        </div>
-      </div>
-    </DragOverlay>,
-    document.body
+    setIsDialogOpen(false);
+
+    toast(addToPlaylistToast(playlistId));
+  }
+
+  if (!track) return null;
+
+  return (
+    <>
+      {createPortal(
+        <DragOverlay
+          dropAnimation={dropAnimation}
+          modifiers={[snapCenterToCursor]}
+        >
+          <div className="flex gap-2 items-center text-sm rounded-md ring-2 ring-green-primary bg-black/80 p-2 w-max cursor-grabbing">
+            <Cover
+              alt={`${track.album.name} cover`}
+              additionalCss="h-[36px] w-[36px]"
+              src={track.album.images[0].url}
+            />
+
+            <div className="space-x-1">
+              <span>{track.artists[0].name}</span>
+              <span>-</span>
+              <span>{track.name}</span>
+            </div>
+          </div>
+        </DragOverlay>,
+        document.body
+      )}
+
+      <TrackAlreadyInPlaylist
+        onSubmit={onDialogSubmit}
+        open={isDialogOpen}
+        setOpen={setIsDialogOpen}
+      />
+    </>
   );
 }
 
