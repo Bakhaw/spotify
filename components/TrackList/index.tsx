@@ -31,7 +31,7 @@ const TrackList: React.FC<TrackListProps> = ({
           tracks.map(
             (track, index) =>
               track && (
-                <li key={track.id}>
+                <li key={`${track.id}-${index}`}>
                   <Draggable id={`track_list:${track.id}`}>
                     <Track
                       order={showOrder ? index + 1 : null}
