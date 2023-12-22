@@ -14,11 +14,11 @@ function Playlists() {
   if (!playlists) return <PlaylistsSkeleton />;
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-2">
       {playlists.items.map((playlist) => (
         <Droppable key={playlist.id} id={playlist.id}>
           <Button
-            className="flex w-full h-full justify-start gap-0 p-0  sm:p-0 bg-transparen"
+            className="flex w-full h-full justify-start gap-0 p-0 sm:p-0 bg-transparent"
             size="sm"
           >
             <Link

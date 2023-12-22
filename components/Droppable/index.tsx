@@ -1,6 +1,6 @@
-import classNames from "classnames";
-
 import { useDroppable } from "@dnd-kit/core";
+
+import { cn } from "@/lib/utils";
 
 interface DroppableProps {
   children: React.ReactNode;
@@ -18,7 +18,10 @@ const Droppable: React.FC<DroppableProps> = ({ children, id }) => {
   return (
     <div
       ref={setNodeRef}
-      className={classNames("rounded-md", isOver && "border")}
+      className={cn(
+        "rounded-md",
+        isOver && "ring ring-green-primary/80 scale-105 transition-all"
+      )}
     >
       {children}
     </div>

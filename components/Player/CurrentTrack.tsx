@@ -13,7 +13,7 @@ const CurrentTrack: React.FC<CurrentTrackProps> = ({ track }) => {
   return (
     <div className="flex">
       <Draggable id={`closed_player:${track.id}`}>
-        <div className="flex flex-1 justify-start items-center gap-3 h-full">
+        <div className="flex flex-1 justify-start items-center gap-3 h-full pr-2 rounded-md">
           <div className="w-[48px]">
             <Cover
               alt={`${track.name} cover`}
@@ -23,10 +23,10 @@ const CurrentTrack: React.FC<CurrentTrackProps> = ({ track }) => {
           </div>
 
           <div className="display-arrowicon max-w-[50vw] md:max-w-[30vw]">
-            <div className="font-bold flex gap-3 transition-all hover:scale-110 sm:font-normal">
+            <div className="font-bold flex gap-3 transition-all hover:scale-105 sm:font-normal">
               <TrackLink track={track} />
             </div>
-            <div className="transition-all hover:scale-110 text-span text-xs">
+            <div className="transition-all hover:scale-105 text-span text-xs">
               <ArtistLink artists={track.artists} />
             </div>
           </div>
