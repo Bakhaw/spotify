@@ -25,6 +25,7 @@ module.exports = {
           "linear-gradient(transparent 0, rgba(0, 0, 0, 0.5) 100%)",
       },
       colors: {
+        hover: "rgba(102, 103, 112, 0.438)",
         "green-primary": "#1db954",
         black: "#191414",
         span: "hsla(0,0%,100%,.7)",

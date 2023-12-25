@@ -38,30 +38,29 @@ function TopTracks() {
   };
 
   return (
-    <div className="flex flex-col gap-2 p-8">
-      <div className="self-end">
-        <Select
-          defaultValue={timeRange}
-          onValueChange={onTimeRangeChange}
-          disabled={!topTracks}
-        >
-          <SelectTrigger aria-label={labels[timeRange]}>
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="short_term">last month</SelectItem>
-            <SelectItem value="medium_term">last 6 months</SelectItem>
-            <SelectItem value="long_term">all time</SelectItem>
-          </SelectContent>
-        </Select>
+    <div className="flex flex-col gap-2">
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold lowercase">top tracks</h1>
+
+        <div>
+          <Select
+            defaultValue={timeRange}
+            onValueChange={onTimeRangeChange}
+            disabled={!topTracks}
+          >
+            <SelectTrigger aria-label={labels[timeRange]}>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="short_term">last month</SelectItem>
+              <SelectItem value="medium_term">last 6 months</SelectItem>
+              <SelectItem value="long_term">all time</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
-      <TrackList
-        showCover
-        showVisualizer
-        title="top tracks"
-        tracks={topTracks?.items}
-      />
+      <TrackList showCover showVisualizer tracks={topTracks?.items} />
     </div>
   );
 }

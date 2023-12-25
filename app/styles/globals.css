@@ -56,7 +56,6 @@
 
 * {
   -webkit-tap-highlight-color: transparent !important;
-  /* outline: none !important; */
 }
 
 body {
@@ -80,23 +79,4 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #666770;
-}
-
-/* Override "swiper" */
-
-.swiper-slide {
-  width: 200px !important;
-  padding: 10px 12px;
-  border-radius: 0.3rem;
-  margin: 0 !important;
-}
-
-.swiper-slide:hover {
-  background-color: rgba(102, 103, 112, 0.438);
-  transition: 0.5s all;
-}
-
-/* Override PTR (react-js-pull-to-refresh) */
-#ptr-container {
-  overflow: auto !important;
 }

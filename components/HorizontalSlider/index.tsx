@@ -1,65 +1,65 @@
 import Link from "next/link";
-import SwiperCore, { FreeMode, Keyboard, Mousewheel } from "swiper";
-import { Swiper, SwiperSlide } from "swiper/react";
+import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 
 import Cover from "@/components/Cover";
 
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
+
 import HorizontalSliderSkeleton from "./HorizontalSliderSkeleton";
-
-import "swiper/css";
-
-SwiperCore.use([FreeMode, Keyboard, Mousewheel]);
 
 interface HorizontalSliderProps {
   items:
     | SpotifyApi.ArtistObjectFull[]
     | SpotifyApi.AlbumObjectFull[]
     | SpotifyApi.AlbumObjectSimplified[];
+  title?: string;
   type: "artist" | "album";
-  title: string;
 }
 
 const HorizontalSlider: React.FC<HorizontalSliderProps> = ({
   items,
-  type,
   title,
+  type,
 }) => {
   return (
-    <div className="w-full">
-      {items?.length !== 0 && (
-        <h1 className="pr-8 pl-3 mb-[6px] text-3xl font-bold lowercase">
-          {title}
-        </h1>
-      )}
-
+    <>
       {items ? (
-        <Swiper
-          keyboard
-          slidesPerView="auto"
-          mousewheel={{ forceToAxis: true, sensitivity: 0.5 }}
-          freeMode={{
-            enabled: true,
-            sticky: false,
-            momentumBounce: false,
-          }}
-        >
-          {items.map((item, i) => (
-            <SwiperSlide key={item.id}>
-              <Link href={`/${type}/${item.id}`}>
-                <Cover
-                  alt={`${item.name} cover`}
-                  priority={i === 0}
-                  src={item.images[0].url}
-                />
-                <div className="mt-1">{item.name}</div>
-              </Link>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+        <div className="space-y-2">
+          {title && (
+            <h1 className="pl-4 text-3xl font-bold lowercase">{title}</h1>
+          )}
+
+          <Carousel
+            plugins={[WheelGesturesPlugin()]}
+            opts={{
+              skipSnaps: true,
+            }}
+          >
+            <CarouselContent className="pl-4">
+              {items.map((item, index) => (
+                <Link key={item.id} href={`/${type}/${item.id}`}>
+                  <CarouselItem className="space-y-2 basis-auto w-52 p-3 rounded-lg hover:bg-hover transition-all duration-300">
+                    <Cover
+                      alt={`${item.name} cover`}
+                      priority={index === 0}
+                      src={item.images[0].url}
+                    />
+
+                    <h2>{item.name}</h2>
+                  </CarouselItem>
+                </Link>
+              ))}
+            </CarouselContent>
+          </Carousel>
+        </div>
       ) : (
         <HorizontalSliderSkeleton />
       )}
-    </div>
+    </>
   );
 };
 

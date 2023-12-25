@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import { getServerSession } from "next-auth";
 
 import Layout from "@/components/Layout";
+import Providers from "@/components/Providers";
 import SessionProvider from "@/components/SessionProvider";
 
 import "@/app/styles/globals.css";
@@ -51,7 +52,9 @@ async function RootLayout({ children }: Props) {
     <html lang="en">
       <body className={myFont.className}>
         <SessionProvider session={session}>
-          <Layout>{children}</Layout>
+          <Providers>
+            <Layout>{children}</Layout>
+          </Providers>
         </SessionProvider>
       </body>
     </html>
