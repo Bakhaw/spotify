@@ -61,10 +61,12 @@ const ArtistDetails: NextPage = () => {
     setCurrentFilter(filter);
   };
 
+  // TODO skeleton
+
   return (
-    <div className="w-full sm:px-8">
+    <>
       <div
-        className="flex flex-col justify-center items-center gap-2  bg-gradient-secondary pt-20 px-3 pb-3"
+        className="flex flex-col justify-center items-center gap-2 bg-gradient-secondary py-8"
         style={{ backgroundColor: generateRGBString(color) }}
       >
         <Cover
@@ -73,16 +75,15 @@ const ArtistDetails: NextPage = () => {
           size="medium"
           src={artist?.images[0].url}
         />
-        <h1 className="text-7xl font-bold w-full text-white">{artist?.name}</h1>
-
+        <h1 className="text-7xl font-bold text-white">{artist?.name}</h1>
         {artist && <MonthlyListeners artistId={artist.id} />}
       </div>
 
       <div
         style={{ backgroundColor: generateRGBString(color) }}
-        className="flex flex-col gap-12 bg-gradient pt-5 pb-10"
+        className="flex flex-col gap-8 bg-gradient"
       >
-        <div className="flex gap-4 pl-3">
+        <div className="flex gap-4 p-4">
           <Button
             onClick={() => handleFilterClick("albums")}
             style={{
@@ -114,19 +115,23 @@ const ArtistDetails: NextPage = () => {
             Singles & EP
           </Button>
         </div>
+
         {currentFilter === "albums" && (
           <HorizontalSlider
             items={removeDuplicatesAlbums}
             type="album"
-            title="Albums"
+            title="albums"
           />
         )}
         {currentFilter === "singles" && (
-          <HorizontalSlider items={singles} type="album" title="Singles & EP" />
+          <HorizontalSlider items={singles} type="album" title="singles & ep" />
         )}
-        <HorizontalSlider items={appearsOn} type="album" title="Appears On" />
+
+        {appearsOn?.length > 0 && (
+          <HorizontalSlider items={appearsOn} type="album" title="appears on" />
+        )}
       </div>
-    </div>
+    </>
   );
 };
 

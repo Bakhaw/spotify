@@ -36,7 +36,7 @@ const Track: React.FC<TrackProps> = ({
 
   return (
     <Button
-      className="transition-all duration-500 flex justify-between items-center p-0 min-h-[56px] h-full w-full overflow-hidden cursor-default bg-transparent hover:bg-[#66677070] hover:text-white"
+      className="transition-all duration-500 flex justify-between items-center p-0 min-h-[56px] h-full w-full cursor-default bg-transparent hover:bg-[#66677070] hover:text-white"
       onMouseEnter={() => setShowIcon(true)}
       onMouseLeave={() => setShowIcon(false)}
       onDoubleClick={() => playSong(currentTrack)}

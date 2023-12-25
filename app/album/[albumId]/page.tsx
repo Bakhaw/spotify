@@ -28,12 +28,12 @@ const Album: NextPage = () => {
   const color = useDominantColor(album?.images[0].url);
 
   return (
-    <div className="flex flex-col sm:px-8 pt-0">
+    <div className="flex flex-col">
       <TrackListHeader album={album} />
 
       <div
         style={{ backgroundColor: generateRGBString(color) }}
-        className="bg-gradient px-3 sm:px-0"
+        className="bg-gradient"
       >
         <TrackList
           showAlbumName={false}
@@ -43,7 +43,7 @@ const Album: NextPage = () => {
       </div>
 
       {album && (
-        <div className="my-8 px-7 sm:px-0">
+        <div className="py-4">
           <AlbumReleaseDate releaseDate={album.release_date} />
           <AlbumCopyrights copyrights={album.copyrights} />
         </div>

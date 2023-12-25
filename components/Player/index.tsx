@@ -7,6 +7,7 @@ import { usePlayerContext } from "@/context/PlayerContext";
 
 import useDominantColor from "@/hooks/useDominantColor";
 import useTrack from "@/hooks/useTrack";
+
 import generateRGBString from "@/lib/generateRGBString";
 import isWhite from "@/lib/isWhite";
 
@@ -38,7 +39,7 @@ const Player: React.FC = () => {
 
   return (
     <div
-      className="fixed bottom-0 p-2 z-10 bg-transparent"
+      className="fixed bottom-0 px-2 pb-2 pt-0 z-10 bg-transparent"
       style={{
         color: isWhite(color) ? "text-black" : "#fff",
         height: showFullPlayer ? "100vh" : "auto",

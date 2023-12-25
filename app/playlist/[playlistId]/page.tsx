@@ -41,7 +41,7 @@ const Playlist: NextPage = () => {
   const playlistDuration = formatMs(duration);
 
   return (
-    <div className="flex flex-col gap-8 p-8">
+    <div className="flex flex-col gap-8">
       <div className="flex flex-col md:flex-row items-center gap-6">
         <Cover alt={`${playlist.name} cover`} src={playlist.images?.[0]?.url} />
 
