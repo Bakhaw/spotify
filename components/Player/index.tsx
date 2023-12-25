@@ -39,13 +39,13 @@ const Player: React.FC = () => {
 
   return (
     <div
-      className="fixed bottom-0 px-2 pb-2 pt-0 z-10 bg-transparent"
+      className="fixed bottom-0 px-2 pb-2 pt-0 z-10 bg-transparent backdrop-blur-sm"
       style={{
         color: isWhite(color) ? "text-black" : "#fff",
         height: showFullPlayer ? "100vh" : "auto",
         transition: "0.3s",
         width: showFullPlayer ? "100%" : "calc(100% - 7px)",
-        padding: showFullPlayer ? "0" : "0.5rem",
+        padding: showFullPlayer ? "0" : "0 0.5rem 0.5rem 0.5rem",
       }}
     >
       <div
