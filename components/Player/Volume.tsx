@@ -1,5 +1,6 @@
 import { debounce } from "lodash";
 import { Volume1Icon, Volume2Icon } from "lucide-react";
+import { TbVolume, TbVolumeOff } from "react-icons/tb";
 
 import { usePlayerContext } from "@/context/PlayerContext";
 
@@ -37,21 +38,45 @@ function Volume() {
     spotifyApi.setVolume(volume);
   }, 300);
 
+  const isVolumeMuted = currentPlaybackState?.device.volume_percent === 0;
+
   function toggleMuteVolume() {
-    if (currentPlaybackState?.device.volume_percent === 0) {
-    }
-    spotifyApi.setVolume(0);
+    const defaultVolume = 30;
+    const newVolume = isVolumeMuted ? defaultVolume : 0;
+
+    setCurrentPlaybackState((state) => {
+      if (!state) return null;
+
+      return {
+        ...state,
+        device: {
+          ...state.device,
+          volume_percent: newVolume,
+        },
+      };
+    });
+
+    spotifyApi.setVolume(newVolume);
   }
 
   if (!currentPlaybackState?.device) return null;
 
   return (
-    <div className="flex justify-end items-center gap-3 w-[160px] h-full">
-      <Volume1Icon
-        onClick={toggleMuteVolume}
-        className="h-8 w-8 transition-all hover:scale-110"
-        role="button"
-      />
+    <div className="flex justify-end items-center gap-2 w-[160px] h-full">
+      {isVolumeMuted ? (
+        <TbVolumeOff
+          onClick={toggleMuteVolume}
+          className="h-6 w-6 transition-all hover:scale-110"
+          role="button"
+        />
+      ) : (
+        <TbVolume
+          onClick={toggleMuteVolume}
+          className="h-6 w-6 transition-all hover:scale-110"
+          role="button"
+        />
+      )}
+
       <Slider
         min={0}
         max={100}
