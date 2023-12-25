@@ -2,7 +2,7 @@ import { usePlayerContext } from "@/context/PlayerContext";
 
 import ArtistLink from "@/components/ArtistLink";
 import TrackLink from "@/components/TrackLink";
-import Visualizer from "../Visualizer";
+import Visualizer from "@/components/Visualizer";
 
 interface TrackDetailsProps {
   showVisualizer?: boolean; // default false
