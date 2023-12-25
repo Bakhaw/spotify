@@ -68,7 +68,7 @@ function Layout({ children }: { children: React.ReactNode }) {
               className={cn(
                 "h-full overflow-x-scroll",
                 isHomePage ? "px-0" : "px-8",
-                currentPlaybackState ? "pb-[160px]" : "pb-[64px]" // 160px = AppHeader + Player + padding // 64px = AppHeader
+                currentPlaybackState ? "pb-[136px]" : "pb-[64px]" // 160px = AppHeader + Player + padding // 64px = AppHeader
               )}
             >
               {children}
