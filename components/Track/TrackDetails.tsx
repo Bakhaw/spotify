@@ -13,6 +13,7 @@ const TrackDetails: React.FC<TrackDetailsProps> = ({
   track,
 }) => {
   const { currentPlaybackState } = usePlayerContext();
+
   const currentTrackId = currentPlaybackState?.item?.id;
   const isTrackActive = track.id === currentTrackId;
   const isPlaying = currentPlaybackState?.is_playing;

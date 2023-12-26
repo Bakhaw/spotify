@@ -1,7 +1,13 @@
 import { usePlayerContext } from "@/context/PlayerContext";
-import { useTimerContext } from "@/context/TimerContext";
 
 import useSpotify from "@/hooks/useSpotify";
+
+export interface PlayOptions {
+  context_uri?: string | undefined;
+  uris?: readonly string[] | undefined;
+  offset?: { position: number } | { uri: string } | undefined;
+  position_ms?: number | undefined;
+}
 
 const usePlaybackControls = () => {
   const spotifyApi = useSpotify();
@@ -10,14 +16,14 @@ const usePlaybackControls = () => {
     currentPlaybackState,
     hydratePlaybackState,
   } = usePlayerContext();
-  const { setProgressMs } = useTimerContext();
 
-  const playSong = async (currentTrack: SpotifyApi.TrackObjectFull | null) => {
-    if (!currentTrack) return;
+  const playSong = async (trackId: string, playOptions: PlayOptions) => {
+    if (!trackId) return;
 
     const currentTrackId = currentPlaybackState?.item?.id;
 
-    if (currentTrack.id === currentTrackId) {
+    // resume the paused track
+    if (trackId === currentTrackId) {
       spotifyApi.play();
 
       setCurrentPlaybackState((state) => {
@@ -29,18 +35,17 @@ const usePlaybackControls = () => {
         };
       });
     } else {
+      // play a new track
       const { body: devices } = await spotifyApi.getMyDevices();
 
       spotifyApi.play({
-        context_uri: currentTrack.album.uri,
-        offset: { uri: currentTrack.uri },
         device_id:
           currentPlaybackState?.device.id ?? String(devices.devices[0].id),
+        ...playOptions,
       });
 
       setTimeout(async () => {
         await hydratePlaybackState();
-        setProgressMs(0);
       }, 1000);
     }
   };

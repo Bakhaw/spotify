@@ -2,15 +2,14 @@ import { PauseIcon, PlayIcon } from "lucide-react";
 
 import { usePlayerContext } from "@/context/PlayerContext";
 
-import usePlaybackControls from "@/hooks/usePlaybackControls";
-import useTrack from "@/hooks/useTrack";
+import usePlaybackControls, { PlayOptions } from "@/hooks/usePlaybackControls";
 
 import Visualizer from "@/components/Visualizer";
 
 interface PlaybackControlsProps {
   order?: number | null;
   showPlayIcon: boolean;
-  track: SpotifyApi.TrackObjectFull | SpotifyApi.TrackObjectSimplified;
+  track: SpotifyApi.TrackObjectFull;
 }
 
 const PlaybackControls: React.FC<PlaybackControlsProps> = ({
@@ -23,15 +22,19 @@ const PlaybackControls: React.FC<PlaybackControlsProps> = ({
 
   const isPlaying = currentPlaybackState?.is_playing;
   const currentTrackId = currentPlaybackState?.item?.id;
-  const currentTrack = useTrack(track.id);
 
-  if (!order || !currentTrack) return null;
+  if (!order) return null;
+
+  const playOptions: PlayOptions = {
+    context_uri: track.album.uri,
+    offset: { uri: track.uri },
+  };
 
   return (
     <div className="text-center h-full px-4">
       {showPlayIcon ? (
         <>
-          {currentTrack.id === currentTrackId && isPlaying ? (
+          {track.id === currentTrackId && isPlaying ? (
             <PauseIcon
               className="h-5 w-5 cursor-pointer"
               onClick={pauseSong}
@@ -40,7 +43,7 @@ const PlaybackControls: React.FC<PlaybackControlsProps> = ({
           ) : (
             <PlayIcon
               className="h-5 w-5 cursor-pointer"
-              onClick={() => playSong(currentTrack)}
+              onClick={() => playSong(track.id, playOptions)}
               role="button"
             />
           )}

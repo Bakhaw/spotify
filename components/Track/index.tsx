@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 
-import usePlaybackControls from "@/hooks/usePlaybackControls";
+import usePlaybackControls, { PlayOptions } from "@/hooks/usePlaybackControls";
 import useTrack from "@/hooks/useTrack";
 
 import { Button } from "@/components/ui/button";
@@ -16,7 +16,7 @@ import TrackDetails from "./TrackDetails";
 export interface TrackProps {
   order?: number | null;
   showAlbumName?: boolean; // default true
-  showCover?: boolean;
+  showCover?: boolean; // default false
   showVisualizer?: boolean; // default false
   track: SpotifyApi.TrackObjectFull | SpotifyApi.TrackObjectSimplified;
 }
@@ -24,36 +24,43 @@ export interface TrackProps {
 const Track: React.FC<TrackProps> = ({
   order,
   showAlbumName = true,
-  showCover,
-  showVisualizer,
+  showCover = false,
+  showVisualizer = false,
   track,
 }) => {
-  const [showPlayIcon, setShowIcon] = useState<boolean>(false);
-  const currentTrack = useTrack(track.id);
   const { playSong } = usePlaybackControls();
+  const currentTrack = useTrack(track.id);
+
+  const [showPlayIcon, setShowIcon] = useState<boolean>(false);
 
   if (!currentTrack) return null;
 
+  const playOptions: PlayOptions = {
+    context_uri: currentTrack.album.uri,
+    offset: { uri: currentTrack.uri },
+  };
+
+  // TODO move showPlayIcon state -> causing whole component re-render
   return (
     <Button
       className="transition-all duration-500 flex justify-between items-center p-0 min-h-[56px] h-full w-full cursor-default bg-transparent hover:bg-[#66677070] hover:text-white"
       onMouseEnter={() => setShowIcon(true)}
       onMouseLeave={() => setShowIcon(false)}
-      onDoubleClick={() => playSong(currentTrack)}
+      onDoubleClick={() => playSong(currentTrack.id, playOptions)}
     >
       <div className="flex justify-between items-center w-full">
         <div className="flex justify-start items-center w-full">
           <PlaybackControls
             order={order}
-            track={track}
             showPlayIcon={showPlayIcon}
+            track={currentTrack}
           />
 
           {showCover && (
             <CoverWithPlayButton
               order={order}
-              track={track}
               showPlayIcon={showPlayIcon}
+              track={currentTrack}
             />
           )}
 
