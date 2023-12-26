@@ -48,7 +48,7 @@ function Layout({ children }: { children: React.ReactNode }) {
           className="w-full"
         >
           <ResizablePanel
-            defaultSize={25}
+            defaultSize={20}
             className={cn(
               "h-screen min-w-fit",
               currentPlaybackState ? "pb-[80px]" : "pb-0"
@@ -61,7 +61,7 @@ function Layout({ children }: { children: React.ReactNode }) {
 
           <ResizableHandle />
 
-          <ResizablePanel defaultSize={100}>
+          <ResizablePanel defaultSize={80}>
             <AppHeader />
 
             <div
