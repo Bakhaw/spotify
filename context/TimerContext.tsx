@@ -23,7 +23,10 @@ function TimerContextProvider({ children }: { children: React.ReactNode }) {
     currentPlaybackState?.progress_ms ?? 0
   );
 
+  // initialize the timer using getMyCurrentPlaybackState()
   useEffect(() => {
+    if (!spotifyApi.getAccessToken()) return;
+
     const initProgressMs = async () => {
       const { body } = await spotifyApi.getMyCurrentPlaybackState();
 
@@ -32,11 +35,10 @@ function TimerContextProvider({ children }: { children: React.ReactNode }) {
       setProgressMs(body.progress_ms);
     };
 
-    if (spotifyApi.getAccessToken()) {
-      initProgressMs();
-    }
+    initProgressMs();
   }, [spotifyApi, session]);
 
+  // used to increment progressMs value every second
   useEffect(() => {
     if (!currentPlaybackState?.is_playing) return;
 
@@ -53,6 +55,11 @@ function TimerContextProvider({ children }: { children: React.ReactNode }) {
 
     return () => clearInterval(intervalId);
   }, [progressMs]);
+
+  // used to reset the progressMs when we play a new track
+  useEffect(() => {
+    setProgressMs(0);
+  }, [currentPlaybackState?.item?.id]);
 
   return (
     <TimerContext.Provider
