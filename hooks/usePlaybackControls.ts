@@ -4,11 +4,7 @@ import useSpotify from "@/hooks/useSpotify";
 
 const usePlaybackControls = () => {
   const spotifyApi = useSpotify();
-  const {
-    setCurrentPlaybackState,
-    currentPlaybackState,
-    hydratePlaybackState,
-  } = usePlayerContext();
+  const { setCurrentPlaybackState, currentPlaybackState } = usePlayerContext();
 
   const playSong = async (track: SpotifyApi.TrackObjectFull) => {
     if (!track) return;
@@ -29,6 +25,17 @@ const usePlaybackControls = () => {
       });
     } else {
       // play a new track
+      setCurrentPlaybackState((state) => {
+        if (!state) return null;
+
+        return {
+          ...state,
+          is_playing: true,
+          item: track,
+          progress_ms: 0,
+        };
+      });
+
       const { body: devices } = await spotifyApi.getMyDevices();
 
       spotifyApi.play({
@@ -37,10 +44,6 @@ const usePlaybackControls = () => {
         context_uri: track.album.uri,
         offset: { uri: track.uri },
       });
-
-      setTimeout(async () => {
-        await hydratePlaybackState();
-      }, 1000);
     }
   };
 

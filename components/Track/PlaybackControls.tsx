@@ -24,6 +24,7 @@ const PlaybackControls: React.FC<PlaybackControlsProps> = ({
 
   if (!order) return null;
 
+  const isCurrentTrack = track.id === currentTrackId;
   const isCurrentTrackPlaying = track.id === currentTrackId && isPlaying;
 
   return (
@@ -55,7 +56,7 @@ const PlaybackControls: React.FC<PlaybackControlsProps> = ({
         </div>
       )}
 
-      {!isCurrentTrackPlaying && (
+      {!isCurrentTrack && (
         <span className="block w-5 group-hover:hidden">{order}</span>
       )}
     </div>

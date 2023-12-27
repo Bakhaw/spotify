@@ -14,7 +14,7 @@ import useSpotify from "@/hooks/useSpotify";
 
 interface PlayerContext {
   currentPlaybackState: SpotifyApi.CurrentPlaybackResponse | null;
-  hydratePlaybackState: () => Promise<void>;
+  refreshPlaybackState: () => Promise<void>;
   setCurrentPlaybackState: Dispatch<
     SetStateAction<SpotifyApi.CurrentPlaybackResponse | null>
   >;
@@ -29,7 +29,7 @@ function PlayerContextProvider({ children }: { children: React.ReactNode }) {
   const [currentPlaybackState, setCurrentPlaybackState] =
     useState<SpotifyApi.CurrentPlaybackResponse | null>(null);
 
-  const hydratePlaybackState = async () => {
+  const refreshPlaybackState = async () => {
     const { body } = await spotifyApi.getMyCurrentPlaybackState();
 
     if (!body || !body.item) return;
@@ -39,7 +39,7 @@ function PlayerContextProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (spotifyApi.getAccessToken()) {
-      hydratePlaybackState();
+      refreshPlaybackState();
     }
   }, [spotifyApi, session]);
 
@@ -48,7 +48,7 @@ function PlayerContextProvider({ children }: { children: React.ReactNode }) {
       value={{
         currentPlaybackState,
         setCurrentPlaybackState,
-        hydratePlaybackState,
+        refreshPlaybackState,
       }}
     >
       {children}

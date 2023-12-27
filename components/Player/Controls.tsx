@@ -8,41 +8,85 @@ import useSpotify from "@/hooks/useSpotify";
 import useTrack from "@/hooks/useTrack";
 
 const Controls = () => {
-  const { currentPlaybackState, hydratePlaybackState } = usePlayerContext();
+  const {
+    currentPlaybackState,
+    refreshPlaybackState,
+    setCurrentPlaybackState,
+  } = usePlayerContext();
   const spotifyApi = useSpotify();
   const currentTrack = useTrack(currentPlaybackState?.item?.id);
 
+  const accessToken = spotifyApi.getAccessToken();
+
+  async function getQueue() {
+    const res = await fetch(`/api/getQueue?accessToken=${accessToken}`);
+    const result = await res.json();
+
+    return {
+      currentlyPlaying: result.currently_playing,
+      queue: result.queue,
+    };
+  }
+
+  // TODO handle back button using queue
   async function onBackwardButtonClick() {
     await spotifyApi.skipToPrevious();
 
     // set timeout is used to make sure the previous song has finished fetching
     setTimeout(async () => {
-      await hydratePlaybackState();
+      await refreshPlaybackState();
     }, 500);
   }
 
   async function onForwardButtonClick() {
-    await spotifyApi.skipToNext();
+    const { currentlyPlaying, queue } = await getQueue();
+    const nextTrack = queue[0];
 
-    // set timeout is used to make sure the next song has finished fetching
-    setTimeout(async () => {
-      await hydratePlaybackState();
-    }, 500);
+    setCurrentPlaybackState((state) => {
+      if (!state) return null;
+
+      return {
+        ...state,
+        item: nextTrack,
+        is_playing: true,
+        progress_ms: 0,
+      };
+    });
+
+    await spotifyApi.skipToNext();
   }
 
   async function onTogglePlay() {
     if (currentPlaybackState?.is_playing) {
+      setCurrentPlaybackState((state) => {
+        if (!state) return null;
+
+        return {
+          ...state,
+          is_playing: false,
+        };
+      });
+
       spotifyApi.pause();
 
-      setTimeout(async () => {
-        await hydratePlaybackState();
-      }, 500);
+      // setTimeout(async () => {
+      //   await refreshPlaybackState();
+      // }, 500);
     } else {
+      setCurrentPlaybackState((state) => {
+        if (!state) return null;
+
+        return {
+          ...state,
+          is_playing: true,
+        };
+      });
+
       spotifyApi.play();
 
-      setTimeout(async () => {
-        await hydratePlaybackState();
-      }, 500);
+      // setTimeout(async () => {
+      //   await refreshPlaybackState();
+      // }, 500);
     }
   }
   const color = useDominantColor(currentTrack?.album.images[0].url);

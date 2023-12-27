@@ -17,7 +17,7 @@ export const TimerContext = createContext<TimerContext | null>(null);
 function TimerContextProvider({ children }: { children: React.ReactNode }) {
   const spotifyApi = useSpotify();
   const { data: session } = useSession();
-  const { currentPlaybackState, hydratePlaybackState } = usePlayerContext();
+  const { currentPlaybackState, setCurrentPlaybackState } = usePlayerContext();
 
   const [progressMs, setProgressMs] = useState<number>(
     currentPlaybackState?.progress_ms ?? 0
@@ -46,7 +46,6 @@ function TimerContextProvider({ children }: { children: React.ReactNode }) {
       if (!currentPlaybackState?.item) return;
 
       if (progressMs > currentPlaybackState.item.duration_ms) {
-        hydratePlaybackState();
         setProgressMs(0);
       } else {
         setProgressMs(progressMs + 1000);
@@ -54,12 +53,23 @@ function TimerContextProvider({ children }: { children: React.ReactNode }) {
     }, 1000);
 
     return () => clearInterval(intervalId);
-  }, [progressMs]);
+  }, [currentPlaybackState, progressMs]);
 
   // used to reset the progressMs when we play a new track
   useEffect(() => {
-    setProgressMs(0);
-  }, [currentPlaybackState?.item?.id]);
+    if (currentPlaybackState?.progress_ms === 0) {
+      setProgressMs(0);
+
+      setCurrentPlaybackState((state) => {
+        if (!state) return null;
+
+        return {
+          ...state,
+          progress_ms: 1,
+        };
+      });
+    }
+  }, [currentPlaybackState?.progress_ms, setCurrentPlaybackState]);
 
   return (
     <TimerContext.Provider
