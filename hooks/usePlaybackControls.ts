@@ -2,13 +2,6 @@ import { usePlayerContext } from "@/context/PlayerContext";
 
 import useSpotify from "@/hooks/useSpotify";
 
-export interface PlayOptions {
-  context_uri?: string | undefined;
-  uris?: readonly string[] | undefined;
-  offset?: { position: number } | { uri: string } | undefined;
-  position_ms?: number | undefined;
-}
-
 const usePlaybackControls = () => {
   const spotifyApi = useSpotify();
   const {
@@ -17,13 +10,13 @@ const usePlaybackControls = () => {
     hydratePlaybackState,
   } = usePlayerContext();
 
-  const playSong = async (trackId: string, playOptions: PlayOptions) => {
-    if (!trackId) return;
+  const playSong = async (track: SpotifyApi.TrackObjectFull) => {
+    if (!track) return;
 
     const currentTrackId = currentPlaybackState?.item?.id;
 
     // resume the paused track
-    if (trackId === currentTrackId) {
+    if (track.id === currentTrackId) {
       spotifyApi.play();
 
       setCurrentPlaybackState((state) => {
@@ -41,7 +34,8 @@ const usePlaybackControls = () => {
       spotifyApi.play({
         device_id:
           currentPlaybackState?.device.id ?? String(devices.devices[0].id),
-        ...playOptions,
+        context_uri: track.album.uri,
+        offset: { uri: track.uri },
       });
 
       setTimeout(async () => {

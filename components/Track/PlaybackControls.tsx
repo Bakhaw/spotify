@@ -1,20 +1,19 @@
 import { PauseIcon, PlayIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 import { usePlayerContext } from "@/context/PlayerContext";
 
-import usePlaybackControls, { PlayOptions } from "@/hooks/usePlaybackControls";
+import usePlaybackControls from "@/hooks/usePlaybackControls";
 
 import Visualizer from "@/components/Visualizer";
 
 interface PlaybackControlsProps {
   order?: number | null;
-  showPlayIcon: boolean;
   track: SpotifyApi.TrackObjectFull;
 }
 
 const PlaybackControls: React.FC<PlaybackControlsProps> = ({
   order,
-  showPlayIcon,
   track,
 }) => {
   const { currentPlaybackState } = usePlayerContext();
@@ -25,35 +24,39 @@ const PlaybackControls: React.FC<PlaybackControlsProps> = ({
 
   if (!order) return null;
 
-  const playOptions: PlayOptions = {
-    context_uri: track.album.uri,
-    offset: { uri: track.uri },
-  };
+  const isCurrentTrackPlaying = track.id === currentTrackId && isPlaying;
 
   return (
     <div className="text-center h-full px-4">
-      {showPlayIcon ? (
-        <>
-          {track.id === currentTrackId && isPlaying ? (
-            <PauseIcon
-              className="h-5 w-5 cursor-pointer"
-              onClick={pauseSong}
-              role="button"
-            />
-          ) : (
-            <PlayIcon
-              className="h-5 w-5 cursor-pointer"
-              onClick={() => playSong(track.id, playOptions)}
-              role="button"
-            />
-          )}
-        </>
-      ) : currentTrackId === track.id && isPlaying ? (
-        <div className="flex justify-center items-center h-5 w-5">
+      <div
+        className={cn(
+          "group-hover:block transition-all duration-300",
+          track.id === currentTrackId && !isPlaying ? "block" : "hidden"
+        )}
+      >
+        {isCurrentTrackPlaying ? (
+          <PauseIcon
+            className="h-5 w-5 cursor-pointer"
+            onClick={pauseSong}
+            role="button"
+          />
+        ) : (
+          <PlayIcon
+            className="h-5 w-5 cursor-pointer"
+            onClick={() => playSong(track)}
+            role="button"
+          />
+        )}
+      </div>
+
+      {isCurrentTrackPlaying && (
+        <div className="group-hover:hidden flex justify-center items-center h-5 w-5">
           <Visualizer />
         </div>
-      ) : (
-        <span className="block w-5">{order}</span>
+      )}
+
+      {!isCurrentTrackPlaying && (
+        <span className="block w-5 group-hover:hidden">{order}</span>
       )}
     </div>
   );
