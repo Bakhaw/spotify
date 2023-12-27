@@ -25,6 +25,7 @@ module.exports = {
           "linear-gradient(transparent 0, rgba(0, 0, 0, 0.5) 100%)",
       },
       colors: {
+        scrollbar: "#666770",
         hover: "rgba(102, 103, 112, 0.438)",
         "green-primary": "#1db954",
         black: "#191414",
