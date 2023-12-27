@@ -1,11 +1,9 @@
-"use client";
-
-import { useState } from "react";
 import Link from "next/link";
 
-import usePlaybackControls, { PlayOptions } from "@/hooks/usePlaybackControls";
+import usePlaybackControls from "@/hooks/usePlaybackControls";
 import useTrack from "@/hooks/useTrack";
 
+import Cover from "@/components/Cover";
 import { Button } from "@/components/ui/button";
 
 import CoverWithPlayButton from "./CoverWithPlayButton";
@@ -31,37 +29,31 @@ const Track: React.FC<TrackProps> = ({
   const { playSong } = usePlaybackControls();
   const currentTrack = useTrack(track.id);
 
-  const [showPlayIcon, setShowIcon] = useState<boolean>(false);
-
   if (!currentTrack) return null;
 
-  const playOptions: PlayOptions = {
-    context_uri: currentTrack.album.uri,
-    offset: { uri: currentTrack.uri },
-  };
-
-  // TODO move showPlayIcon state -> causing whole component re-render
   return (
     <Button
-      className="transition-all duration-500 flex justify-between items-center p-0 min-h-[56px] h-full w-full cursor-default bg-transparent hover:bg-[#66677070] hover:text-white"
-      onMouseEnter={() => setShowIcon(true)}
-      onMouseLeave={() => setShowIcon(false)}
-      onDoubleClick={() => playSong(currentTrack.id, playOptions)}
+      className="group transition-all duration-300 flex justify-between items-center p-0 min-h-[56px] h-full w-full cursor-default bg-transparent hover:bg-[#66677070] hover:text-white"
+      onDoubleClick={() => playSong(currentTrack)}
     >
       <div className="flex justify-between items-center w-full">
         <div className="flex justify-start items-center w-full">
-          <PlaybackControls
-            order={order}
-            showPlayIcon={showPlayIcon}
-            track={currentTrack}
-          />
+          <PlaybackControls order={order} track={currentTrack} />
 
           {showCover && (
-            <CoverWithPlayButton
-              order={order}
-              showPlayIcon={showPlayIcon}
-              track={currentTrack}
-            />
+            <>
+              {order ? (
+                <div className="h-[60px] w-[60px] mr-3 relative">
+                  <Cover
+                    alt="Cover"
+                    size="small"
+                    src={currentTrack.album.images[0].url}
+                  />
+                </div>
+              ) : (
+                <CoverWithPlayButton track={currentTrack} />
+              )}
+            </>
           )}
 
           <TrackDetails showVisualizer={showVisualizer} track={currentTrack} />
