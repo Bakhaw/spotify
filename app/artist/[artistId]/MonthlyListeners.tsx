@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 
+import { Skeleton } from "@/components/ui/skeleton";
+
 interface MonthlyListenersProps {
   artistId: string;
 }
@@ -22,7 +24,15 @@ const MonthlyListeners: React.FC<MonthlyListenersProps> = ({ artistId }) => {
     getMonthlyListeners(artistId);
   }, [artistId]);
 
-  return <span className="w-fit text-span">{monthlyListeners}</span>;
+  return (
+    <div className="w-fit">
+      {monthlyListeners ? (
+        <div className="text-span">{monthlyListeners}</div>
+      ) : (
+        <Skeleton className="h-2 w-44 rounded-md bg-span" />
+      )}
+    </div>
+  );
 };
 
 export default MonthlyListeners;

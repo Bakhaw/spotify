@@ -66,7 +66,7 @@ const ArtistDetails: NextPage = () => {
   return (
     <>
       <div
-        className="flex flex-col justify-center items-center gap-2 bg-gradient-secondary py-8"
+        className="flex flex-col justify-center items-center gap-2 bg-gradient-secondary py-4"
         style={{ backgroundColor: generateRGBString(color) }}
       >
         <Cover
