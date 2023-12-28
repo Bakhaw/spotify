@@ -1,7 +1,11 @@
+"use client";
+
+import { useEffect } from "react";
+import { useSession } from "next-auth/react";
 import { debounce } from "lodash";
 
 import { usePlayerContext } from "@/context/PlayerContext";
-import { useTimerContext } from "@/context/TimerContext";
+import { useTimerStore } from "@/store/useTimerStore";
 
 import useSpotify from "@/hooks/useSpotify";
 
@@ -9,8 +13,42 @@ import { Slider } from "@/components/ui/slider";
 
 function Timer() {
   const spotifyApi = useSpotify();
+  const { data: session } = useSession();
+
   const { currentPlaybackState } = usePlayerContext();
-  const { progressMs, setProgressMs } = useTimerContext();
+  const { progressMs, setProgressMs } = useTimerStore();
+
+  // initialize the timer using getMyCurrentPlaybackState()
+  useEffect(() => {
+    if (!spotifyApi.getAccessToken()) return;
+
+    const initProgressMs = async () => {
+      const { body } = await spotifyApi.getMyCurrentPlaybackState();
+
+      if (!body || !body.progress_ms) return;
+
+      setProgressMs(body.progress_ms);
+    };
+
+    initProgressMs();
+  }, [spotifyApi, session, setProgressMs]);
+
+  // used to increment progressMs value every second
+  useEffect(() => {
+    if (!currentPlaybackState?.is_playing) return;
+
+    const intervalId = setInterval(() => {
+      if (!currentPlaybackState?.item) return;
+
+      if (progressMs > currentPlaybackState.item.duration_ms) {
+        setProgressMs(0);
+      } else {
+        setProgressMs(progressMs + 1000);
+      }
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, [currentPlaybackState, progressMs, setProgressMs]);
 
   function onProgressChange(value: number[]) {
     const newProgressMs = value[0];

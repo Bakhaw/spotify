@@ -47,7 +47,8 @@
     "spotify-web-api-node": "^5.0.2",
     "tailwind-merge": "^2.1.0",
     "tailwind-scrollbar-hide": "^1.1.7",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "zustand": "^4.4.7"
   },
   "devDependencies": {
     "@types/jsdom": "^21.1.6",

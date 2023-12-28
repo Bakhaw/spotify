@@ -1,10 +1,12 @@
 import { usePlayerContext } from "@/context/PlayerContext";
+import { useTimerStore } from "@/store/useTimerStore";
 
 import useSpotify from "@/hooks/useSpotify";
 
 const usePlaybackControls = () => {
   const spotifyApi = useSpotify();
   const { setCurrentPlaybackState, currentPlaybackState } = usePlayerContext();
+  const setProgressMs = useTimerStore((s) => s.setProgressMs);
 
   const playSong = async (track: SpotifyApi.TrackObjectFull) => {
     if (!track) return;
@@ -35,6 +37,8 @@ const usePlaybackControls = () => {
           progress_ms: 0,
         };
       });
+
+      setProgressMs(0);
 
       const { body: devices } = await spotifyApi.getMyDevices();
 
