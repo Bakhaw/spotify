@@ -1,13 +1,16 @@
+import { usePlayerStore } from "@/store/usePlayerStore";
+
+import useTrack from "@/hooks/useTrack";
+
 import ArtistLink from "@/components/ArtistLink";
 import Cover from "@/components/Cover";
 import Draggable from "@/components/Draggable";
 import TrackLink from "@/components/TrackLink";
 
-interface CurrentTrackProps {
-  track?: SpotifyApi.TrackObjectFull;
-}
+function CurrentTrack() {
+  const currentPlaybackState = usePlayerStore((s) => s.currentPlaybackState);
+  const track = useTrack(currentPlaybackState?.item?.id);
 
-const CurrentTrack: React.FC<CurrentTrackProps> = ({ track }) => {
   if (!track) return null; // TODO skeleton
 
   return (
@@ -34,6 +37,6 @@ const CurrentTrack: React.FC<CurrentTrackProps> = ({ track }) => {
       </Draggable>
     </div>
   );
-};
+}
 
 export default CurrentTrack;

@@ -1,10 +1,6 @@
 import { ChevronUpIcon } from "lucide-react";
 import { AiOutlineArrowsAlt } from "react-icons/ai";
 
-import { usePlayerStore } from "@/store/usePlayerStore";
-
-import useTrack from "@/hooks/useTrack";
-
 import Controls from "./Controls";
 import CurrentTrack from "./CurrentTrack";
 import DeviceSelector from "./DeviceSelector";
@@ -16,14 +12,11 @@ interface ClosedPlayerProps {
 }
 
 const ClosedPlayer: React.FC<ClosedPlayerProps> = ({ onOpen }) => {
-  const currentPlaybackState = usePlayerStore((s) => s.currentPlaybackState);
-  const track = useTrack(currentPlaybackState?.item?.id);
-
   return (
     <div className="w-full">
       <div className="flex items-center justify-between w-full p-2">
         <div className="w-full">
-          <CurrentTrack track={track} />
+          <CurrentTrack />
         </div>
 
         <div className="block md:hidden pr-3">
