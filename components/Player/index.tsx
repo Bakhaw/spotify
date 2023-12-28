@@ -20,10 +20,12 @@ const Player: React.FC = () => {
   const spotifyApi = useSpotify();
   const { data: session } = useSession();
   const pathname = usePathname();
+
   const { currentPlaybackState, fetchPlaybackState } = usePlayerStore();
-  const track = useTrack(currentPlaybackState?.item?.id);
 
   const [showFullPlayer, setShowFullPlayer] = useState(false);
+
+  const track = useTrack(currentPlaybackState?.item?.id);
 
   function openPlayer() {
     setShowFullPlayer(true);

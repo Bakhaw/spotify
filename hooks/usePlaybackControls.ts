@@ -9,12 +9,12 @@ const usePlaybackControls = () => {
   const setProgressMs = useTimerStore((s) => s.setProgressMs);
 
   const playSong = async (track: SpotifyApi.TrackObjectFull) => {
-    if (!track || !currentPlaybackState) return;
+    if (!track) return;
 
-    const currentTrackId = currentPlaybackState.item?.id;
+    const currentTrackId = currentPlaybackState?.item?.id;
 
     // resume the paused track
-    if (track.id === currentTrackId) {
+    if (currentPlaybackState && track.id === currentTrackId) {
       spotifyApi.play();
 
       setCurrentPlaybackState({
@@ -23,16 +23,16 @@ const usePlaybackControls = () => {
       });
     } else {
       // play a new track
+      const { body: devices } = await spotifyApi.getMyDevices();
+
       setCurrentPlaybackState({
-        ...currentPlaybackState,
+        device: devices.devices[0],
         is_playing: true,
         item: track,
         progress_ms: 0,
       });
 
       setProgressMs(0);
-
-      const { body: devices } = await spotifyApi.getMyDevices();
 
       spotifyApi.play({
         device_id:

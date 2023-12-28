@@ -1,4 +1,5 @@
 import { usePlayerStore } from "@/store/usePlayerStore";
+import { useTimerStore } from "@/store/useTimerStore";
 
 import isWhite from "@/lib/isWhite";
 import { cn } from "@/lib/utils";
@@ -8,22 +9,16 @@ import useSpotify from "@/hooks/useSpotify";
 import useTrack from "@/hooks/useTrack";
 
 const Controls = () => {
-  const { currentPlaybackState, fetchPlaybackState, setCurrentPlaybackState } =
-    usePlayerStore();
   const spotifyApi = useSpotify();
+
+  const {
+    currentPlaybackState,
+    fetchNextTrack,
+    fetchPlaybackState,
+    setCurrentPlaybackState,
+  } = usePlayerStore();
+  const setProgressMs = useTimerStore((s) => s.setProgressMs);
   const currentTrack = useTrack(currentPlaybackState?.item?.id);
-
-  const accessToken = spotifyApi.getAccessToken();
-
-  async function getQueue() {
-    const res = await fetch(`/api/getQueue?accessToken=${accessToken}`);
-    const result = await res.json();
-
-    return {
-      currentlyPlaying: result.currently_playing as SpotifyApi.TrackObjectFull,
-      queue: result.queue as SpotifyApi.TrackObjectFull[],
-    };
-  }
 
   // TODO handle back button using queue
   async function onBackwardButtonClick() {
@@ -36,18 +31,8 @@ const Controls = () => {
   }
 
   async function onForwardButtonClick() {
-    if (!currentPlaybackState) return;
-
-    const { currentlyPlaying, queue } = await getQueue();
-    const nextTrack = queue[0];
-
-    setCurrentPlaybackState({
-      ...currentPlaybackState,
-      item: nextTrack,
-      is_playing: true,
-      progress_ms: 0,
-    });
-
+    fetchNextTrack();
+    setProgressMs(0);
     await spotifyApi.skipToNext();
   }
 
@@ -61,10 +46,6 @@ const Controls = () => {
       });
 
       spotifyApi.pause();
-
-      // setTimeout(async () => {
-      //   await refreshPlaybackState();
-      // }, 500);
     } else {
       setCurrentPlaybackState({
         ...currentPlaybackState,
@@ -72,14 +53,9 @@ const Controls = () => {
       });
 
       spotifyApi.play();
-
-      // setTimeout(async () => {
-      //   await refreshPlaybackState();
-      // }, 500);
     }
   }
   const color = useDominantColor(currentTrack?.album.images[0].url);
-
   const isWhiteBg = isWhite(color);
 
   return (

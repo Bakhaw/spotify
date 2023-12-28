@@ -15,8 +15,9 @@ function Timer() {
   const spotifyApi = useSpotify();
   const { data: session } = useSession();
 
-  const currentPlaybackState = usePlayerStore((s) => s.currentPlaybackState);
-  const { progressMs, setProgressMs } = useTimerStore();
+  const { currentPlaybackState, fetchNextTrack, setCurrentPlaybackState } =
+    usePlayerStore();
+  const { progressMs, refetch, setProgressMs, setRefetch } = useTimerStore();
 
   // initialize the timer using getMyCurrentPlaybackState()
   useEffect(() => {
@@ -33,14 +34,15 @@ function Timer() {
     initProgressMs();
   }, [spotifyApi, session, setProgressMs]);
 
-  // used to increment progressMs value every second
+  // used to increment progressMs value every second AND to update currentPlaybackState with the nextTrack
   useEffect(() => {
     if (!currentPlaybackState?.is_playing) return;
 
     const intervalId = setInterval(() => {
       if (!currentPlaybackState?.item) return;
 
-      if (progressMs > currentPlaybackState.item.duration_ms) {
+      if (progressMs > currentPlaybackState.item.duration_ms - 2000) {
+        setRefetch(true);
         setProgressMs(0);
       } else {
         setProgressMs(progressMs + 1000);
@@ -48,7 +50,21 @@ function Timer() {
     }, 1000);
 
     return () => clearInterval(intervalId);
-  }, [currentPlaybackState, progressMs, setProgressMs]);
+  }, [
+    currentPlaybackState,
+    progressMs,
+    setCurrentPlaybackState,
+    setProgressMs,
+    setRefetch,
+  ]);
+
+  // used to catch if we approach the end of a song, the "refetch" value is true whenever it's the case (updates in setInterval)
+  useEffect(() => {
+    if (refetch) {
+      fetchNextTrack();
+      setRefetch(false); // reinitialize refetch
+    }
+  }, [refetch, fetchNextTrack, setRefetch]);
 
   function onProgressChange(value: number[]) {
     const newProgressMs = value[0];
