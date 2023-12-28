@@ -1,8 +1,7 @@
-import Link from "next/link";
 import { ChevronUpIcon } from "lucide-react";
 import { AiOutlineArrowsAlt } from "react-icons/ai";
 
-import { usePlayerContext } from "@/context/PlayerContext";
+import { usePlayerStore } from "@/store/usePlayerStore";
 
 import useTrack from "@/hooks/useTrack";
 
@@ -17,7 +16,7 @@ interface ClosedPlayerProps {
 }
 
 const ClosedPlayer: React.FC<ClosedPlayerProps> = ({ onOpen }) => {
-  const { currentPlaybackState } = usePlayerContext();
+  const currentPlaybackState = usePlayerStore((s) => s.currentPlaybackState);
   const track = useTrack(currentPlaybackState?.item?.id);
 
   return (

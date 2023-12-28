@@ -1,8 +1,7 @@
 import { debounce } from "lodash";
-import { Volume1Icon, Volume2Icon } from "lucide-react";
 import { TbVolume, TbVolumeOff } from "react-icons/tb";
 
-import { usePlayerContext } from "@/context/PlayerContext";
+import { usePlayerStore } from "@/store/usePlayerStore";
 
 import useSpotify from "@/hooks/useSpotify";
 
@@ -10,21 +9,19 @@ import { Slider } from "@/components/ui/slider";
 
 function Volume() {
   const spotifyApi = useSpotify();
-  const { currentPlaybackState, setCurrentPlaybackState } = usePlayerContext();
+  const { currentPlaybackState, setCurrentPlaybackState } = usePlayerStore();
 
   function onVolumeChange(value: number[]) {
+    if (!currentPlaybackState) return;
+
     const newVolume = value[0];
 
-    setCurrentPlaybackState((state) => {
-      if (!state) return null;
-
-      return {
-        ...state,
-        device: {
-          ...state.device,
-          volume_percent: newVolume,
-        },
-      };
+    setCurrentPlaybackState({
+      ...currentPlaybackState,
+      device: {
+        ...currentPlaybackState.device,
+        volume_percent: newVolume,
+      },
     });
 
     if (newVolume > 0 && newVolume < 100) {
@@ -41,19 +38,17 @@ function Volume() {
   const isVolumeMuted = currentPlaybackState?.device.volume_percent === 0;
 
   function toggleMuteVolume() {
+    if (!currentPlaybackState) return;
+
     const defaultVolume = 30;
     const newVolume = isVolumeMuted ? defaultVolume : 0;
 
-    setCurrentPlaybackState((state) => {
-      if (!state) return null;
-
-      return {
-        ...state,
-        device: {
-          ...state.device,
-          volume_percent: newVolume,
-        },
-      };
+    setCurrentPlaybackState({
+      ...currentPlaybackState,
+      device: {
+        ...currentPlaybackState.device,
+        volume_percent: newVolume,
+      },
     });
 
     spotifyApi.setVolume(newVolume);

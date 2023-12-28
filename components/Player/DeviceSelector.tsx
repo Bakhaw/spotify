@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { LuMonitorSpeaker } from "react-icons/lu";
 
-import { usePlayerContext } from "@/context/PlayerContext";
+import { usePlayerStore } from "@/store/usePlayerStore";
 
 import useFetch from "@/hooks/useFetch";
 import useSpotify from "@/hooks/useSpotify";
@@ -15,7 +15,7 @@ import {
 
 function DeviceSelector() {
   const spotifyApi = useSpotify();
-  const { currentPlaybackState, hydratePlaybackState } = usePlayerContext();
+  const { currentPlaybackState, fetchPlaybackState } = usePlayerStore();
 
   const getDevices = useCallback(() => spotifyApi.getMyDevices(), [spotifyApi]);
 
@@ -31,7 +31,7 @@ function DeviceSelector() {
     await spotifyApi.transferMyPlayback([device.id]);
 
     setTimeout(async () => {
-      await hydratePlaybackState();
+      await fetchPlaybackState();
     }, 500);
   }
 

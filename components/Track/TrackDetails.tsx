@@ -1,4 +1,4 @@
-import { usePlayerContext } from "@/context/PlayerContext";
+import { usePlayerStore } from "@/store/usePlayerStore";
 
 import ArtistLink from "@/components/ArtistLink";
 import TrackLink from "@/components/TrackLink";
@@ -12,7 +12,7 @@ const TrackDetails: React.FC<TrackDetailsProps> = ({
   showVisualizer = false,
   track,
 }) => {
-  const { currentPlaybackState } = usePlayerContext();
+  const currentPlaybackState = usePlayerStore((s) => s.currentPlaybackState);
 
   const currentTrackId = currentPlaybackState?.item?.id;
   const isTrackActive = track.id === currentTrackId;

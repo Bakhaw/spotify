@@ -1,4 +1,4 @@
-import { usePlayerContext } from "@/context/PlayerContext";
+import { usePlayerStore } from "@/store/usePlayerStore";
 
 import isWhite from "@/lib/isWhite";
 import { cn } from "@/lib/utils";
@@ -8,11 +8,8 @@ import useSpotify from "@/hooks/useSpotify";
 import useTrack from "@/hooks/useTrack";
 
 const Controls = () => {
-  const {
-    currentPlaybackState,
-    refreshPlaybackState,
-    setCurrentPlaybackState,
-  } = usePlayerContext();
+  const { currentPlaybackState, fetchPlaybackState, setCurrentPlaybackState } =
+    usePlayerStore();
   const spotifyApi = useSpotify();
   const currentTrack = useTrack(currentPlaybackState?.item?.id);
 
@@ -23,8 +20,8 @@ const Controls = () => {
     const result = await res.json();
 
     return {
-      currentlyPlaying: result.currently_playing,
-      queue: result.queue,
+      currentlyPlaying: result.currently_playing as SpotifyApi.TrackObjectFull,
+      queue: result.queue as SpotifyApi.TrackObjectFull[],
     };
   }
 
@@ -34,37 +31,33 @@ const Controls = () => {
 
     // set timeout is used to make sure the previous song has finished fetching
     setTimeout(async () => {
-      await refreshPlaybackState();
+      await fetchPlaybackState();
     }, 500);
   }
 
   async function onForwardButtonClick() {
+    if (!currentPlaybackState) return;
+
     const { currentlyPlaying, queue } = await getQueue();
     const nextTrack = queue[0];
 
-    setCurrentPlaybackState((state) => {
-      if (!state) return null;
-
-      return {
-        ...state,
-        item: nextTrack,
-        is_playing: true,
-        progress_ms: 0,
-      };
+    setCurrentPlaybackState({
+      ...currentPlaybackState,
+      item: nextTrack,
+      is_playing: true,
+      progress_ms: 0,
     });
 
     await spotifyApi.skipToNext();
   }
 
   async function onTogglePlay() {
-    if (currentPlaybackState?.is_playing) {
-      setCurrentPlaybackState((state) => {
-        if (!state) return null;
+    if (!currentPlaybackState) return;
 
-        return {
-          ...state,
-          is_playing: false,
-        };
+    if (currentPlaybackState.is_playing) {
+      setCurrentPlaybackState({
+        ...currentPlaybackState,
+        is_playing: false,
       });
 
       spotifyApi.pause();
@@ -73,13 +66,9 @@ const Controls = () => {
       //   await refreshPlaybackState();
       // }, 500);
     } else {
-      setCurrentPlaybackState((state) => {
-        if (!state) return null;
-
-        return {
-          ...state,
-          is_playing: true,
-        };
+      setCurrentPlaybackState({
+        ...currentPlaybackState,
+        is_playing: true,
       });
 
       spotifyApi.play();

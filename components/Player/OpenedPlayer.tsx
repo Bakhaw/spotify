@@ -1,6 +1,6 @@
 import { ChevronDownIcon } from "lucide-react";
 
-import { usePlayerContext } from "@/context/PlayerContext";
+import { usePlayerStore } from "@/store/usePlayerStore";
 
 import useTrack from "@/hooks/useTrack";
 
@@ -17,7 +17,7 @@ interface OpenedPlayer {
 }
 
 const OpenedPlayer: React.FC<OpenedPlayer> = ({ onClose }) => {
-  const { currentPlaybackState } = usePlayerContext();
+  const currentPlaybackState = usePlayerStore((s) => s.currentPlaybackState);
   const track = useTrack(currentPlaybackState?.item?.id);
 
   if (!track) return null;

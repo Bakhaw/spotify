@@ -1,7 +1,7 @@
 import { PauseIcon, PlayIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-import { usePlayerContext } from "@/context/PlayerContext";
+import { usePlayerStore } from "@/store/usePlayerStore";
 
 import usePlaybackControls from "@/hooks/usePlaybackControls";
 
@@ -16,7 +16,7 @@ const PlaybackControls: React.FC<PlaybackControlsProps> = ({
   order,
   track,
 }) => {
-  const { currentPlaybackState } = usePlayerContext();
+  const currentPlaybackState = usePlayerStore((s) => s.currentPlaybackState);
   const { pauseSong, playSong } = usePlaybackControls();
 
   const isPlaying = currentPlaybackState?.is_playing;

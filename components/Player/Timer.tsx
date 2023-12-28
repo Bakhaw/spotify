@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { debounce } from "lodash";
 
-import { usePlayerContext } from "@/context/PlayerContext";
+import { usePlayerStore } from "@/store/usePlayerStore";
 import { useTimerStore } from "@/store/useTimerStore";
 
 import useSpotify from "@/hooks/useSpotify";
@@ -15,7 +15,7 @@ function Timer() {
   const spotifyApi = useSpotify();
   const { data: session } = useSession();
 
-  const { currentPlaybackState } = usePlayerContext();
+  const currentPlaybackState = usePlayerStore((s) => s.currentPlaybackState);
   const { progressMs, setProgressMs } = useTimerStore();
 
   // initialize the timer using getMyCurrentPlaybackState()

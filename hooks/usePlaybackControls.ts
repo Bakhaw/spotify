@@ -1,41 +1,33 @@
-import { usePlayerContext } from "@/context/PlayerContext";
+import { usePlayerStore } from "@/store/usePlayerStore";
 import { useTimerStore } from "@/store/useTimerStore";
 
 import useSpotify from "@/hooks/useSpotify";
 
 const usePlaybackControls = () => {
   const spotifyApi = useSpotify();
-  const { setCurrentPlaybackState, currentPlaybackState } = usePlayerContext();
+  const { currentPlaybackState, setCurrentPlaybackState } = usePlayerStore();
   const setProgressMs = useTimerStore((s) => s.setProgressMs);
 
   const playSong = async (track: SpotifyApi.TrackObjectFull) => {
-    if (!track) return;
+    if (!track || !currentPlaybackState) return;
 
-    const currentTrackId = currentPlaybackState?.item?.id;
+    const currentTrackId = currentPlaybackState.item?.id;
 
     // resume the paused track
     if (track.id === currentTrackId) {
       spotifyApi.play();
 
-      setCurrentPlaybackState((state) => {
-        if (!state) return null;
-
-        return {
-          ...state,
-          is_playing: true,
-        };
+      setCurrentPlaybackState({
+        ...currentPlaybackState,
+        is_playing: true,
       });
     } else {
       // play a new track
-      setCurrentPlaybackState((state) => {
-        if (!state) return null;
-
-        return {
-          ...state,
-          is_playing: true,
-          item: track,
-          progress_ms: 0,
-        };
+      setCurrentPlaybackState({
+        ...currentPlaybackState,
+        is_playing: true,
+        item: track,
+        progress_ms: 0,
       });
 
       setProgressMs(0);
@@ -52,13 +44,11 @@ const usePlaybackControls = () => {
   };
 
   const pauseSong = () => {
-    setCurrentPlaybackState((state) => {
-      if (!state) return null;
+    if (!currentPlaybackState) return;
 
-      return {
-        ...state,
-        is_playing: false,
-      };
+    setCurrentPlaybackState({
+      ...currentPlaybackState,
+      is_playing: false,
     });
 
     spotifyApi.pause();

@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 
-import { usePlayerContext } from "@/context/PlayerContext";
+import { usePlayerStore } from "@/store/usePlayerStore";
 
 import useDominantColor from "@/hooks/useDominantColor";
+import useSpotify from "@/hooks/useSpotify";
 import useTrack from "@/hooks/useTrack";
 
 import generateRGBString from "@/lib/generateRGBString";
@@ -15,8 +17,10 @@ import ClosedPlayer from "./ClosedPlayer";
 import OpenedPlayer from "./OpenedPlayer";
 
 const Player: React.FC = () => {
+  const spotifyApi = useSpotify();
+  const { data: session } = useSession();
   const pathname = usePathname();
-  const { currentPlaybackState } = usePlayerContext();
+  const { currentPlaybackState, fetchPlaybackState } = usePlayerStore();
   const track = useTrack(currentPlaybackState?.item?.id);
 
   const [showFullPlayer, setShowFullPlayer] = useState(false);
@@ -29,6 +33,14 @@ const Player: React.FC = () => {
     setShowFullPlayer(false);
   }
 
+  // initalize player
+  useEffect(() => {
+    if (!spotifyApi.getAccessToken()) return;
+
+    fetchPlaybackState();
+  }, [spotifyApi, session, fetchPlaybackState]);
+
+  // close the OpenedPlayer on route change
   useEffect(() => {
     closePlayer();
   }, [pathname]);

@@ -1,8 +1,10 @@
+import { useEffect } from "react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { IoPlaySkipBack, IoPlaySkipForward } from "react-icons/io5";
 import { FaPause, FaPlay } from "react-icons/fa6";
 
-import { usePlayerContext } from "@/context/PlayerContext";
+import { usePlayerStore } from "@/store/usePlayerStore";
 
 import useDominantColor from "@/hooks/useDominantColor";
 import useSpotify from "@/hooks/useSpotify";
@@ -22,12 +24,24 @@ import vinylColors from "./vinylColors";
 
 const Vinyl = () => {
   const spotifyApi = useSpotify();
-  const {
-    currentPlaybackState,
-    hydratePlaybackState,
-    setCurrentPlaybackState,
-  } = usePlayerContext();
+  const { data: session } = useSession();
+
+  const { currentPlaybackState, fetchPlaybackState, setCurrentPlaybackState } =
+    usePlayerStore();
   const track = useTrack(currentPlaybackState?.item?.id);
+
+  // initialize playback state
+  useEffect(() => {
+    console.log(currentPlaybackState);
+
+    if (!spotifyApi.getAccessToken()) return;
+
+    // if the store already contain a playback state, just use it -> no need to fetch
+    // if the store is empty, we need to fetch
+    if (!currentPlaybackState) {
+      fetchPlaybackState();
+    }
+  }, [currentPlaybackState, spotifyApi, session, fetchPlaybackState]);
 
   // this value is corresponding to .album-box .active .vinyl animation-delay property
   const activeVinylAnimationDelayProperty = 2600;
@@ -37,43 +51,39 @@ const Vinyl = () => {
 
     // set timeout is used to make sure the previous song has finished fetching
     setTimeout(async () => {
-      await hydratePlaybackState();
+      await fetchPlaybackState();
     }, activeVinylAnimationDelayProperty);
   }
 
   async function onNextButtonClick() {
-    setCurrentPlaybackState((state) => {
-      if (!state) return null;
+    if (!currentPlaybackState) return;
 
-      return {
-        ...state,
-        is_playing: false,
-      };
+    setCurrentPlaybackState({
+      ...currentPlaybackState,
+      is_playing: false,
     });
 
     await spotifyApi.skipToNext();
 
     // set timeout is used to make sure the next song has finished fetching
     setTimeout(async () => {
-      await hydratePlaybackState();
+      await fetchPlaybackState();
     }, 500);
   }
 
   async function togglePlay() {
+    if (!currentPlaybackState) return;
+
     if (currentPlaybackState?.is_playing) {
       spotifyApi.pause();
 
       setTimeout(async () => {
-        await hydratePlaybackState();
+        await fetchPlaybackState();
       }, 500);
     } else {
-      setCurrentPlaybackState((state) => {
-        if (!state) return null;
-
-        return {
-          ...state,
-          is_playing: true,
-        };
+      setCurrentPlaybackState({
+        ...currentPlaybackState,
+        is_playing: true,
       });
 
       setTimeout(() => {

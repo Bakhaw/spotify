@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 
-import { usePlayerContext } from "@/context/PlayerContext";
+import { usePlayerStore } from "@/store/usePlayerStore";
 
 import { cn } from "@/lib/utils";
 
@@ -20,7 +20,7 @@ import { Toaster } from "@/components/ui/toaster";
 
 function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const { currentPlaybackState } = usePlayerContext();
+  const currentPlaybackState = usePlayerStore((s) => s.currentPlaybackState);
 
   const fullScreenPages = ["/login", "/studio"];
   const isFullScreenPage = fullScreenPages.includes(pathname);
