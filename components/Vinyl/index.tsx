@@ -32,8 +32,6 @@ const Vinyl = () => {
 
   // initialize playback state
   useEffect(() => {
-    console.log(currentPlaybackState);
-
     if (!spotifyApi.getAccessToken()) return;
 
     // if the store already contain a playback state, just use it -> no need to fetch
