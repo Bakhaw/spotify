@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { debounce } from "lodash";
 
@@ -15,11 +15,14 @@ function Timer() {
   const spotifyApi = useSpotify();
   const { data: session } = useSession();
 
-  const { currentPlaybackState, fetchNextTrack, setCurrentPlaybackState } =
+  const { currentPlaybackState, fetchQueue, setCurrentPlaybackState } =
     usePlayerStore();
   const { progressMs, refetch, setProgressMs, setRefetch } = useTimerStore();
 
-  // initialize the timer using getMyCurrentPlaybackState()
+  const [nextTrack, setNextTrack] = useState<SpotifyApi.TrackObjectFull | null>(
+    null
+  );
+
   useEffect(() => {
     if (!spotifyApi.getAccessToken()) return;
 
@@ -34,16 +37,28 @@ function Timer() {
     initProgressMs();
   }, [spotifyApi, session, setProgressMs]);
 
-  // used to increment progressMs value every second AND to update currentPlaybackState with the nextTrack
+  // used to increment progressMs value every second AND to handle nextTrack
   useEffect(() => {
     if (!currentPlaybackState?.is_playing) return;
 
     const intervalId = setInterval(() => {
-      if (!currentPlaybackState?.item) return;
+      if (progressMs === null || !currentPlaybackState?.item) return;
 
-      if (progressMs > currentPlaybackState.item.duration_ms - 2000) {
-        setRefetch(true);
+      if (nextTrack && progressMs > currentPlaybackState.item.duration_ms) {
+        setCurrentPlaybackState({
+          ...currentPlaybackState,
+          is_playing: true,
+          item: nextTrack,
+          progress_ms: 0,
+        });
+
         setProgressMs(0);
+
+        setRefetch(false);
+      } else if (progressMs > currentPlaybackState.item.duration_ms - 5000) {
+        // fetch next track 5 seconds before the current playing track ends
+        setRefetch(true);
+        setProgressMs(progressMs + 1000);
       } else {
         setProgressMs(progressMs + 1000);
       }
@@ -61,10 +76,40 @@ function Timer() {
   // used to catch if we approach the end of a song, the "refetch" value is true whenever it's the case (updates in setInterval)
   useEffect(() => {
     if (refetch) {
-      fetchNextTrack();
-      setRefetch(false); // reinitialize refetch
+      console.log("handle refetch");
+
+      const handleRefetch = async () => {
+        const queue = await fetchQueue();
+
+        if (!queue || !currentPlaybackState) return;
+
+        // sometimes we have desynchro due to fetch duration, and the next track already started inside Spotify
+        // so we check if the Spotify current playing track
+        // if different from our playbackState => it means this is the nextTrack and we'll use it
+        if (queue.currentlyPlaying.id !== currentPlaybackState.item.id) {
+          const { body } = await spotifyApi.getMyCurrentPlaybackState();
+
+          if (!body.item) return;
+
+          setCurrentPlaybackState({
+            device: body.device,
+            item: body.item,
+            is_playing: body.is_playing,
+            progress_ms: body.progress_ms,
+          });
+
+          setProgressMs(body.progress_ms);
+          setRefetch(false);
+        } else {
+          // this case is fired most of the time
+          const nextTrack = queue.queue[0];
+          setNextTrack(nextTrack);
+        }
+      };
+
+      handleRefetch();
     }
-  }, [refetch, fetchNextTrack, setRefetch]);
+  }, [refetch]);
 
   function onProgressChange(value: number[]) {
     const newProgressMs = value[0];
@@ -79,7 +124,7 @@ function Timer() {
     onProgressChange(value);
   }, 300);
 
-  if (!currentPlaybackState?.item) return null;
+  if (progressMs === null || !currentPlaybackState?.item) return null;
 
   const currentMinutes = Math.floor((progressMs / 1000 / 60) << 0);
   const currentSeconds = Math.floor((progressMs / 1000) % 60);

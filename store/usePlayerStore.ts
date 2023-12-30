@@ -14,11 +14,11 @@ type CurrentPlaybackState = {
 interface PlayerStore {
   currentPlaybackState: CurrentPlaybackState | null;
   fetchPlaybackState: () => Promise<void>;
-  fetchNextTrack: () => void;
+  fetchQueue: () => Promise<Queue | undefined>;
   setCurrentPlaybackState: (currentPlaybackState: CurrentPlaybackState) => void;
 }
 
-export const usePlayerStore = create<PlayerStore>()((set, get) => ({
+export const usePlayerStore = create<PlayerStore>()((set) => ({
   currentPlaybackState: null,
   fetchPlaybackState: async () => {
     const { body } = await spotifyApi.getMyCurrentPlaybackState();
@@ -34,26 +34,11 @@ export const usePlayerStore = create<PlayerStore>()((set, get) => ({
       },
     });
   },
-  fetchNextTrack: async () => {
-    const { currentPlaybackState } = get();
-
-    if (!currentPlaybackState) return;
-
+  fetchQueue: async () => {
     const res = await fetch(`/api/getQueue`);
     const queue = (await res.json()) as Queue | undefined;
 
-    if (!queue) return;
-
-    const nextTrack = queue.queue[0];
-
-    set({
-      currentPlaybackState: {
-        ...currentPlaybackState,
-        item: nextTrack,
-        is_playing: true,
-        progress_ms: 0,
-      },
-    });
+    return queue;
   },
   setCurrentPlaybackState: (currentPlaybackState: CurrentPlaybackState) =>
     set({ currentPlaybackState }),

@@ -5,6 +5,7 @@ import { IoPlaySkipBack, IoPlaySkipForward } from "react-icons/io5";
 import { FaPause, FaPlay } from "react-icons/fa6";
 
 import { usePlayerStore } from "@/store/usePlayerStore";
+import { useTimerStore } from "@/store/useTimerStore";
 
 import useDominantColor from "@/hooks/useDominantColor";
 import useSpotify from "@/hooks/useSpotify";
@@ -26,8 +27,13 @@ const Vinyl = () => {
   const spotifyApi = useSpotify();
   const { data: session } = useSession();
 
-  const { currentPlaybackState, fetchPlaybackState, setCurrentPlaybackState } =
-    usePlayerStore();
+  const {
+    currentPlaybackState,
+    fetchPlaybackState,
+    fetchQueue,
+    setCurrentPlaybackState,
+  } = usePlayerStore();
+  const setProgressMs = useTimerStore((s) => s.setProgressMs);
   const track = useTrack(currentPlaybackState?.item?.id);
 
   // initialize playback state
@@ -44,6 +50,7 @@ const Vinyl = () => {
   // this value is corresponding to .album-box .active .vinyl animation-delay property
   const activeVinylAnimationDelayProperty = 2600;
 
+  // todo handle prev with queue
   async function onPreviousButtonClick() {
     await spotifyApi.skipToPrevious();
 
@@ -54,19 +61,30 @@ const Vinyl = () => {
   }
 
   async function onNextButtonClick() {
-    if (!currentPlaybackState) return;
+    const queue = await fetchQueue();
+    const nextTrack = queue?.queue[0];
+
+    if (!nextTrack || !currentPlaybackState) return;
 
     setCurrentPlaybackState({
       ...currentPlaybackState,
       is_playing: false,
     });
 
-    await spotifyApi.skipToNext();
+    spotifyApi.pause();
 
-    // set timeout is used to make sure the next song has finished fetching
     setTimeout(async () => {
-      await fetchPlaybackState();
-    }, 500);
+      setCurrentPlaybackState({
+        ...currentPlaybackState,
+        item: nextTrack,
+        is_playing: true,
+        progress_ms: 0,
+      });
+
+      setProgressMs(0);
+
+      await spotifyApi.skipToNext();
+    }, activeVinylAnimationDelayProperty);
   }
 
   async function togglePlay() {

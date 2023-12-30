@@ -20,7 +20,6 @@ const Studio: NextPage = () => {
   const track = useTrack(currentPlaybackState?.item?.id);
   const color = useDominantColor(track?.album.images[0].url);
 
-  console.log({ currentPlaybackState, track });
   return (
     <div
       className="flex flex-col justify-center items-center h-screen bg-gradient-secondary overflow-hidden"

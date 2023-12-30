@@ -13,8 +13,8 @@ const Controls = () => {
 
   const {
     currentPlaybackState,
-    fetchNextTrack,
     fetchPlaybackState,
+    fetchQueue,
     setCurrentPlaybackState,
   } = usePlayerStore();
   const setProgressMs = useTimerStore((s) => s.setProgressMs);
@@ -31,8 +31,20 @@ const Controls = () => {
   }
 
   async function onForwardButtonClick() {
-    fetchNextTrack();
+    const queue = await fetchQueue();
+    const nextTrack = queue?.queue[0];
+
+    if (!currentPlaybackState || !nextTrack) return;
+
+    setCurrentPlaybackState({
+      ...currentPlaybackState,
+      item: nextTrack,
+      is_playing: true,
+      progress_ms: 0,
+    });
+
     setProgressMs(0);
+
     await spotifyApi.skipToNext();
   }
 
