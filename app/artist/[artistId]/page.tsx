@@ -54,7 +54,8 @@ const ArtistDetails: NextPage = () => {
     (project) => project.album_group === "appears_on"
   );
 
-  const color = useDominantColor(artist?.images[0].url);
+  const dominantColor = useDominantColor(artist?.images[0].url);
+  const backgroundColor = generateRGBString(dominantColor);
 
   const [currentFilter, setCurrentFilter] = useState<string>("albums");
   const handleFilterClick = (filter: string) => {
@@ -66,7 +67,7 @@ const ArtistDetails: NextPage = () => {
     <>
       <div
         className="flex flex-col justify-center items-center gap-2 bg-gradient-secondary py-4"
-        style={{ backgroundColor: generateRGBString(color) }}
+        style={{ backgroundColor }}
       >
         <Cover
           alt={`${artist?.name} cover`}
@@ -79,15 +80,16 @@ const ArtistDetails: NextPage = () => {
       </div>
 
       <div
-        style={{ backgroundColor: generateRGBString(color) }}
+        style={{ backgroundColor }}
         className="flex flex-col gap-8 bg-gradient p-4 sm:px-8"
       >
         <div className="flex gap-4">
           <Button
             onClick={() => handleFilterClick("albums")}
             style={{
-              backgroundColor:
-                currentFilter === "albums" ? generateRGBString(color, 0.7) : "",
+              ...(currentFilter === "albums" && {
+                backgroundColor: generateRGBString(dominantColor, 0.7),
+              }),
             }}
             size="sm"
             className={cn(
@@ -100,10 +102,9 @@ const ArtistDetails: NextPage = () => {
           <Button
             size="sm"
             style={{
-              backgroundColor:
-                currentFilter === "singles"
-                  ? generateRGBString(color, 0.7)
-                  : "",
+              ...(currentFilter === "singles" && {
+                backgroundColor: generateRGBString(dominantColor, 0.7),
+              }),
             }}
             className={cn(
               "w-auto justify-start rounded-full text-xs",

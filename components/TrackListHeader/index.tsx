@@ -1,6 +1,7 @@
+import useDominantColor from "@/hooks/useDominantColor";
+
 import formatMs from "@/lib/formatMs";
 import generateRGBString from "@/lib/generateRGBString";
-import useDominantColor from "@/hooks/useDominantColor";
 
 import ArtistLink from "@/components/ArtistLink";
 import Cover from "@/components/Cover";
@@ -12,7 +13,8 @@ interface TrackListHeaderProps {
 }
 
 const TrackListHeader: React.FC<TrackListHeaderProps> = ({ album }) => {
-  const color = useDominantColor(album?.images[0].url);
+  const dominantColor = useDominantColor(album?.images[0].url);
+  const backgroundColor = generateRGBString(dominantColor);
 
   if (!album) return <TrackListHeaderSkeleton />;
 
@@ -27,7 +29,7 @@ const TrackListHeader: React.FC<TrackListHeaderProps> = ({ album }) => {
   return (
     <div
       className="flex flex-col md:flex-row items-center gap-5 pt-20 px-3 pb-3 rounded-t-md bg-gradient-secondary sm:p-10"
-      style={{ backgroundColor: generateRGBString(color) }}
+      style={{ backgroundColor }}
     >
       <Cover alt={`${album.name} cover`} src={album.images[0].url} />
       <div className="flex flex-col justify-between w-full gap-2 pl-4 text-white">

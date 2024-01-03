@@ -18,13 +18,16 @@ const Studio: NextPage = () => {
   const [useAlbumColor, setUseAlbumColor] = useState(true);
 
   const track = useTrack(currentPlaybackState?.item?.id);
-  const color = useDominantColor(track?.album.images[0].url);
+  const dominantColor = useDominantColor(track?.album.images[0].url);
+  const backgroundColor = useAlbumColor
+    ? generateRGBString(dominantColor)
+    : "#000";
 
   return (
     <div
       className="flex flex-col justify-center items-center h-screen bg-gradient-secondary overflow-hidden"
       style={{
-        backgroundColor: useAlbumColor ? generateRGBString(color) : "#000",
+        backgroundColor,
       }}
     >
       <Button

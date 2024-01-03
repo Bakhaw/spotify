@@ -67,8 +67,8 @@ const Controls = () => {
       spotifyApi.play();
     }
   }
-  const color = useDominantColor(currentTrack?.album.images[0].url);
-  const isWhiteBg = isWhite(color);
+  const dominantColor = useDominantColor(currentTrack?.album.images[0].url);
+  const isWhiteBg = isWhite(dominantColor);
 
   return (
     <div className="flex justify-center items-center gap-4 h-full w-full">

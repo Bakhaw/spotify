@@ -25,16 +25,15 @@ const Album: NextPage = () => {
   );
 
   const album = useFetch<SpotifyApi.SingleAlbumResponse>(getAlbum, [albumId]);
-  const color = useDominantColor(album?.images[0].url);
+
+  const dominantColor = useDominantColor(album?.images[0].url);
+  const backgroundColor = generateRGBString(dominantColor);
 
   return (
     <div className="flex flex-col">
       <TrackListHeader album={album} />
 
-      <div
-        style={{ backgroundColor: generateRGBString(color) }}
-        className="bg-gradient px-2"
-      >
+      <div style={{ backgroundColor }} className="bg-gradient px-2">
         <TrackList
           showAlbumName={false}
           showOrder
