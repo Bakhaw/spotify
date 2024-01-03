@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 
+import { useLayoutStore } from "@/store/useLayoutStore";
 import { usePlayerStore } from "@/store/usePlayerStore";
 
 import { cn } from "@/lib/utils";
@@ -22,6 +23,7 @@ import { Toaster } from "@/components/ui/toaster";
 function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const currentPlaybackState = usePlayerStore((s) => s.currentPlaybackState);
+  const collapseSidebar = useLayoutStore((s) => s.collapseSidebar);
 
   const fullScreenPages = ["/login", "/studio"];
   const isFullScreenPage = fullScreenPages.includes(pathname);
@@ -31,6 +33,14 @@ function Layout({ children }: { children: React.ReactNode }) {
   const isFullScreenPageResponsive = fullStartWithPages.some((page) =>
     pathname?.startsWith(page)
   );
+
+  function onResize(size: number) {
+    if (size <= 7) {
+      collapseSidebar(true);
+    } else {
+      collapseSidebar(false);
+    }
+  }
 
   return (
     <div className="h-screen">
@@ -46,7 +56,6 @@ function Layout({ children }: { children: React.ReactNode }) {
         <ResizablePanelGroup
           autoSaveId="resizablePanelGroup"
           direction="horizontal"
-          className="w-full"
         >
           <ResizablePanel
             defaultSize={20}
@@ -54,6 +63,7 @@ function Layout({ children }: { children: React.ReactNode }) {
               "hidden sm:block h-screen min-w-[88px]",
               currentPlaybackState ? "pb-[80px]" : "pb-0"
             )}
+            onResize={onResize}
           >
             <ScrollArea className="@container h-full">
               <SideBar />
