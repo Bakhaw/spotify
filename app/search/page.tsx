@@ -56,7 +56,7 @@ const Search = () => {
     };
 
     search();
-  }, [query]);
+  }, [query, spotifyApi]);
 
   const tracks = searchResponse?.tracks?.items ?? [];
   const artists = searchResponse?.artists?.items ?? [];
