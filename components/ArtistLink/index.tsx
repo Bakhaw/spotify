@@ -27,7 +27,7 @@ const ArtistLink: React.FC<ArtistLinkProps> = ({
             {artist.name}
           </Link>
           {artists.length > 1 && index < artists.length - 1 && (
-            <span>,&nbsp;</span>
+            <span className="self-end">,&nbsp;</span>
           )}
         </li>
       ))}
