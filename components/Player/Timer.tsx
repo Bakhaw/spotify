@@ -67,6 +67,7 @@ function Timer() {
     return () => clearInterval(intervalId);
   }, [
     currentPlaybackState,
+    nextTrack,
     progressMs,
     setCurrentPlaybackState,
     setProgressMs,
@@ -76,8 +77,6 @@ function Timer() {
   // used to catch if we approach the end of a song, the "refetch" value is true whenever it's the case (updates in setInterval)
   useEffect(() => {
     if (refetch) {
-      console.log("handle refetch");
-
       const handleRefetch = async () => {
         const queue = await fetchQueue();
 
@@ -109,7 +108,15 @@ function Timer() {
 
       handleRefetch();
     }
-  }, [refetch]);
+  }, [
+    refetch,
+    currentPlaybackState,
+    spotifyApi,
+    fetchQueue,
+    setCurrentPlaybackState,
+    setProgressMs,
+    setRefetch,
+  ]);
 
   function onProgressChange(value: number[]) {
     const newProgressMs = value[0];

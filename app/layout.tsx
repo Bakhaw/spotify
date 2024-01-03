@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { getServerSession } from "next-auth";
 
 import Layout from "@/components/Layout";
 import Providers from "@/components/Providers";
@@ -46,12 +45,10 @@ type Props = {
 };
 
 async function RootLayout({ children }: Props) {
-  const session = await getServerSession();
-
   return (
     <html lang="en">
       <body className={myFont.className}>
-        <SessionProvider session={session}>
+        <SessionProvider>
           <Providers>
             <Layout>{children}</Layout>
           </Providers>
