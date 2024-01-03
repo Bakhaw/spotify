@@ -132,7 +132,7 @@ const Vinyl = () => {
         )}
       >
         <>
-          <div className="album-cover">
+          <div className="album-cover hover:scale-110">
             <Image
               alt={`${track?.name} cover`}
               height={trackImage?.height ?? 300}
@@ -142,13 +142,9 @@ const Vinyl = () => {
               src={trackImage?.url ?? CoverFallback}
             />
             {track && (
-              <div className="album-cover__details">
-                <h1 className="album-cover__details__track-name">
-                  <TrackLink track={track} />
-                </h1>
-                <h1 className="album-cover__details__artist-name">
-                  <ArtistLink artists={track.artists} />
-                </h1>
+              <div className="absolute bottom-[-100px] left-0">
+                <TrackLink className="text-4xl" track={track} />
+                <ArtistLink className="text-3xl" artists={track.artists} />
               </div>
             )}
           </div>
