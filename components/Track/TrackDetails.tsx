@@ -20,7 +20,7 @@ const TrackDetails: React.FC<TrackDetailsProps> = ({
 
   return (
     <div className="flex flex-col max-w-[45vw] md:max-w-80">
-      <div className="flex gap-2">
+      <div className="flex items-baseline gap-2">
         {showVisualizer && isTrackActive && isPlaying && <Visualizer />}
 
         <TrackLink isActive={isTrackActive} track={track} />
