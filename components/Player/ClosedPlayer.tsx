@@ -13,34 +13,32 @@ interface ClosedPlayerProps {
 
 const ClosedPlayer: React.FC<ClosedPlayerProps> = ({ onOpen }) => {
   return (
-    <div className="w-full">
-      <div className="flex items-center justify-between w-full p-2">
-        <div className="w-full">
-          <CurrentTrack />
-        </div>
+    <div className="flex items-center justify-between h-16 w-full px-2">
+      <div className="w-full">
+        <CurrentTrack />
+      </div>
 
-        <div className="block md:hidden pr-3">
-          <ChevronUpIcon
-            className="h-6 w-6 transition-all	hover:scale-125"
-            role="button"
-            onClick={onOpen}
-          />
-        </div>
+      <div className="block md:hidden">
+        <ChevronUpIcon
+          className="h-6 w-6 transition-all	hover:scale-125"
+          role="button"
+          onClick={onOpen}
+        />
+      </div>
 
-        <div className="hidden md:flex w-full flex-grow flex-col justify-center items-center">
-          <Controls />
+      <div className="hidden md:flex w-full flex-grow flex-col justify-center items-center">
+        <Controls />
 
-          <Timer />
-        </div>
+        <Timer />
+      </div>
 
-        <div className="hidden md:flex justify-end items-center gap-3 w-full">
-          <DeviceSelector />
-          <Volume />
-          <AiOutlineArrowsAlt
-            className="h-6 w-6 transition-all hover:scale-110"
-            role="button"
-          />
-        </div>
+      <div className="hidden md:flex justify-end items-center gap-3 w-full">
+        <DeviceSelector />
+        <Volume />
+        <AiOutlineArrowsAlt
+          className="h-6 w-6 transition-all hover:scale-110"
+          role="button"
+        />
       </div>
     </div>
   );

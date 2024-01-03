@@ -62,7 +62,6 @@ const ArtistDetails: NextPage = () => {
   };
 
   // TODO skeleton
-
   return (
     <>
       <div
@@ -81,9 +80,9 @@ const ArtistDetails: NextPage = () => {
 
       <div
         style={{ backgroundColor: generateRGBString(color) }}
-        className="flex flex-col gap-8 bg-gradient"
+        className="flex flex-col gap-8 bg-gradient p-4 sm:px-8"
       >
-        <div className="flex gap-4 p-4">
+        <div className="flex gap-4">
           <Button
             onClick={() => handleFilterClick("albums")}
             style={{
