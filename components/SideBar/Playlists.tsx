@@ -30,7 +30,7 @@ function Playlists() {
           {isSideBarCollapsed ? (
             <TooltipProvider delayDuration={150} skipDelayDuration={75}>
               <Tooltip>
-                <TooltipTrigger>
+                <TooltipTrigger asChild>
                   <Button
                     className="w-full h-full p-0 bg-transparent"
                     size="sm"
