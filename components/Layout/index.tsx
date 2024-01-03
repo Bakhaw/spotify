@@ -35,7 +35,9 @@ function Layout({ children }: { children: React.ReactNode }) {
   );
 
   function onResize(size: number) {
-    if (size <= 7) {
+    const minSize = 5; // under 5, the panel doesn't have enough space to display Cover + playlist name
+
+    if (size <= minSize) {
       collapseSidebar(true);
     } else {
       collapseSidebar(false);

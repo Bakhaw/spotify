@@ -18,7 +18,10 @@ import {
 const STORAGE_KEY = "topTracks__timeRange";
 
 function TopTracks() {
-  const storedTimeRange = localStorage.getItem(STORAGE_KEY) as TimeRange;
+  const storedTimeRange =
+    typeof window !== "undefined"
+      ? (localStorage.getItem(STORAGE_KEY) as TimeRange)
+      : undefined;
   const defaultTimeRange: TimeRange = storedTimeRange ?? "short_term";
 
   const [timeRange, setTimeRange] = useState<TimeRange>(defaultTimeRange);
