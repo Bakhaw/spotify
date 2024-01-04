@@ -49,7 +49,7 @@ const OpenedPlayer: React.FC<OpenedPlayer> = ({ onClose }) => {
               <ArtistLink artists={track.artists} />
             </div>
 
-            <LikeButton track={track} />
+            {/* <LikeButton track={track} /> */}
           </div>
 
           <div className="flex flex-col">

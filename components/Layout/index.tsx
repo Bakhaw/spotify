@@ -26,10 +26,10 @@ function Layout({ children }: { children: React.ReactNode }) {
   const isFullScreenPage = fullScreenPages.includes(pathname);
   const isHomePage = pathname === "/";
 
-  // const fullStartWithPages = ["/album", "/artist"];
-  // const isFullScreenPageResponsive = fullStartWithPages.some((page) =>
-  //   pathname?.startsWith(page)
-  // );
+  const fullStartWithPages = ["/album", "/artist"];
+  const isFullScreenPageResponsive = fullStartWithPages.some((page) =>
+    pathname?.startsWith(page)
+  );
 
   return (
     <div className="h-screen">
@@ -67,7 +67,9 @@ function Layout({ children }: { children: React.ReactNode }) {
             <div
               className={cn(
                 "h-full overflow-x-scroll",
-                isHomePage ? "px-0" : "px-2 sm:px-8",
+                isHomePage || isFullScreenPageResponsive
+                  ? "px-0"
+                  : "px-2 sm:px-8",
                 currentPlaybackState ? "pb-[136px]" : "pb-[64px]" // 160px = AppHeader + Player + padding // 64px = AppHeader
               )}
             >

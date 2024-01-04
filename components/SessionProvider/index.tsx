@@ -1,4 +1,5 @@
 "use client";
+
 import { Session } from "next-auth";
 import { SessionProvider as NextAuthSessionProvider } from "next-auth/react";
 
