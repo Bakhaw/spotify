@@ -1,27 +1,27 @@
-import { LuLibrary, LuMusic2 } from "react-icons/lu";
+import { LuLibrary } from "react-icons/lu";
 import { HiOutlineSquares2X2 } from "react-icons/hi2";
 import { PiVinylRecord } from "react-icons/pi";
+import { GoHome } from "react-icons/go";
 
 const routes = [
   {
     href: "/",
-    icon: <LuMusic2 className="h-6 w-6 md:h-4 md:w-4" />,
-    text: "Listen Now",
+    icon: <GoHome className="h-full w-full" />,
+    text: "Home",
   },
   {
-    disabled: true,
     href: "/search",
-    icon: <HiOutlineSquares2X2 className="h-6 w-6 md:h-4 md:w-4" />,
+    icon: <HiOutlineSquares2X2 className="h-full w-full" />,
     text: "Browse",
   },
   {
     href: "/library",
-    icon: <LuLibrary className="h-6 w-6 md:h-5 md:w-5" />,
+    icon: <LuLibrary className="h-full w-full" />,
     text: "Library",
   },
   {
     href: "/studio",
-    icon: <PiVinylRecord className="h-6 w-6 md:h-5 md:w-5" />,
+    icon: <PiVinylRecord className="h-full w-full" />,
     text: "Studio",
   },
 ];

@@ -7,6 +7,7 @@ import { usePlayerStore } from "@/store/usePlayerStore";
 import { cn } from "@/lib/utils";
 
 import AppHeader from "@/components/AppHeader";
+import BottomBar from "@/components/BottomBar";
 import Player from "@/components/Player";
 import SideBar from "@/components/SideBar";
 
@@ -50,7 +51,7 @@ function Layout({ children }: { children: React.ReactNode }) {
           <ResizablePanel
             defaultSize={20}
             className={cn(
-              "h-screen min-w-[88px] hidden sm:block",
+              "hidden sm:block h-screen min-w-[88px]",
               currentPlaybackState ? "pb-[80px]" : "pb-0"
             )}
           >
@@ -70,7 +71,9 @@ function Layout({ children }: { children: React.ReactNode }) {
                 isHomePage || isFullScreenPageResponsive
                   ? "px-0"
                   : "px-2 sm:px-8",
-                currentPlaybackState ? "pb-[136px]" : "pb-[64px]" // 136px = AppHeader + Player + padding // 64px = AppHeader
+                currentPlaybackState
+                  ? "pb-[196px] sm:pb-[136px]" // 196px = {BottomBar} + AppHeader + {Player} + padding
+                  : "pb-[124px] sm:pb-[64px]" // 124px = {BottomBar} + AppHeader + padding
               )}
             >
               {children}
@@ -79,6 +82,10 @@ function Layout({ children }: { children: React.ReactNode }) {
 
           <Player />
           <Toaster />
+
+          <div className="sm:hidden w-full fixed bottom-0">
+            <BottomBar />
+          </div>
         </ResizablePanelGroup>
       )}
     </div>

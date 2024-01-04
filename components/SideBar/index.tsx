@@ -20,7 +20,6 @@ function SideBar() {
           <Button
             key={route.text}
             className="px-2 w-full"
-            disabled={route.disabled}
             size="sm"
             variant={pathname === route.href ? "secondary" : "ghost"}
           >
@@ -28,7 +27,7 @@ function SideBar() {
               className="flex items-center h-full w-full gap-4"
               href={route.href}
             >
-              <div className="mx-auto @xs:mx-0">{route.icon}</div>
+              <div className="mx-auto @xs:mx-0 h-5 w-5">{route.icon}</div>
               <span className="hidden @xs:block">{route.text}</span>
             </Link>
           </Button>

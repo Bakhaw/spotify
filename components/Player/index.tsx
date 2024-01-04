@@ -53,7 +53,7 @@ const Player: React.FC = () => {
 
   return (
     <div
-      className="fixed bottom-0 px-2 pb-2 pt-0 z-10 bg-transparent backdrop-blur-sm"
+      className="fixed bottom-[60px] sm:bottom-0 px-2 pb-2 pt-0 z-10 bg-transparent backdrop-blur-sm"
       style={{
         color: isWhite(color) ? "text-black" : "#fff",
         height: showFullPlayer ? "100vh" : "auto",
