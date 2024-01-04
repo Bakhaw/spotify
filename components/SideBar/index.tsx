@@ -15,7 +15,7 @@ function SideBar() {
 
   return (
     <div className="h-full p-4">
-      <div className="flex flex-col gap-3 items-center justify-center md:items-start md:justify-start">
+      <div className="flex flex-col gap-3 items-center justify-center @xs:items-start @xs:justify-start">
         {routes.map((route) => (
           <Button
             key={route.text}
@@ -28,8 +28,8 @@ function SideBar() {
               className="flex items-center h-full w-full gap-4"
               href={route.href}
             >
-              <div className="mx-auto md:mx-0">{route.icon}</div>
-              <span className="hidden md:block">{route.text}</span>
+              <div className="mx-auto @xs:mx-0">{route.icon}</div>
+              <span className="hidden @xs:block">{route.text}</span>
             </Link>
           </Button>
         ))}

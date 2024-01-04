@@ -15,6 +15,9 @@ module.exports = {
       },
     },
     extend: {
+      containers: {
+        xs: "90px",
+      },
       letterSpacing: {
         span: "letter-spacing: -1px;",
       },
@@ -85,5 +88,8 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    require("@tailwindcss/container-queries"),
+  ],
 };

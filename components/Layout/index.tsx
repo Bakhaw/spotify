@@ -50,11 +50,11 @@ function Layout({ children }: { children: React.ReactNode }) {
           <ResizablePanel
             defaultSize={20}
             className={cn(
-              "h-screen min-w-fit",
+              "h-screen min-w-[88px] hidden sm:block",
               currentPlaybackState ? "pb-[80px]" : "pb-0"
             )}
           >
-            <ScrollArea className="h-full">
+            <ScrollArea className="@container h-full">
               <SideBar />
             </ScrollArea>
           </ResizablePanel>
@@ -67,7 +67,7 @@ function Layout({ children }: { children: React.ReactNode }) {
             <div
               className={cn(
                 "h-full overflow-x-scroll",
-                isHomePage ? "px-0" : "px-8",
+                isHomePage ? "px-0" : "px-2 sm:px-8",
                 currentPlaybackState ? "pb-[136px]" : "pb-[64px]" // 160px = AppHeader + Player + padding // 64px = AppHeader
               )}
             >

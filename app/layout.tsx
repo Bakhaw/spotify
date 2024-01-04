@@ -44,7 +44,7 @@ type Props = {
   children?: React.ReactNode;
 };
 
-async function RootLayout({ children }: Props) {
+function RootLayout({ children }: Props) {
   return (
     <html lang="en">
       <body className={myFont.className}>

@@ -11,7 +11,7 @@ function AppHeader() {
   if (pathname === "/login") return null;
 
   return (
-    <div className="flex justify-between items-center px-8 py-4">
+    <div className="flex justify-between items-center p-4 sm:px-8">
       <div className="flex gap-2">
         <button
           aria-label="Navigate to the previous page"

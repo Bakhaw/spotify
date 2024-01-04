@@ -23,7 +23,7 @@ function Playlists() {
             size="sm"
           >
             <Link
-              className="flex justify-center p-1 items-center gap-4 h-full w-full md:justify-start hover:bg-[#666770] hover:text-white"
+              className="flex justify-center p-1 items-center gap-4 h-full w-full @xs:justify-start hover:bg-[#666770] hover:text-white"
               href={`/playlist/${playlist.id}`}
             >
               <Cover
@@ -31,7 +31,7 @@ function Playlists() {
                 additionalCss="h-[40px] w-[40px]"
                 src={playlist.images?.[0]?.url}
               />
-              <span className="hidden md:block">{playlist.name}</span>
+              <span className="hidden @xs:block">{playlist.name}</span>
             </Link>
           </Button>
         </Droppable>
