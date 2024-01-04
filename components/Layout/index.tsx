@@ -70,7 +70,7 @@ function Layout({ children }: { children: React.ReactNode }) {
                 isHomePage || isFullScreenPageResponsive
                   ? "px-0"
                   : "px-2 sm:px-8",
-                currentPlaybackState ? "pb-[136px]" : "pb-[64px]" // 160px = AppHeader + Player + padding // 64px = AppHeader
+                currentPlaybackState ? "pb-[136px]" : "pb-[64px]" // 136px = AppHeader + Player + padding // 64px = AppHeader
               )}
             >
               {children}

@@ -43,7 +43,7 @@ const Album: NextPage = () => {
       </div>
 
       {album && (
-        <div className="p-4 sm:px-0">
+        <div className="p-4">
           <AlbumReleaseDate releaseDate={album.release_date} />
           <AlbumCopyrights copyrights={album.copyrights} />
         </div>
