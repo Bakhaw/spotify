@@ -10,6 +10,7 @@ import useDominantColor from "@/hooks/useDominantColor";
 import useSpotify from "@/hooks/useSpotify";
 import useTrack from "@/hooks/useTrack";
 
+import { cn } from "@/lib/utils";
 import generateRGBString from "@/lib/generateRGBString";
 import isWhite from "@/lib/isWhite";
 
@@ -53,7 +54,10 @@ const Player: React.FC = () => {
 
   return (
     <div
-      className="fixed bottom-[60px] sm:bottom-0 px-2 pb-2 pt-0 z-10 bg-transparent backdrop-blur-sm"
+      className={cn(
+        "fixed px-2 pb-2 pt-0 z-10 bg-transparent backdrop-blur-sm",
+        showFullPlayer ? "bottom-0" : "bottom-[60px] sm:bottom-0 "
+      )}
       style={{
         color: isWhite(color) ? "text-black" : "#fff",
         height: showFullPlayer ? "100vh" : "auto",

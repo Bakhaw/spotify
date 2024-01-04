@@ -23,10 +23,7 @@ const OpenedPlayer: React.FC<OpenedPlayer> = ({ onClose }) => {
   if (!track) return null;
 
   return (
-    <div
-      className="overflow-hidden flex flex-col justify-between items-center w-full p-5"
-      style={{ height: "100dvh" }}
-    >
+    <div className="flex flex-col justify-start items-center h-full w-full p-4 gap-12">
       <ChevronDownIcon
         className="h-6 w-6 self-end"
         role="button"
