@@ -15,8 +15,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+const STORAGE_KEY = "topTracks__timeRange";
+
 function TopTracks() {
-  const [timeRange, setTimeRange] = useState<TimeRange>("long_term");
+  const storedTimeRange = localStorage.getItem(STORAGE_KEY) as TimeRange;
+  const defaultTimeRange: TimeRange = storedTimeRange ?? "short_term";
+
+  const [timeRange, setTimeRange] = useState<TimeRange>(defaultTimeRange);
 
   const spotifyApi = useSpotify();
 
@@ -29,6 +34,7 @@ function TopTracks() {
 
   function onTimeRangeChange(timeRange: TimeRange) {
     setTimeRange(timeRange);
+    localStorage.setItem(STORAGE_KEY, timeRange);
   }
 
   const labels = {
