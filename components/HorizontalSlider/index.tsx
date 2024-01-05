@@ -1,4 +1,6 @@
 import Link from "next/link";
+import Image from "next/image";
+
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 
 import { cn } from "@/lib/utils";
@@ -12,6 +14,10 @@ import {
 } from "@/components/ui/carousel";
 
 import HorizontalSliderSkeleton from "./HorizontalSliderSkeleton";
+
+import disqueOr from "../../assets/disqueOr.svg";
+import disquePlatine from "../../assets/disquePlatine.svg";
+import disqueDiamant from "../../assets/disqueDiamant.svg";
 
 interface HorizontalSliderProps {
   className?: string;
@@ -29,6 +35,8 @@ const HorizontalSlider: React.FC<HorizontalSliderProps> = ({
   title,
   type,
 }) => {
+  const imageSources = [disqueDiamant, disquePlatine, disqueOr];
+
   return (
     <>
       {items ? (
@@ -56,10 +64,19 @@ const HorizontalSlider: React.FC<HorizontalSliderProps> = ({
                       additionalCss="h-[150px] w-[150px] sm:h-[200px] sm:w-[200px]"
                       src={item.images?.[0]?.url}
                     />
-
-                    <h2 className="line-clamp-3">
-                      {index + 1}. {item.name}
-                    </h2>
+                    <div className="flex justify-between items-center">
+                      <h2 className="line-clamp-3">
+                        {index + 1}. {item.name}
+                      </h2>
+                      {index < imageSources.length && (
+                        <Image
+                          src={imageSources[index]}
+                          alt={imageSources[index]}
+                          height={30}
+                          width={30}
+                        />
+                      )}
+                    </div>
                   </CarouselItem>
                 </Link>
               ))}

@@ -33,13 +33,16 @@ const TrackList: React.FC<TrackListProps> = ({
               track && (
                 <li key={`${track.id}-${index}`}>
                   <Draggable id={`track_list:${track.id}`}>
-                    <Track
-                      order={showOrder ? index + 1 : null}
-                      showAlbumName={showAlbumName}
-                      showCover={showCover}
-                      showVisualizer={showVisualizer}
-                      track={track}
-                    />
+                    <div className="flex items-center gap-3">
+                      <p>{index + 1}</p>
+                      <Track
+                        order={showOrder ? index + 1 : null}
+                        showAlbumName={showAlbumName}
+                        showCover={showCover}
+                        showVisualizer={showVisualizer}
+                        track={track}
+                      />
+                    </div>
                   </Draggable>
                 </li>
               )
