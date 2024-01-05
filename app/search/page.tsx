@@ -82,8 +82,12 @@ const Search = () => {
       {searchResponse && (
         <div className="space-y-6">
           <TrackList showCover tracks={tracks} title="tracks" />
-          <HorizontalSlider items={artists} type="artist" title="artists" />
-          <HorizontalSlider items={albums} type="album" title="albums" />
+
+          <h1 className="text-3xl font-bold lowercase">artists</h1>
+          <HorizontalSlider items={artists} type="artist" />
+
+          <h1 className="text-3xl font-bold lowercase">albums</h1>
+          <HorizontalSlider items={albums} type="album" />
         </div>
       )}
     </div>
