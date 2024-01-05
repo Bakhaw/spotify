@@ -9,6 +9,8 @@ import useSpotify from "@/hooks/useSpotify";
 import useDominantColor from "@/hooks/useDominantColor";
 import generateRGBString from "@/lib/generateRGBString";
 
+import AppHeader from "@/components/AppHeader";
+import Container from "@/components/Container";
 import TrackList from "@/components/TrackList";
 import TrackListHeader from "@/components/TrackListHeader";
 
@@ -30,24 +32,32 @@ const Album: NextPage = () => {
   const backgroundColor = generateRGBString(dominantColor);
 
   return (
-    <div className="flex flex-col">
-      <TrackListHeader album={album} />
-
-      <div style={{ backgroundColor }} className="bg-gradient px-2">
-        <TrackList
-          showAlbumName={false}
-          showOrder
-          tracks={album?.tracks.items}
-        />
+    <>
+      <div className="relative">
+        <AppHeader backgroundColor={backgroundColor} />
       </div>
 
-      {album && (
-        <div className="p-4">
-          <AlbumReleaseDate releaseDate={album.release_date} />
-          <AlbumCopyrights copyrights={album.copyrights} />
+      <Container>
+        <div className="flex flex-col mt-14">
+          <TrackListHeader album={album} />
+
+          <div style={{ backgroundColor }} className="bg-gradient px-2 sm:px-8">
+            <TrackList
+              showAlbumName={false}
+              showOrder
+              tracks={album?.tracks.items}
+            />
+          </div>
+
+          {album && (
+            <div className="p-4 sm:px-8">
+              <AlbumReleaseDate releaseDate={album.release_date} />
+              <AlbumCopyrights copyrights={album.copyrights} />
+            </div>
+          )}
         </div>
-      )}
-    </div>
+      </Container>
+    </>
   );
 };
 

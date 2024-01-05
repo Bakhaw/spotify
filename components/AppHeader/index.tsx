@@ -4,14 +4,25 @@ import { ChevronLeftCircleIcon, ChevronRightCircleIcon } from "lucide-react";
 import ThemeToggle from "@/components/ThemeToggle";
 import UserNav from "@/components/UserNav";
 
-function AppHeader() {
+interface AppHeaderProps {
+  backgroundColor?: string;
+}
+
+const AppHeader: React.FC<AppHeaderProps> = ({ backgroundColor }) => {
   const router = useRouter();
   const pathname = usePathname();
 
   if (pathname === "/login") return null;
 
   return (
-    <div className="flex justify-between items-center p-4 sm:px-8">
+    <div
+      className="flex justify-between items-center w-full h-14 px-4 sm:px-8 z-50 bg-primary absolute"
+      style={{
+        ...(backgroundColor && {
+          backgroundColor,
+        }),
+      }}
+    >
       <div className="flex gap-2">
         <button
           aria-label="Navigate to the previous page"
@@ -36,6 +47,6 @@ function AppHeader() {
       </div>
     </div>
   );
-}
+};
 
 export default AppHeader;

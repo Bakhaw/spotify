@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 
 import AppHeader from "@/components/AppHeader";
 import BottomBar from "@/components/BottomBar";
+import Container from "@/components/Container";
 import Player from "@/components/Player";
 import SideBar from "@/components/SideBar";
 
@@ -27,7 +28,6 @@ function Layout({ children }: { children: React.ReactNode }) {
 
   const fullScreenPages = ["/login", "/studio"];
   const isFullScreenPage = fullScreenPages.includes(pathname);
-  const isHomePage = pathname === "/";
 
   const fullStartWithPages = ["/album", "/artist"];
   const isFullScreenPageResponsive = fullStartWithPages.some((page) =>
@@ -48,9 +48,7 @@ function Layout({ children }: { children: React.ReactNode }) {
     <div className="h-screen">
       {isFullScreenPage ? (
         <>
-          <div className="absolute">
-            <AppHeader />
-          </div>
+          <AppHeader />
 
           <div className="h-full">{children}</div>
         </>
@@ -75,21 +73,13 @@ function Layout({ children }: { children: React.ReactNode }) {
           <ResizableHandle />
 
           <ResizablePanel defaultSize={80}>
-            <AppHeader />
+            {!isFullScreenPageResponsive && (
+              <div className="relative">
+                <AppHeader />
+              </div>
+            )}
 
-            <div
-              className={cn(
-                "h-full overflow-x-scroll",
-                isHomePage || isFullScreenPageResponsive
-                  ? "px-0"
-                  : "px-2 sm:px-8",
-                currentPlaybackState
-                  ? "pb-[196px] sm:pb-[136px]" // 196px = {BottomBar} + AppHeader + {Player} + padding
-                  : "pb-[124px] sm:pb-[64px]" // 124px = {BottomBar} + AppHeader + padding
-              )}
-            >
-              {children}
-            </div>
+            <Container>{children}</Container>
           </ResizablePanel>
 
           <Player />

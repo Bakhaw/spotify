@@ -4,7 +4,7 @@ import CustomLink from "@/components/CustomLink";
 
 const Library: NextPage = () => {
   return (
-    <div className="flex flex-col gap-4 p-8">
+    <div className="space-y-2">
       <CustomLink href="/library/saved-tracks" label="saved tracks" />
       <CustomLink href="/library/playlists" label="playlists" />
     </div>

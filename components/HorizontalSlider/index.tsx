@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 
+import { cn } from "@/lib/utils";
+
 import Cover from "@/components/Cover";
 
 import {
@@ -12,6 +14,7 @@ import {
 import HorizontalSliderSkeleton from "./HorizontalSliderSkeleton";
 
 interface HorizontalSliderProps {
+  className?: string;
   items:
     | SpotifyApi.ArtistObjectFull[]
     | SpotifyApi.AlbumObjectFull[]
@@ -21,6 +24,7 @@ interface HorizontalSliderProps {
 }
 
 const HorizontalSlider: React.FC<HorizontalSliderProps> = ({
+  className,
   items,
   title,
   type,
@@ -28,7 +32,7 @@ const HorizontalSlider: React.FC<HorizontalSliderProps> = ({
   return (
     <>
       {items ? (
-        <div className="space-y-2">
+        <div className={cn("space-y-2 -mx-8", className)}>
           {title && <h1 className="text-3xl font-bold lowercase">{title}</h1>}
 
           <Carousel
@@ -37,10 +41,15 @@ const HorizontalSlider: React.FC<HorizontalSliderProps> = ({
               skipSnaps: true,
             }}
           >
-            <CarouselContent className="pl-4 space-x-2">
+            <CarouselContent className="pl-12 gap-2">
               {items.map((item, index) => (
                 <Link key={item.id} href={`/${type}/${item.id}`}>
-                  <CarouselItem className="space-y-2 basis-auto h-full w-52 p-3 rounded-lg bg-hover/10 hover:bg-hover transition-all duration-300">
+                  <CarouselItem
+                    className={cn(
+                      "space-y-2 h-full w-52 p-3 rounded-lg bg-hover/10 hover:bg-hover transition-all duration-300",
+                      index === items.length - 1 && "mr-8 sm:mr-2"
+                    )}
+                  >
                     <Cover
                       alt={`${item.name} cover`}
                       priority={index === 0}

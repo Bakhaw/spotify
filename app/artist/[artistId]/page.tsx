@@ -11,6 +11,8 @@ import useDominantColor from "@/hooks/useDominantColor";
 import generateRGBString from "@/lib/generateRGBString";
 import { cn } from "@/lib/utils";
 
+import AppHeader from "@/components/AppHeader";
+import Container from "@/components/Container";
 import Cover from "@/components/Cover";
 import HorizontalSlider from "@/components/HorizontalSlider";
 
@@ -65,72 +67,87 @@ const ArtistDetails: NextPage = () => {
   // TODO skeleton
   return (
     <>
-      <div
-        className="flex flex-col justify-center items-center gap-2 bg-gradient-secondary py-4"
-        style={{ backgroundColor }}
-      >
-        <Cover
-          alt={`${artist?.name} cover`}
-          rounded
-          size="medium"
-          src={artist?.images[0].url}
-        />
-        <h1 className="text-7xl font-bold text-white">{artist?.name}</h1>
-        {artist && <MonthlyListeners artistId={artist.id} />}
+      <div className="relative">
+        <AppHeader backgroundColor={backgroundColor} />
       </div>
 
-      <div
-        style={{ backgroundColor }}
-        className="flex flex-col gap-8 bg-gradient p-4 sm:px-8"
-      >
-        <div className="flex gap-4">
-          <Button
-            onClick={() => handleFilterClick("albums")}
-            style={{
-              ...(currentFilter === "albums" && {
-                backgroundColor: generateRGBString(dominantColor, 0.7),
-              }),
-            }}
-            size="sm"
-            className={cn(
-              "w-auto justify-start rounded-full text-xs",
-              currentFilter === "albums" && "text-white hover:bg-white"
-            )}
-          >
-            Albums
-          </Button>
-          <Button
-            size="sm"
-            style={{
-              ...(currentFilter === "singles" && {
-                backgroundColor: generateRGBString(dominantColor, 0.7),
-              }),
-            }}
-            className={cn(
-              "w-auto justify-start rounded-full text-xs",
-              currentFilter === "singles" && "text-white hover:bg-white"
-            )}
-            onClick={() => handleFilterClick("singles")}
-          >
-            Singles & EP
-          </Button>
+      <Container>
+        <div
+          className="flex flex-col justify-center items-center gap-2 bg-gradient-secondary py-4 mt-14"
+          style={{ backgroundColor }}
+        >
+          <Cover
+            alt={`${artist?.name} cover`}
+            rounded
+            size="medium"
+            src={artist?.images[0].url}
+          />
+          <h1 className="text-7xl font-bold text-white">{artist?.name}</h1>
+          {artist && <MonthlyListeners artistId={artist.id} />}
         </div>
 
-        {currentFilter === "albums" && (
-          <HorizontalSlider
-            items={removeDuplicatesAlbums}
-            type="album"
-            title="albums"
-          />
-        )}
-        {currentFilter === "singles" && (
-          <HorizontalSlider items={singles} type="album" title="singles & ep" />
-        )}
+        <div
+          style={{ backgroundColor }}
+          className="flex flex-col gap-8 bg-gradient py-4"
+        >
+          <div className="flex gap-4 px-4 sm:px-8">
+            <Button
+              onClick={() => handleFilterClick("albums")}
+              style={{
+                ...(currentFilter === "albums" && {
+                  backgroundColor: generateRGBString(dominantColor, 0.7),
+                }),
+              }}
+              size="sm"
+              className={cn(
+                "w-auto justify-start rounded-full text-xs",
+                currentFilter === "albums" && "text-white hover:bg-white"
+              )}
+            >
+              Albums
+            </Button>
+            <Button
+              size="sm"
+              style={{
+                ...(currentFilter === "singles" && {
+                  backgroundColor: generateRGBString(dominantColor, 0.7),
+                }),
+              }}
+              className={cn(
+                "w-auto justify-start rounded-full text-xs",
+                currentFilter === "singles" && "text-white hover:bg-white"
+              )}
+              onClick={() => handleFilterClick("singles")}
+            >
+              Singles & EP
+            </Button>
+          </div>
 
-        {appearsOn?.length > 0 && (
-          <HorizontalSlider items={appearsOn} type="album" title="appears on" />
-        )}
-      </div>
+          {currentFilter === "albums" && (
+            <div className="space-y-2 px-4 sm:px-8">
+              <h1 className="text-3xl font-bold lowercase">albums</h1>
+
+              <HorizontalSlider items={removeDuplicatesAlbums} type="album" />
+            </div>
+          )}
+
+          {currentFilter === "singles" && (
+            <HorizontalSlider
+              items={singles}
+              type="album"
+              title="singles & ep"
+            />
+          )}
+
+          {appearsOn?.length > 0 && (
+            <HorizontalSlider
+              items={appearsOn}
+              type="album"
+              title="appears on"
+            />
+          )}
+        </div>
+      </Container>
     </>
   );
 };

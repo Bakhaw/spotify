@@ -3,13 +3,8 @@ import TopTracks from "@/components/TopTracks";
 
 const Home = () => (
   <div className="space-y-2 sm:space-y-8">
-    <div className="px-4 sm:px-8">
-      <TopArtists />
-    </div>
-
-    <div className="px-4 sm:px-8">
-      <TopTracks />
-    </div>
+    <TopArtists />
+    <TopTracks />
   </div>
 );
 
