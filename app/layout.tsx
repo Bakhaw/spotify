@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+
 import localFont from "next/font/local";
 
 import Layout from "@/components/Layout";
@@ -38,6 +39,7 @@ export const metadata: Metadata = {
   title: "Music",
   description: "Music",
   manifest: "/manifest.json",
+  appleWebApp: true,
 };
 
 type Props = {
