@@ -15,9 +15,9 @@ import Link from "next/link";
 import Controls from "./Controls";
 import CurrentTrack from "./CurrentTrack";
 import DeviceSelector from "./DeviceSelector";
+import OpenedPlayer from "./OpenedPlayer";
 import Timer from "./Timer";
 import Volume from "./Volume";
-import OpenedPlayer from "./OpenedPlayer";
 
 function ClosedPlayer() {
   const currentPlaybackState = usePlayerStore((s) => s.currentPlaybackState);

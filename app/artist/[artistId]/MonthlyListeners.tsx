@@ -14,6 +14,9 @@ const MonthlyListeners: React.FC<MonthlyListenersProps> = ({ artistId }) => {
   const getMonthlyListeners = async (artistId: string) => {
     const res = await fetch(`/api/monthlyListeners?artistId=${artistId}`);
     const { result } = await res.json();
+
+    if (!result) return;
+
     const listenersWithoutComma = result.replace(/,/g, " ");
 
     setMonthlyListeners(listenersWithoutComma);
