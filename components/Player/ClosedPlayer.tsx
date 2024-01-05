@@ -10,6 +10,8 @@ import generateRGBString from "@/lib/generateRGBString";
 
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 
+import Link from "next/link";
+
 import Controls from "./Controls";
 import CurrentTrack from "./CurrentTrack";
 import DeviceSelector from "./DeviceSelector";
@@ -58,10 +60,12 @@ function ClosedPlayer() {
       <div className="hidden md:flex justify-end items-center gap-3 w-full">
         <DeviceSelector />
         <Volume />
-        <AiOutlineArrowsAlt
-          className="h-6 w-6 transition-all hover:scale-110"
-          role="button"
-        />
+        <Link href="/studio">
+          <AiOutlineArrowsAlt
+            className="h-6 w-6 transition-all hover:scale-110"
+            role="button"
+          />
+        </Link>
       </div>
     </div>
   );

@@ -55,7 +55,7 @@ function DeviceSelector() {
         <PopoverContent className="flex flex-col justify-between gap-4 text-sm">
           <div className="space-y-2">
             <div className="flex justify-start items-center gap-2">
-              <span className="h-2 w-2 bg-red-600 rounded-full animate-pulse" />
+              <span className="h-2 w-2 bg-green-600 rounded-full animate-pulse" />
               <span>Current device</span>
             </div>
 

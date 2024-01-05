@@ -1,4 +1,5 @@
-import { PauseIcon, PlayIcon } from "lucide-react";
+import { IoPlay } from "react-icons/io5";
+import { IoIosPause } from "react-icons/io";
 
 import { usePlayerStore } from "@/store/usePlayerStore";
 
@@ -21,11 +22,11 @@ const CoverWithPlayButton: React.FC<CoverWithPlayButtonProps> = ({ track }) => {
     <div className="h-[60px] w-[60px] mr-3 relative">
       <Cover alt="Cover" size="small" src={track.album.images[0].url} />
 
-      <div className="hidden h-full w-full group-hover:flex justify-center items-center top-0 absolute bg-black/90">
+      <div className="hidden h-full w-full group-hover:flex justify-center items-center top-0 absolute bg-black/60">
         {track.id === currentTrackId && isPlaying ? (
-          <PauseIcon className="h-5 w-5 cursor-pointer" onClick={pauseSong} />
+          <IoIosPause className="h-5 w-5 cursor-pointer" onClick={pauseSong} />
         ) : (
-          <PlayIcon
+          <IoPlay
             className="h-5 w-5 cursor-pointer"
             onClick={() => playSong(track)}
           />

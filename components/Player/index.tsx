@@ -41,13 +41,12 @@ const Player: React.FC = () => {
   return (
     <div
       className={cn(
-        "fixed w-full px-2 pb-2 pt-0 z-10 bg-transparent backdrop-blur-sm",
-        currentPlaybackState ? "bottom-16 sm:bottom-0" : "bottom-0",
-        isWhiteBg ? "text-black" : "text-white"
+        "fixed w-full px-2 pb-2 pt-0 z-10 bg-transparent backdrop-blur-sm text-white",
+        currentPlaybackState ? "bottom-16 sm:bottom-0" : "bottom-0"
       )}
     >
       <div
-        className="flex justify-center items-center h-full w-full bg-gradient-secondary rounded"
+        className="flex justify-center items-center h-full w-full bg-gradient-secondary rounded p-1"
         style={{
           backgroundColor,
         }}
