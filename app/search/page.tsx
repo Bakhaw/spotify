@@ -7,6 +7,8 @@ import useQueryParams from "@/hooks/useQueryParams";
 import TrackList from "@/components/TrackList";
 import HorizontalSlider from "@/components/HorizontalSlider";
 
+import { IoSearchOutline } from "react-icons/io5";
+
 type QueryParams = {
   search: string;
 };
@@ -64,16 +66,17 @@ const Search = () => {
 
   return (
     <div className="space-y-2 sm:space-y-8">
-      <h1>Search Page</h1>
-
-      <form onSubmit={onSubmit}>
-        <input
-          placeholder="Search"
-          defaultValue={queryParams.search}
-          ref={inputRef}
-          type="text"
-        />
-        <button>Submit</button>
+      <form className="py-5" onSubmit={onSubmit}>
+        <div className="w-2/6 rounded-full flex items-center">
+          <IoSearchOutline className="absolute ml-4 w-5 h-5" />
+          <input
+            className="w-full p-4 pl-12 rounded-full"
+            placeholder="Search"
+            defaultValue={queryParams.search}
+            ref={inputRef}
+            type="text"
+          />
+        </div>
       </form>
 
       {searchResponse && (
