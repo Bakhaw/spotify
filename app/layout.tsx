@@ -39,7 +39,11 @@ export const metadata: Metadata = {
   title: "Music",
   description: "Music",
   manifest: "/manifest.json",
-  appleWebApp: true,
+  appleWebApp: {
+    capable: true,
+    title: "My Website",
+    statusBarStyle: "black-translucent",
+  },
 };
 
 type Props = {
