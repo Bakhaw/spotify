@@ -9,7 +9,10 @@ import Image from "next/image";
 const Home = () => {
   const topArtists = useTopArtists("short_term");
 
-  const randomTopArtistImage = sessionStorage.getItem("randomTopArtistImage");
+  const randomTopArtistImage =
+    typeof window !== "undefined"
+      ? sessionStorage.getItem("randomTopArtistImage")
+      : undefined;
 
   function getRandomImageUrl(
     topArtists: SpotifyApi.UsersTopArtistsResponse
