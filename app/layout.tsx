@@ -36,6 +36,7 @@ const myFont = localFont({
 });
 
 export const metadata: Metadata = {
+  viewport: "initial-scale=1, viewport-fit=cover, width=device-width",
   title: "Music",
   description: "Music",
   manifest: "/manifest.json",
