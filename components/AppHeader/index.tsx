@@ -16,7 +16,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ backgroundColor }) => {
 
   return (
     <div
-      className="flex justify-between items-center w-full h-14 px-4 sm:px-8 z-50 bg-primary absolute"
+      className="flex justify-between items-center w-full h-14 px-4 sm:px-8 z-50 absolute"
       style={{
         ...(backgroundColor && {
           backgroundColor,
