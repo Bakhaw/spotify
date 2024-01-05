@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { Viewport } from "next";
 
 import localFont from "next/font/local";
 
@@ -36,15 +37,24 @@ const myFont = localFont({
 });
 
 export const metadata: Metadata = {
-  viewport: "initial-scale=1, viewport-fit=cover, width=device-width",
   title: "Music",
   description: "Music",
   manifest: "/manifest.json",
+  viewport: {
+    viewportFit: "cover",
+    initialScale: 1,
+  },
   appleWebApp: {
     capable: true,
     title: "My Website",
     statusBarStyle: "black-translucent",
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  viewportFit: "cover",
+  initialScale: 1,
 };
 
 type Props = {
