@@ -153,8 +153,8 @@ const Vinyl = () => {
             className="album-inside"
             style={{
               background: vinylColor(rgb),
-              boxShadow: `10px 0 15px 0 ${vinylColor("#ffffff")}35`,
-              WebkitBoxShadow: `10px 0 15px 0 ${vinylColor("#ffffff")}35`,
+              boxShadow: `10px 0 15px 0 ${vinylColor("#000000")}60`,
+              WebkitBoxShadow: `10px 0 15px 0 ${vinylColor("#000000")}60`,
             }}
           ></div>
 

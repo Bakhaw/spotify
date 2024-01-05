@@ -1,11 +1,10 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useState } from "react";
 
 import { TimeRange } from "@/types";
 
-import useFetch from "@/hooks/useFetch";
-import useSpotify from "@/hooks/useSpotify";
+import useTopArtists from "@/hooks/useTopArtists";
 
 import HorizontalSlider from "@/components/HorizontalSlider";
 
@@ -28,14 +27,7 @@ function TopArtists() {
 
   const [timeRange, setTimeRange] = useState<TimeRange>(defaultTimeRange);
 
-  const spotifyApi = useSpotify();
-  const getTopArtists = useCallback(
-    () => spotifyApi.getMyTopArtists({ time_range: timeRange }),
-    [spotifyApi, timeRange]
-  );
-
-  const topArtists =
-    useFetch<SpotifyApi.UsersTopArtistsResponse>(getTopArtists);
+  const topArtists = useTopArtists(timeRange);
 
   function onTimeRangeChange(timeRange: TimeRange) {
     setTimeRange(timeRange);
