@@ -60,6 +60,7 @@ const Home = () => {
         }
         height={300}
         width={300}
+        priority={true}
       />
       <TopArtists />
       <TopTracks />

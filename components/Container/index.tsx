@@ -28,7 +28,7 @@ const Container: React.FC<ContainerProps> = ({ children }) => {
     <div
       className={cn(
         "overflow-y-scroll overflow-x-hidden",
-        !isFeaturedPage && "mt-14 p-2 sm:px-8 sm:py-4",
+        !isFeaturedPage && "mt-14 p-4 sm:px-8 sm:py-4",
         currentPlaybackState
           ? "h-[calc(100vh-(80px+56px))]"
           : isFeaturedPage

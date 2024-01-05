@@ -46,17 +46,20 @@ const HorizontalSlider: React.FC<HorizontalSliderProps> = ({
                 <Link key={item.id} href={`/${type}/${item.id}`}>
                   <CarouselItem
                     className={cn(
-                      "space-y-2 h-full w-52 p-3 rounded-lg bg-hover/10 hover:bg-hover transition-all duration-300",
+                      "space-y-2 h-full w-40 sm:w-52 p-3 rounded-lg bg-hover/10 hover:bg-hover transition-all duration-300",
                       index === items.length - 1 && "mr-8 sm:mr-2"
                     )}
                   >
                     <Cover
                       alt={`${item.name} cover`}
                       priority={index === 0}
+                      additionalCss="h-[150px] w-[150px] sm:h-[200px] sm:w-[200px]"
                       src={item.images?.[0]?.url}
                     />
 
-                    <h2 className="line-clamp-3">{item.name}</h2>
+                    <h2 className="line-clamp-3">
+                      {index + 1}. {item.name}
+                    </h2>
                   </CarouselItem>
                 </Link>
               ))}
