@@ -2,8 +2,6 @@
 
 import { useEffect, useState } from "react";
 
-import { Skeleton } from "@/components/ui/skeleton";
-
 interface MonthlyListenersProps {
   artistId: string;
 }
@@ -27,12 +25,37 @@ const MonthlyListeners: React.FC<MonthlyListenersProps> = ({ artistId }) => {
     getMonthlyListeners(artistId);
   }, [artistId]);
 
+  // LOADING PART
+
+  const [slotMachineNumber, setSlotMachineNumber] = useState<number>(0);
+
+  useEffect(() => {
+    function generateRandomNumber(min: number, max: number) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function simulateSlotMachineAnimation() {
+      function updateNumber() {
+        setSlotMachineNumber(generateRandomNumber(100000, 99999999));
+        setTimeout(updateNumber, 30);
+      }
+
+      function startAnimation() {
+        updateNumber();
+      }
+
+      startAnimation();
+    }
+
+    simulateSlotMachineAnimation();
+  }, []);
+
   return (
     <div className="w-fit">
       {monthlyListeners ? (
-        <div className="text-span">{monthlyListeners}</div>
+        <span className="text-span">{monthlyListeners}</span>
       ) : (
-        <Skeleton className="h-2 w-44 rounded-md bg-span" />
+        <span className="text-span">{slotMachineNumber.toLocaleString()}</span>
       )}
     </div>
   );
