@@ -11,7 +11,7 @@ function BottomBar() {
   if (pathname === "/studio" || pathname === "/login") return null;
 
   return (
-    <div className="h-full p-2 bg-primary pb-4">
+    <div className="h-full p-2 bg-primary px-4 pb-10">
       <div className="flex gap-3 items-center justify-evenly">
         {routes.map((route) => (
           <Button
