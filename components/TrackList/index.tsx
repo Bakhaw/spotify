@@ -4,6 +4,7 @@ import Track from "@/components/Track";
 import TrackListSkeleton from "./TrackListSkeleton";
 
 interface TrackListProps {
+  showRank?: boolean; // default false
   showAlbumName?: boolean; // default true
   showCover?: boolean; // default false
   showOrder?: boolean; // default false
@@ -15,6 +16,7 @@ interface TrackListProps {
 }
 
 const TrackList: React.FC<TrackListProps> = ({
+  showRank = false,
   showAlbumName = true,
   showCover = false,
   showOrder = false,
@@ -34,7 +36,7 @@ const TrackList: React.FC<TrackListProps> = ({
                 <li key={`${track.id}-${index}`}>
                   <Draggable id={`track_list:${track.id}`}>
                     <div className="flex items-center gap-3">
-                      <p>{index + 1}</p>
+                      {showRank && <p>{index + 1}</p>}
                       <Track
                         order={showOrder ? index + 1 : null}
                         showAlbumName={showAlbumName}

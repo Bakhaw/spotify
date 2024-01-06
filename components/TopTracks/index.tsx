@@ -69,7 +69,7 @@ function TopTracks() {
         </div>
       </div>
 
-      <TrackList showCover showVisualizer tracks={topTracks?.items} />
+      <TrackList showRank showCover showVisualizer tracks={topTracks?.items} />
     </div>
   );
 }

@@ -63,7 +63,11 @@ function TopArtists() {
         </div>
       </div>
 
-      <HorizontalSlider items={topArtists?.items} type="artist" />
+      <HorizontalSlider
+        items={topArtists?.items}
+        type="artist"
+        rankIcons={true}
+      />
     </div>
   );
 }

@@ -27,6 +27,7 @@ interface HorizontalSliderProps {
     | SpotifyApi.AlbumObjectSimplified[];
   title?: string;
   type: "artist" | "album";
+  rankIcons?: boolean;
 }
 
 const HorizontalSlider: React.FC<HorizontalSliderProps> = ({
@@ -34,6 +35,7 @@ const HorizontalSlider: React.FC<HorizontalSliderProps> = ({
   items,
   title,
   type,
+  rankIcons,
 }) => {
   const imageSources = [disqueDiamant, disquePlatine, disqueOr];
 
@@ -64,19 +66,23 @@ const HorizontalSlider: React.FC<HorizontalSliderProps> = ({
                       additionalCss="h-[150px] w-[150px] sm:h-[200px] sm:w-[200px]"
                       src={item.images?.[0]?.url}
                     />
-                    <div className="flex justify-between items-center">
-                      <h2 className="line-clamp-3">
-                        {index + 1}. {item.name}
-                      </h2>
-                      {index < imageSources.length && (
-                        <Image
-                          src={imageSources[index]}
-                          alt={imageSources[index]}
-                          height={30}
-                          width={30}
-                        />
-                      )}
-                    </div>
+                    {rankIcons ? (
+                      <div className="flex justify-between items-center">
+                        <h2 className="line-clamp-3">
+                          {index + 1}. {item.name}
+                        </h2>
+                        {index < imageSources.length && (
+                          <Image
+                            src={imageSources[index]}
+                            alt={imageSources[index]}
+                            height={30}
+                            width={30}
+                          />
+                        )}
+                      </div>
+                    ) : (
+                      <h2 className="line-clamp-3">{item.name}</h2>
+                    )}
                   </CarouselItem>
                 </Link>
               ))}
