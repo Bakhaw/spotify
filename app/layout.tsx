@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 
 import localFont from "next/font/local";
 
@@ -46,6 +46,12 @@ export const metadata: Metadata = {
     title: "Music App",
     statusBarStyle: "black-translucent",
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  viewportFit: "cover",
+  initialScale: 1,
 };
 
 type Props = {
