@@ -2,16 +2,16 @@
 
 import { useCallback } from "react";
 import { NextPage } from "next";
+import { useParams } from "next/navigation";
 
 import formatMs from "@/lib/formatMs";
 
 import useFetch from "@/hooks/useFetch";
 import useSpotify from "@/hooks/useSpotify";
 
+import Container from "@/components/Container";
 import Cover from "@/components/Cover";
 import TrackList from "@/components/TrackList";
-import { useParams } from "next/navigation";
-import Container from "@/components/Container";
 
 const Playlist: NextPage = () => {
   const { playlistId } = useParams();
