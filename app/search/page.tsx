@@ -1,19 +1,14 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
-import useQueryParams from "@/hooks/useQueryParams";
 import useSpotify from "@/hooks/useSpotify";
 
 import Container from "@/components/Container";
 import HorizontalSlider from "@/components/HorizontalSlider";
 import SearchBar from "@/components/SearchBar";
-import SearchBarFallback from "@/components/SearchBar/SearchBarFallback";
 import TrackList from "@/components/TrackList";
-
-type QueryParams = {
-  search: string;
-};
 
 type SearchType =
   | "album"
@@ -23,15 +18,15 @@ type SearchType =
   | "show"
   | "episode";
 
-const Search = () => {
+const Search = ({ searchParams }: { searchParams?: { query: string } }) => {
   const spotifyApi = useSpotify();
-  const { queryParams } = useQueryParams<QueryParams>();
+  const { data: session } = useSession();
 
   const [searchResponse, setSearchResponse] =
     useState<SpotifyApi.SearchResponse | null>(null);
 
   useEffect(() => {
-    if (!queryParams.search) return;
+    if (!spotifyApi.getAccessToken() || !searchParams?.query) return;
 
     const search = async (query: string) => {
       const types: SearchType[] = ["album", "artist", "track"];
@@ -47,8 +42,8 @@ const Search = () => {
       }
     };
 
-    search(queryParams.search);
-  }, [queryParams, spotifyApi]);
+    search(searchParams.query);
+  }, [searchParams?.query, spotifyApi, session]);
 
   const tracks = searchResponse?.tracks?.items ?? [];
   const artists = searchResponse?.artists?.items ?? [];
@@ -57,9 +52,7 @@ const Search = () => {
   return (
     <Container>
       <div className="space-y-4 sm:space-y-8">
-        <Suspense fallback={<SearchBarFallback />}>
-          <SearchBar />
-        </Suspense>
+        <SearchBar />
 
         {searchResponse && (
           <div className="space-y-6">

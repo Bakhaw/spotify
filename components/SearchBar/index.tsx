@@ -3,25 +3,32 @@
 import { FormEvent, useRef } from "react";
 import { IoSearchOutline } from "react-icons/io5";
 
-import useQueryParams from "@/hooks/useQueryParams";
-
-type QueryParams = {
-  search: string;
-};
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 function SearchBar() {
-  const { queryParams, setQueryParams } = useQueryParams<QueryParams>();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
+
   const inputRef = useRef<HTMLInputElement>(null);
+  const defaultValue = searchParams.get("query")?.toString();
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
+    const params = new URLSearchParams(searchParams);
+
     const query = inputRef?.current?.value;
 
-    if (!query) return;
+    if (query) {
+      params.set("query", query);
+    } else {
+      params.delete("query");
+    }
 
-    setQueryParams({ search: inputRef?.current?.value });
-    inputRef.current.blur();
+    inputRef?.current?.blur();
+
+    replace(`${pathname}?${params.toString()}`);
   }
 
   return (
@@ -33,7 +40,7 @@ function SearchBar() {
         <input
           className="w-full p-4 pl-12 rounded-full"
           placeholder="Search"
-          defaultValue={queryParams.search}
+          defaultValue={defaultValue}
           ref={inputRef}
           type="text"
         />
