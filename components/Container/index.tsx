@@ -24,7 +24,7 @@ const Container: React.FC<ContainerProps> = ({ children, className }) => {
   return (
     <div
       className={cn(
-        "overflow-y-scroll overflow-x-hidden",
+        "mt-14 overflow-y-scroll overflow-x-hidden",
         currentPlaybackState ? minHeight : maxHeight,
         className
       )}
