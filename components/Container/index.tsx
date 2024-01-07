@@ -26,13 +26,13 @@ const Container: React.FC<ContainerProps> = ({ children, className }) => {
   // 56px: AppHeader total height
 
   const featuredPageHeight = {
-    min: "h-[calc(100vh-(96px+80px))] sm:h-[calc(100vh-80px)]",
-    max: "h-[calc(100vh-96px)] sm:h-screen",
+    min: "h-[calc(100dvh-(96px+80px))] sm:h-[calc(100dvh-80px)]",
+    max: "h-[calc(100dvh-96px)] sm:h-screen",
   };
 
   const defaultPageHeight = {
-    min: "mt-14 h-[calc(100vh-(96px+56px+80px))] sm:h-[calc(100vh-(56px+80px))]",
-    max: "mt-14 h-[calc(100vh-(96px+56px))] sm:h-[calc(100vh-56px)]",
+    min: "mt-14 h-[calc(100dvh-(96px+56px+80px))] sm:h-[calc(100dvh-(56px+80px))]",
+    max: "mt-14 h-[calc(100dvh-(96px+56px))] sm:h-[calc(100dvh-56px)]",
   };
 
   const minHeight = isFeaturedPage
