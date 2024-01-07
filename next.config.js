@@ -19,7 +19,6 @@ const hosts = [
 ];
 
 const nextConfig = withPWA({
-  // next config
   images: {
     remotePatterns: hosts.map((host) => ({
       hostname: host,
