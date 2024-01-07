@@ -43,14 +43,14 @@ const Track: React.FC<TrackProps> = ({
           {showCover && (
             <>
               {order ? (
-                <div className="h-[60px] w-[60px] mr-3 relative">
-                  <Cover
-                    alt="Cover"
-                    size="small"
-                    src={currentTrack.album.images[0].url}
-                  />
-                </div>
+                // <div className="h-[60px] w-[60px] border mr-3 relative">
+                <Cover
+                  alt="Cover"
+                  size="small"
+                  src={currentTrack.album.images[0].url}
+                />
               ) : (
+                // </div>
                 <CoverWithPlayButton track={currentTrack} />
               )}
             </>

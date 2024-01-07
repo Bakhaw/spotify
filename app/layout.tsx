@@ -53,7 +53,7 @@ function RootLayout({ children }: Props) {
       <body
         className={cn(
           myFont.className,
-          "h-[calc(100dvh-82px)] sm:h-auto border overflow-hidden"
+          "h-[calc(100dvh-80px)] sm:h-auto overflow-hidden"
         )}
       >
         <SessionProvider>
