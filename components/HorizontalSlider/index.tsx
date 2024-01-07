@@ -43,8 +43,6 @@ const HorizontalSlider: React.FC<HorizontalSliderProps> = ({
     <>
       {items ? (
         <div className={cn("space-y-2 -mx-8", className)}>
-          {title && <h1 className="text-3xl font-bold lowercase">{title}</h1>}
-
           <Carousel
             plugins={[WheelGesturesPlugin()]}
             opts={{
