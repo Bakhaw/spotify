@@ -32,7 +32,7 @@ const Cover: React.FC<CoverProps> = ({
     <Image
       alt={alt}
       className={cn(
-        `block object-cover ${sizes[size]}`,
+        `block object-cover z-0 ${sizes[size]}`,
         rounded && "rounded-full",
         additionalCss
       )}

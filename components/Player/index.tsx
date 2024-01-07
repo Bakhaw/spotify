@@ -41,8 +41,8 @@ const Player: React.FC = () => {
   return (
     <div
       className={cn(
-        "fixed w-full px-2 pb-2 pt-0 z-10 bg-transparent backdrop-blur-sm text-white",
-        currentPlaybackState ? "bottom-24 sm:bottom-0" : "bottom-0"
+        "fixed w-full px-2 pb-2 pt-0 z-10 bg-transparent text-white",
+        currentPlaybackState ? "bottom-20 sm:bottom-0" : "bottom-0"
       )}
     >
       <div
