@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-// import type { Viewport } from "next";
 
 import localFont from "next/font/local";
 
@@ -7,10 +6,11 @@ import Layout from "@/components/Layout";
 import Providers from "@/components/Providers";
 import SessionProvider from "@/components/SessionProvider";
 
+import { cn } from "@/lib/utils";
+
 import "@/app/styles/globals.css";
 import "@/app/styles/vinyl.scss";
 import "@/app/styles/visualizer.scss";
-import { cn } from "@/lib/utils";
 
 const myFont = localFont({
   src: [
@@ -41,18 +41,7 @@ export const metadata: Metadata = {
   title: "Music",
   description: "Music",
   manifest: "/manifest.json",
-  // appleWebApp: {
-  //   capable: true,
-  //   title: "My Website",
-  //   statusBarStyle: "black-translucent",
-  // },
 };
-
-// export const viewport: Viewport = {
-//   width: "device-width",
-//   viewportFit: "cover",
-//   initialScale: 1,
-// };
 
 type Props = {
   children?: React.ReactNode;
@@ -64,7 +53,7 @@ function RootLayout({ children }: Props) {
       <body
         className={cn(
           myFont.className,
-          "h-[calc(100dvh-96px)] overflow-hidden"
+          "h-[calc(100dvh-82px)] overflow-hidden"
         )}
       >
         <SessionProvider>
