@@ -9,9 +9,15 @@ import { useTimerStore } from "@/store/useTimerStore";
 
 import useSpotify from "@/hooks/useSpotify";
 
+import { cn } from "@/lib/utils";
+
 import { Slider } from "@/components/ui/slider";
 
-function Timer() {
+interface TimerProps {
+  className?: string;
+}
+
+const Timer: React.FC<TimerProps> = ({ className }) => {
   const spotifyApi = useSpotify();
   const { data: session } = useSession();
 
@@ -143,7 +149,9 @@ function Timer() {
   );
 
   return (
-    <div className="flex justify-around w-[300px] lg:w-full gap-2">
+    <div
+      className={cn("flex justify-around w-[300px] lg:w-full gap-2", className)}
+    >
       <span>
         {currentMinutes}:{currentSeconds.toString().padStart(2, "0")}
       </span>
@@ -160,6 +168,6 @@ function Timer() {
       </span>
     </div>
   );
-}
+};
 
 export default Timer;
