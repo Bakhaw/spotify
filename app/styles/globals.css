@@ -67,9 +67,9 @@ html {
 body {
   padding: 0;
   margin: 0;
-  border: 2px solid blueviolet;
-  height: 100svh;
-  overflow: hidden;
+  border: 2px solid yellow;
+  /* height: 100svh;
+  overflow: hidden; */
 }
 
 /* custom scrollbar */
