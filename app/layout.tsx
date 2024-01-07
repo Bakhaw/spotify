@@ -40,10 +40,6 @@ export const metadata: Metadata = {
   title: "Music",
   description: "Music",
   manifest: "/manifest.json",
-  viewport: {
-    viewportFit: "cover",
-    initialScale: 1,
-  },
   appleWebApp: {
     capable: true,
     title: "My Website",
