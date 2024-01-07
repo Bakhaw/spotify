@@ -59,7 +59,7 @@
 }
 
 html {
-  min-height: calc(100% + env(safe-area-inset-top));
+  /* min-height: calc(100% + env(safe-area-inset-top)); */
   padding: env(safe-area-inset-top) env(safe-area-inset-right)
     env(safe-area-inset-bottom) env(safe-area-inset-left);
   background-attachment: fixed;
@@ -75,6 +75,7 @@ html {
 body {
   padding: 0;
   margin: 0;
+  border: 2px solid red;
   /* height: 100dvh; */
   /* overflow: hidden; */
 }
