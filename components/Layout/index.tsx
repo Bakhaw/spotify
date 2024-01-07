@@ -79,7 +79,7 @@ function Layout({ children }: { children: React.ReactNode }) {
               </div>
             )}
 
-            <Container>{children}</Container>
+            {children}
           </ResizablePanel>
 
           <Player />

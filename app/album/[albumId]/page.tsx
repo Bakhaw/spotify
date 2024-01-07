@@ -4,9 +4,10 @@ import { useCallback } from "react";
 import { NextPage } from "next";
 import { useParams } from "next/navigation";
 
+import useDominantColor from "@/hooks/useDominantColor";
 import useFetch from "@/hooks/useFetch";
 import useSpotify from "@/hooks/useSpotify";
-import useDominantColor from "@/hooks/useDominantColor";
+
 import generateRGBString from "@/lib/generateRGBString";
 
 import AppHeader from "@/components/AppHeader";

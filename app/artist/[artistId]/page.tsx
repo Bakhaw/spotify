@@ -132,19 +132,19 @@ const ArtistDetails: NextPage = () => {
           )}
 
           {currentFilter === "singles" && (
-            <HorizontalSlider
-              items={singles}
-              type="album"
-              title="singles & ep"
-            />
+            <div className="space-y-2 px-4 sm:px-8">
+              <h1 className="text-3xl font-bold lowercase">singles & ep</h1>
+
+              <HorizontalSlider items={singles} type="album" />
+            </div>
           )}
 
           {appearsOn?.length > 0 && (
-            <HorizontalSlider
-              items={appearsOn}
-              type="album"
-              title="appears on"
-            />
+            <div className="space-y-2 px-4 sm:px-8">
+              <h1 className="text-3xl font-bold lowercase">appears on</h1>
+
+              <HorizontalSlider items={appearsOn} type="album" />
+            </div>
           )}
         </div>
       </Container>

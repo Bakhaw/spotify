@@ -1,13 +1,14 @@
 "use client";
 
 import { FormEvent, useEffect, useRef, useState } from "react";
+import { IoSearchOutline } from "react-icons/io5";
 
 import useSpotify from "@/hooks/useSpotify";
 import useQueryParams from "@/hooks/useQueryParams";
-import TrackList from "@/components/TrackList";
-import HorizontalSlider from "@/components/HorizontalSlider";
 
-import { IoSearchOutline } from "react-icons/io5";
+import Container from "@/components/Container";
+import HorizontalSlider from "@/components/HorizontalSlider";
+import TrackList from "@/components/TrackList";
 
 type QueryParams = {
   search: string;
@@ -65,32 +66,34 @@ const Search = () => {
   const albums = searchResponse?.albums?.items ?? [];
 
   return (
-    <div className="space-y-2 sm:space-y-8">
-      <form className="py-5" onSubmit={onSubmit}>
-        <div className="w-2/6 rounded-full flex items-center">
-          <IoSearchOutline className="absolute ml-4 w-5 h-5" />
-          <input
-            className="w-full p-4 pl-12 rounded-full"
-            placeholder="Search"
-            defaultValue={queryParams.search}
-            ref={inputRef}
-            type="text"
-          />
-        </div>
-      </form>
+    <Container>
+      <div className="space-y-2 sm:space-y-8">
+        <form className="py-5" onSubmit={onSubmit}>
+          <div className="w-2/6 rounded-full flex items-center">
+            <IoSearchOutline className="absolute ml-4 w-5 h-5" />
+            <input
+              className="w-full p-4 pl-12 rounded-full"
+              placeholder="Search"
+              defaultValue={queryParams.search}
+              ref={inputRef}
+              type="text"
+            />
+          </div>
+        </form>
 
-      {searchResponse && (
-        <div className="space-y-6">
-          <TrackList showCover tracks={tracks} title="tracks" />
+        {searchResponse && (
+          <div className="space-y-6">
+            <TrackList showCover tracks={tracks} title="tracks" />
 
-          <h1 className="text-3xl font-bold lowercase">artists</h1>
-          <HorizontalSlider items={artists} type="artist" />
+            <h1 className="text-3xl font-bold lowercase">artists</h1>
+            <HorizontalSlider items={artists} type="artist" />
 
-          <h1 className="text-3xl font-bold lowercase">albums</h1>
-          <HorizontalSlider items={albums} type="album" />
-        </div>
-      )}
-    </div>
+            <h1 className="text-3xl font-bold lowercase">albums</h1>
+            <HorizontalSlider items={albums} type="album" />
+          </div>
+        )}
+      </div>
+    </Container>
   );
 };
 

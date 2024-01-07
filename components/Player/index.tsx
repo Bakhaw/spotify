@@ -42,7 +42,7 @@ const Player: React.FC = () => {
     <div
       className={cn(
         "fixed w-full px-2 pb-2 pt-0 z-10 bg-transparent backdrop-blur-sm text-white",
-        currentPlaybackState ? "bottom-16 sm:bottom-0" : "bottom-0"
+        currentPlaybackState ? "bottom-24 sm:bottom-0" : "bottom-0"
       )}
     >
       <div

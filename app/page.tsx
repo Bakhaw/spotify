@@ -1,10 +1,11 @@
 "use client";
 
+import Image from "next/image";
+
+import Container from "@/components/Container";
 import TopArtists from "@/components/TopArtists";
 import TopTracks from "@/components/TopTracks";
 import useTopArtists from "@/hooks/useTopArtists";
-
-import Image from "next/image";
 
 const Home = () => {
   const topArtists = useTopArtists("short_term");
@@ -49,22 +50,24 @@ const Home = () => {
   }
 
   return (
-    <div className="space-y-2 sm:space-y-8">
-      <Image
-        className="absolute blur-3xl w-full max-h-[400px] z-[-2] object-cover top-0 right-0 opacity-90"
-        alt="blur-background"
-        src={
-          randomTopArtistImage
-            ? randomTopArtistImage
-            : getRandomImageUrl(topArtists)
-        }
-        height={300}
-        width={300}
-        priority={true}
-      />
-      <TopArtists />
-      <TopTracks />
-    </div>
+    <Container>
+      <div className="space-y-2 px-8 py-4">
+        <Image
+          className="absolute blur-3xl w-full max-h-[400px] z-[-2] object-cover top-0 right-0 opacity-90"
+          alt="blur-background"
+          src={
+            randomTopArtistImage
+              ? randomTopArtistImage
+              : getRandomImageUrl(topArtists)
+          }
+          height={300}
+          width={300}
+          priority={true}
+        />
+        <TopArtists />
+        <TopTracks />
+      </div>
+    </Container>
   );
 };
 
