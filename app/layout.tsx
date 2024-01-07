@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-// import type { Viewport } from "next";
+import type { Viewport } from "next";
 
 import localFont from "next/font/local";
 
@@ -40,18 +40,18 @@ export const metadata: Metadata = {
   title: "Music",
   description: "Music",
   manifest: "/manifest.json",
-  // appleWebApp: {
-  //   capable: true,
-  //   title: "My Website",
-  //   statusBarStyle: "black-translucent",
-  // },
+  appleWebApp: {
+    capable: true,
+    title: "My Website",
+    statusBarStyle: "black-translucent",
+  },
 };
 
-// export const viewport: Viewport = {
-//   width: "device-width",
-//   viewportFit: "cover",
-//   initialScale: 1,
-// };
+export const viewport: Viewport = {
+  width: "device-width",
+  viewportFit: "cover",
+  initialScale: 1,
+};
 
 type Props = {
   children?: React.ReactNode;
