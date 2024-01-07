@@ -24,11 +24,11 @@ const Home = () => {
   return (
     <Container>
       <Image
-        className="absolute blur-[200px] w-full max-h-[350px] z-[-2] object-cover top-0 right-0 opacity-90"
+        className="absolute blur-[200px] w-full max-h-[300px] z-[-2] object-cover top-0 right-0 opacity-90"
         alt="blur-background"
         src={image.src}
-        height={350}
-        width={350}
+        height={300}
+        width={300}
         priority={true}
       />
 
