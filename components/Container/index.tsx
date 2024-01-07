@@ -19,9 +19,7 @@ const Container: React.FC<ContainerProps> = ({ children, className }) => {
 
   const minHeight =
     "h-[calc(100dvh-(96px+56px+80px))] sm:h-[calc(100dvh-(56px+80px))]";
-  // const minHeight = "h-full pb-[232px] sm:pb-[136px]";
   const maxHeight = "h-[calc(100dvh-(96px+56px))] sm:h-[calc(100dvh-56px)]";
-  // const maxHeight = "h-full border pb-[152px] sm:pb-[56px]";
 
   return (
     <div
