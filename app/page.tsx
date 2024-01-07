@@ -24,7 +24,7 @@ const Home = () => {
   return (
     <Container>
       <Image
-        className="absolute blur-[200px] w-full max-h-[300px] z-[-2] object-cover top-0 right-0 opacity-90"
+        className="absolute blur-3xl w-full max-h-[300px] z-[-2] object-cover top-0 right-0 opacity-90"
         alt="blur-background"
         src={"https://i.scdn.co/image/ab6761610000e5eb5ca9274493610ae924015b9b"}
         height={300}
