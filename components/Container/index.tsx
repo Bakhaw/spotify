@@ -13,13 +13,13 @@ const Container: React.FC<ContainerProps> = ({ children, className }) => {
   const currentPlaybackState = usePlayerStore((s) => s.currentPlaybackState);
 
   // calc() values
-  // 82px: BottomBar total height
+  // 80px: BottomBar total height
   // 80px: Player total height
   // 56px: AppHeader total height
 
   const minHeight =
-    "h-[calc(100dvh-(82px+80px+56px))] sm:h-[calc(100dvh-(80px+56px))]";
-  const maxHeight = "h-[calc(100dvh-(82px+56px))] sm:h-[calc(100dvh-56px)]";
+    "h-[calc(100dvh-(80px+80px+56px))] sm:h-[calc(100dvh-(80px+56px))]";
+  const maxHeight = "h-[calc(100dvh-(80px+56px))] sm:h-[calc(100dvh-56px)]";
 
   return (
     <div
