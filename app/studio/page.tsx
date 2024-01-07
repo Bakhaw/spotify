@@ -31,7 +31,7 @@ const Studio: NextPage = () => {
       }}
     >
       <Button
-        className="border absolute top-4 right-8"
+        className="z-50 border absolute top-4 right-8"
         onClick={() => setUseAlbumColor((useAlbumColor) => !useAlbumColor)}
         size="icon"
         variant="ghost"
