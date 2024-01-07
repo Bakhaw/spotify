@@ -1,13 +1,14 @@
 "use client";
 
-import { FormEvent, useEffect, useRef, useState } from "react";
-import { IoSearchOutline } from "react-icons/io5";
+import { Suspense, useEffect, useState } from "react";
 
-import useSpotify from "@/hooks/useSpotify";
 import useQueryParams from "@/hooks/useQueryParams";
+import useSpotify from "@/hooks/useSpotify";
 
 import Container from "@/components/Container";
 import HorizontalSlider from "@/components/HorizontalSlider";
+import SearchBar from "@/components/SearchBar";
+import SearchBarFallback from "@/components/SearchBar/SearchBarFallback";
 import TrackList from "@/components/TrackList";
 
 type QueryParams = {
@@ -24,22 +25,10 @@ type SearchType =
 
 const Search = () => {
   const spotifyApi = useSpotify();
-  const { queryParams, setQueryParams } = useQueryParams<QueryParams>();
-  const inputRef = useRef<HTMLInputElement>(null);
+  const { queryParams } = useQueryParams<QueryParams>();
 
   const [searchResponse, setSearchResponse] =
     useState<SpotifyApi.SearchResponse | null>(null);
-
-  async function onSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    const query = inputRef?.current?.value;
-
-    if (!query) return;
-
-    setQueryParams({ search: inputRef?.current?.value });
-    inputRef.current.blur();
-  }
 
   useEffect(() => {
     if (!queryParams.search) return;
@@ -68,20 +57,9 @@ const Search = () => {
   return (
     <Container>
       <div className="space-y-4 sm:space-y-8">
-        <form onSubmit={onSubmit}>
-          <div className="w-full sm:w-2/6 rounded-full flex items-center">
-            <div className="flex items-center relative">
-              <IoSearchOutline className="absolute ml-4 w-5 h-5" />
-            </div>
-            <input
-              className="w-full p-4 pl-12 rounded-full"
-              placeholder="Search"
-              defaultValue={queryParams.search}
-              ref={inputRef}
-              type="text"
-            />
-          </div>
-        </form>
+        <Suspense fallback={<SearchBarFallback />}>
+          <SearchBar />
+        </Suspense>
 
         {searchResponse && (
           <div className="space-y-6">

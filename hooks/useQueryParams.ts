@@ -1,3 +1,5 @@
+"use client";
+
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 // https://github.com/vercel/next.js/discussions/47583#discussioncomment-5666720
