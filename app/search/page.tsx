@@ -38,6 +38,7 @@ const Search = () => {
     if (!query) return;
 
     setQueryParams({ search: inputRef?.current?.value });
+    inputRef.current.blur();
   }
 
   const query = inputRef?.current?.value;
@@ -67,10 +68,12 @@ const Search = () => {
 
   return (
     <Container>
-      <div className="space-y-2 sm:space-y-8">
+      <div className="px-8 py-4 space-y-2 sm:space-y-8">
         <form className="py-5" onSubmit={onSubmit}>
           <div className="w-2/6 rounded-full flex items-center">
-            <IoSearchOutline className="absolute ml-4 w-5 h-5" />
+            <div className="flex items-center relative">
+              <IoSearchOutline className="absolute ml-4 w-5 h-5" />
+            </div>
             <input
               className="w-full p-4 pl-12 rounded-full"
               placeholder="Search"

@@ -9,7 +9,6 @@ import { cn } from "@/lib/utils";
 
 import AppHeader from "@/components/AppHeader";
 import BottomBar from "@/components/BottomBar";
-import Container from "@/components/Container";
 import Player from "@/components/Player";
 import SideBar from "@/components/SideBar";
 
