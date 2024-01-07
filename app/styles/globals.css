@@ -67,6 +67,7 @@ html {
   background-repeat: no-repeat;
   background-size: cover;
   background-color: #121212;
+  overflow: hidden;
 
   border: 2px solid red;
 }
