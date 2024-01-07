@@ -68,8 +68,8 @@ body {
   padding: 0;
   margin: 0;
   border: 2px solid yellow;
-  height: 100dvh;
-  overflow: hidden;
+  /* height: 100dvh; */
+  /* overflow: hidden; */
 }
 
 /* custom scrollbar */

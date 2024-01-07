@@ -10,6 +10,7 @@ import SessionProvider from "@/components/SessionProvider";
 import "@/app/styles/globals.css";
 import "@/app/styles/vinyl.scss";
 import "@/app/styles/visualizer.scss";
+import { cn } from "@/lib/utils";
 
 const myFont = localFont({
   src: [
@@ -60,7 +61,7 @@ type Props = {
 function RootLayout({ children }: Props) {
   return (
     <html lang="en">
-      <body className={myFont.className}>
+      <body className={cn(myFont.className, "overflow-hidden")}>
         <SessionProvider>
           <Providers>
             <Layout>{children}</Layout>
