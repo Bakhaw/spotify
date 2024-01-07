@@ -34,12 +34,10 @@ const Album: NextPage = () => {
 
   return (
     <>
-      <div className="relative">
-        <AppHeader backgroundColor={backgroundColor} />
-      </div>
+      <AppHeader backgroundColor={backgroundColor} />
 
       <Container>
-        <div className="flex flex-col mt-14">
+        <div className="flex flex-col">
           <TrackListHeader album={album} />
 
           <div style={{ backgroundColor }} className="bg-gradient px-2 sm:px-8">

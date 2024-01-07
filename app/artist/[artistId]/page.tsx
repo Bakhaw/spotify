@@ -67,13 +67,11 @@ const ArtistDetails: NextPage = () => {
   // TODO skeleton
   return (
     <>
-      <div className="relative">
-        <AppHeader backgroundColor={backgroundColor} />
-      </div>
+      <AppHeader backgroundColor={backgroundColor} />
 
       <Container>
         <div
-          className="flex flex-col justify-center items-center gap-2 bg-gradient-secondary py-4 mt-14"
+          className="flex flex-col justify-center items-center gap-2 bg-gradient-secondary py-4"
           style={{ backgroundColor }}
         >
           <Cover
@@ -127,6 +125,8 @@ const ArtistDetails: NextPage = () => {
             <div className="space-y-2 px-4 sm:px-8">
               <h1 className="text-3xl font-bold lowercase">albums</h1>
 
+              <HorizontalSlider items={removeDuplicatesAlbums} type="album" />
+              <HorizontalSlider items={removeDuplicatesAlbums} type="album" />
               <HorizontalSlider items={removeDuplicatesAlbums} type="album" />
             </div>
           )}
