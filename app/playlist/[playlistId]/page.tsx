@@ -43,7 +43,7 @@ const Playlist: NextPage = () => {
 
   return (
     <Container>
-      <div className="flex flex-col gap-8 px-8 py-4">
+      <div className="flex flex-col gap-8">
         <div className="flex flex-col md:flex-row items-center gap-6">
           <Cover
             alt={`${playlist.name} cover`}

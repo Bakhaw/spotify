@@ -68,9 +68,9 @@ const Search = () => {
 
   return (
     <Container>
-      <div className="px-8 py-4 space-y-2 sm:space-y-8">
-        <form className="py-5" onSubmit={onSubmit}>
-          <div className="w-2/6 rounded-full flex items-center">
+      <div className="space-y-4 sm:space-y-8">
+        <form onSubmit={onSubmit}>
+          <div className="w-full sm:w-2/6 rounded-full flex items-center">
             <div className="flex items-center relative">
               <IoSearchOutline className="absolute ml-4 w-5 h-5" />
             </div>
@@ -88,11 +88,15 @@ const Search = () => {
           <div className="space-y-6">
             <TrackList showCover tracks={tracks} title="tracks" />
 
-            <h1 className="text-3xl font-bold lowercase">artists</h1>
-            <HorizontalSlider items={artists} type="artist" />
+            <div className="space-y-2">
+              <h1 className="text-3xl font-bold lowercase">artists</h1>
+              <HorizontalSlider items={artists} type="artist" />
+            </div>
 
-            <h1 className="text-3xl font-bold lowercase">albums</h1>
-            <HorizontalSlider items={albums} type="album" />
+            <div className="space-y-2">
+              <h1 className="text-3xl font-bold lowercase">albums</h1>
+              <HorizontalSlider items={albums} type="album" />
+            </div>
           </div>
         )}
       </div>

@@ -4,6 +4,8 @@ import { useCallback } from "react";
 
 import useFetch from "@/hooks/useFetch";
 import useSpotify from "@/hooks/useSpotify";
+
+import Container from "@/components/Container";
 import TrackList from "@/components/TrackList";
 
 function SavedTracks() {
@@ -19,9 +21,9 @@ function SavedTracks() {
   if (!savedTracks) return null;
 
   return (
-    <div className="p-8">
+    <Container>
       <TrackList showCover title="saved tracks" tracks={formattedSavedTracks} />
-    </div>
+    </Container>
   );
 }
 

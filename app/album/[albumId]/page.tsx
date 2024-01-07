@@ -36,7 +36,7 @@ const Album: NextPage = () => {
     <>
       <AppHeader backgroundColor={backgroundColor} />
 
-      <Container>
+      <Container className="p-0 sm:p-0">
         <div className="flex flex-col">
           <TrackListHeader album={album} />
 

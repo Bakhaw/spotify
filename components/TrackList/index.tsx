@@ -25,8 +25,8 @@ const TrackList: React.FC<TrackListProps> = ({
   tracks,
 }) => {
   return (
-    <div>
-      <h1 className="mb-4 text-3xl font-bold lowercase">{title}</h1>
+    <div className="space-y-2">
+      <h1 className="text-3xl font-bold lowercase">{title}</h1>
 
       <ul className="flex flex-col gap-3">
         {tracks ? (

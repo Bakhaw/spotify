@@ -51,24 +51,22 @@ const Home = () => {
 
   return (
     <Container>
-      <div className="px-4 sm:px-8 py-4">
-        <Image
-          className="absolute blur-3xl w-full max-h-[400px] z-[-2] object-cover top-0 right-0 opacity-90"
-          alt="blur-background"
-          src={
-            randomTopArtistImage
-              ? randomTopArtistImage
-              : getRandomImageUrl(topArtists)
-          }
-          height={300}
-          width={300}
-          priority={true}
-        />
+      <Image
+        className="absolute blur-3xl w-full max-h-[400px] z-[-2] object-cover top-0 right-0 opacity-90"
+        alt="blur-background"
+        src={
+          randomTopArtistImage
+            ? randomTopArtistImage
+            : getRandomImageUrl(topArtists)
+        }
+        height={300}
+        width={300}
+        priority={true}
+      />
 
-        <div className="space-y-8">
-          <TopArtists />
-          <TopTracks />
-        </div>
+      <div className="space-y-8">
+        <TopArtists />
+        <TopTracks />
       </div>
     </Container>
   );

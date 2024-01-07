@@ -72,7 +72,11 @@ function Layout({ children }: { children: React.ReactNode }) {
           <ResizableHandle />
 
           <ResizablePanel defaultSize={80}>
-            {!isFullScreenPageResponsive && <AppHeader />}
+            {!isFullScreenPageResponsive && (
+              <div className="relative">
+                <AppHeader />
+              </div>
+            )}
 
             {children}
           </ResizablePanel>

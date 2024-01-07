@@ -69,7 +69,7 @@ const ArtistDetails: NextPage = () => {
     <>
       <AppHeader backgroundColor={backgroundColor} />
 
-      <Container>
+      <Container className="p-0 sm:p-0">
         <div
           className="flex flex-col justify-center items-center gap-2 bg-gradient-secondary py-4"
           style={{ backgroundColor }}
