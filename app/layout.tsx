@@ -61,7 +61,12 @@ type Props = {
 function RootLayout({ children }: Props) {
   return (
     <html lang="en">
-      <body className={cn(myFont.className, "overflow-hidden")}>
+      <body
+        className={cn(
+          myFont.className,
+          "h-[calc(100dvh-96px)] overflow-hidden"
+        )}
+      >
         <SessionProvider>
           <Providers>
             <Layout>{children}</Layout>

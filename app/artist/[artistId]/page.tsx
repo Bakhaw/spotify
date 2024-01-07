@@ -67,7 +67,9 @@ const ArtistDetails: NextPage = () => {
   // TODO skeleton
   return (
     <>
-      <AppHeader backgroundColor={backgroundColor} />
+      <div className="sm:relative">
+        <AppHeader backgroundColor={backgroundColor} />
+      </div>
 
       <Container className="p-0 sm:p-0">
         <div

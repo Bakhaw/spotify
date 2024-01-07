@@ -34,7 +34,9 @@ const Album: NextPage = () => {
 
   return (
     <>
-      <AppHeader backgroundColor={backgroundColor} />
+      <div className="sm:relative">
+        <AppHeader backgroundColor={backgroundColor} />
+      </div>
 
       <Container className="p-0 sm:p-0">
         <div className="flex flex-col">
