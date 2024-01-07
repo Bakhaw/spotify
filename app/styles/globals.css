@@ -59,15 +59,16 @@
 }
 
 html {
-  /* height: 100svh; */
-  /* overflow: hidden; */
+  height: 100svh;
+  overflow: hidden;
+  border: 2px solid yellow;
 }
 
 body {
   padding: 0;
   margin: 0;
-  border: 2px solid pink;
-  height: 100svh;
+  border: 2px solid blue;
+  /* height: 100svh; */
   overflow: hidden;
 }
 
