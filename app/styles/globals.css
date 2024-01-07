@@ -59,17 +59,17 @@
 }
 
 html {
-  /* min-height: calc(100% + env(safe-area-inset-top));
+  min-height: calc(100% + env(safe-area-inset-top));
   padding: env(safe-area-inset-top) env(safe-area-inset-right)
     env(safe-area-inset-bottom) env(safe-area-inset-left);
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  background-color: #121212; */
-  height: 100dvh;
+  background-color: #121212;
+  /* height: 100dvh; */
   overflow: hidden;
-  border: 2px solid red;
+  border: 2px solid green;
 }
 
 body {
