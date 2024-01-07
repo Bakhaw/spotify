@@ -80,6 +80,7 @@ body {
 
 /* custom scrollbar */
 ::-webkit-scrollbar {
+  z-index: 999;
   width: 2px;
   padding: env(safe-area-inset-top) 0 0 env(safe-area-inset-left);
 }
