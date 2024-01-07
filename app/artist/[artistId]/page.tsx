@@ -126,8 +126,6 @@ const ArtistDetails: NextPage = () => {
               <h1 className="text-3xl font-bold lowercase">albums</h1>
 
               <HorizontalSlider items={removeDuplicatesAlbums} type="album" />
-              <HorizontalSlider items={removeDuplicatesAlbums} type="album" />
-              <HorizontalSlider items={removeDuplicatesAlbums} type="album" />
             </div>
           )}
 
