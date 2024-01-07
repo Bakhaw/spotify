@@ -75,7 +75,6 @@ body {
 /* custom scrollbar */
 ::-webkit-scrollbar {
   width: 2px;
-  padding: env(safe-area-inset-top) 0 0 env(safe-area-inset-left);
 }
 
 ::-webkit-scrollbar-track {
