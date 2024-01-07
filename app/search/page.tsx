@@ -41,11 +41,10 @@ const Search = () => {
     inputRef.current.blur();
   }
 
-  const query = inputRef?.current?.value;
   useEffect(() => {
-    if (!query) return;
+    if (!queryParams.search) return;
 
-    const search = async () => {
+    const search = async (query: string) => {
       const types: SearchType[] = ["album", "artist", "track"];
 
       try {
@@ -59,8 +58,8 @@ const Search = () => {
       }
     };
 
-    search();
-  }, [query, spotifyApi]);
+    search(queryParams.search);
+  }, [queryParams, spotifyApi]);
 
   const tracks = searchResponse?.tracks?.items ?? [];
   const artists = searchResponse?.artists?.items ?? [];
