@@ -30,7 +30,7 @@ const Search = ({ searchParams }: { searchParams?: { query: string } }) => {
     if (!spotifyApi.getAccessToken() || !searchParams?.query) return;
 
     const search = async (query: string) => {
-      const types: SearchType[] = ["album", "artist", "track"];
+      const types: SearchType[] = ["album", "artist", "playlist", "track"];
 
       try {
         const { body } = await spotifyApi.search(query, types, {
@@ -49,6 +49,7 @@ const Search = ({ searchParams }: { searchParams?: { query: string } }) => {
   const tracks = searchResponse?.tracks?.items ?? [];
   const artists = searchResponse?.artists?.items ?? [];
   const albums = searchResponse?.albums?.items ?? [];
+  const playlists = searchResponse?.playlists?.items ?? [];
 
   return (
     <Container>
@@ -69,13 +70,18 @@ const Search = ({ searchParams }: { searchParams?: { query: string } }) => {
             />
 
             <div className="space-y-2">
-              <h1 className="text-3xl font-bold lowercase">artists</h1>
+              <h1 className="text-3xl lowercase">artists</h1>
               <HorizontalSlider items={artists} type="artist" />
             </div>
 
             <div className="space-y-2">
-              <h1 className="text-3xl font-bold lowercase">albums</h1>
+              <h1 className="text-3xl lowercase">albums</h1>
               <HorizontalSlider items={albums} type="album" />
+            </div>
+
+            <div className="space-y-2">
+              <h1 className="text-3xl lowercase">playlists</h1>
+              <HorizontalSlider items={playlists} type="playlist" />
             </div>
           </div>
         )}

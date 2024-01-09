@@ -16,6 +16,9 @@ const hosts = [
   "platform-lookaside.fbsbx.com",
   "image-cdn-ak.spotifycdn.com",
   "image-cdn-fa.spotifycdn.com",
+  "thisis-images.spotifycdn.com",
+  "seeded-session-images.scdn.co",
+  "seed-mix-image.spotifycdn.com",
 ];
 
 const nextConfig = withPWA({

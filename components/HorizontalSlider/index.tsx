@@ -19,21 +19,22 @@ import disqueOr from "../../assets/disqueOr.svg";
 import disquePlatine from "../../assets/disquePlatine.svg";
 import disqueDiamant from "../../assets/disqueDiamant.svg";
 
+type HorizontalSliderItems =
+  | SpotifyApi.ArtistObjectFull[]
+  | SpotifyApi.AlbumObjectFull[]
+  | SpotifyApi.AlbumObjectSimplified[]
+  | SpotifyApi.PlaylistObjectSimplified[];
+
 interface HorizontalSliderProps {
   className?: string;
-  items:
-    | SpotifyApi.ArtistObjectFull[]
-    | SpotifyApi.AlbumObjectFull[]
-    | SpotifyApi.AlbumObjectSimplified[];
-  title?: string;
-  type: "artist" | "album";
+  items: HorizontalSliderItems;
+  type: "artist" | "album" | "playlist";
   rankIcons?: boolean;
 }
 
 const HorizontalSlider: React.FC<HorizontalSliderProps> = ({
   className,
   items,
-  title,
   type,
   rankIcons,
 }) => {
