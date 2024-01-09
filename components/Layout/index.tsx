@@ -28,7 +28,7 @@ function Layout({ children }: { children: React.ReactNode }) {
   const fullScreenPages = ["/login", "/studio"];
   const isFullScreenPage = fullScreenPages.includes(pathname);
 
-  const fullStartWithPages = ["/album", "/artist"];
+  const fullStartWithPages = ["/artist", "/album", "/playlist"];
   const isFullScreenPageResponsive = fullStartWithPages.some((page) =>
     pathname?.startsWith(page)
   );

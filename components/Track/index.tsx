@@ -28,6 +28,7 @@ export interface TrackComposition {
   PlaybackControls: typeof TrackPlaybackControls;
 }
 
+// TODO handle local track
 const Track: React.FC<TrackProps> & TrackComposition = ({
   children,
   track,
