@@ -1,22 +1,11 @@
-import formatMs from "@/lib/formatMs";
-
 import LikeButton from "@/components/LikeButton";
 
-interface TrackActionsProps {
-  track: SpotifyApi.TrackObjectFull;
-}
+import { useTrackContext } from "./context";
 
-// TODO move formatMs from here => not an action
-const TrackActions: React.FC<TrackActionsProps> = ({ track }) => {
-  return (
-    <div className="flex justify-center items-center gap-2 px-4">
-      {/* <LikeButton track={track} /> */}
+const TrackActions = () => {
+  const { track } = useTrackContext();
 
-      <span className="hidden md:block">
-        {formatMs(track.duration_ms, "clock")}
-      </span>
-    </div>
-  );
+  return <LikeButton track={track} />;
 };
 
 export default TrackActions;

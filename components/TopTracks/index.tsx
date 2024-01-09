@@ -69,7 +69,14 @@ function TopTracks() {
         </div>
       </div>
 
-      <TrackList showRank showCover showVisualizer tracks={topTracks?.items} />
+      <TrackList
+        options={{
+          showCoverWithPlayButton: true,
+          showOrder: true,
+          showVisualizer: true,
+        }}
+        tracks={topTracks?.items}
+      />
     </div>
   );
 }

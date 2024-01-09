@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { HeartIcon } from "lucide-react";
 
@@ -40,16 +40,11 @@ const LikeButton: React.FC<LikeButtonProps> = ({ track }) => {
   // }, [spotifyApi, track]);
 
   return (
-    <div
-      aria-label="favorite"
-      role="button"
-      className="h-7 w-7"
-      onClick={onFavoriteButtonClick}
-    >
+    <div aria-label="favorite" role="button" onClick={onFavoriteButtonClick}>
       {isTrackSaved ? (
         <HeartIcon fill="#1ED760" color="#1ED760" />
       ) : (
-        <HeartIcon />
+        <HeartIcon className="h-5 w-5" />
       )}
     </div>
   );

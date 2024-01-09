@@ -5,13 +5,12 @@ import { usePlayerStore } from "@/store/usePlayerStore";
 
 import usePlaybackControls from "@/hooks/usePlaybackControls";
 
-import Cover from "@/components/Cover";
+import TrackCover from "./TrackCover";
 
-interface CoverWithPlayButtonProps {
-  track: SpotifyApi.TrackObjectFull;
-}
+import { useTrackContext } from "./context";
 
-const CoverWithPlayButton: React.FC<CoverWithPlayButtonProps> = ({ track }) => {
+const TrackCoverWithPlayButton = () => {
+  const { track } = useTrackContext();
   const currentPlaybackState = usePlayerStore((s) => s.currentPlaybackState);
   const { pauseSong, playSong } = usePlaybackControls();
 
@@ -19,10 +18,10 @@ const CoverWithPlayButton: React.FC<CoverWithPlayButtonProps> = ({ track }) => {
   const currentTrackId = currentPlaybackState?.item?.id;
 
   return (
-    <div className="h-[60px] w-[60px] mr-3 relative">
-      <Cover alt="Cover" size="small" src={track.album.images[0].url} />
+    <div className="h-[60px] w-[60px] shrink-0 relative">
+      <TrackCover />
 
-      <div className="hidden h-full w-full group-hover:flex justify-center items-center top-0 absolute bg-black/60">
+      <div className="top-0 absolute h-full w-full hidden group-hover:flex justify-center items-center bg-black/60">
         {track.id === currentTrackId && isPlaying ? (
           <IoIosPause className="h-5 w-5 cursor-pointer" onClick={pauseSong} />
         ) : (
@@ -36,4 +35,4 @@ const CoverWithPlayButton: React.FC<CoverWithPlayButtonProps> = ({ track }) => {
   );
 };
 
-export default CoverWithPlayButton;
+export default TrackCoverWithPlayButton;

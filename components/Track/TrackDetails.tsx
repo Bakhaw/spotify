@@ -4,14 +4,15 @@ import ArtistLink from "@/components/ArtistLink";
 import TrackLink from "@/components/TrackLink";
 import Visualizer from "@/components/Visualizer";
 
+import { useTrackContext } from "./context";
+
 interface TrackDetailsProps {
   showVisualizer?: boolean; // default false
-  track: SpotifyApi.TrackObjectFull;
 }
 const TrackDetails: React.FC<TrackDetailsProps> = ({
   showVisualizer = false,
-  track,
 }) => {
+  const { track } = useTrackContext();
   const currentPlaybackState = usePlayerStore((s) => s.currentPlaybackState);
 
   const currentTrackId = currentPlaybackState?.item?.id;

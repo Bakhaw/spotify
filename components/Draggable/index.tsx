@@ -1,15 +1,15 @@
 import { useId } from "react";
 import { useDraggable } from "@dnd-kit/core";
-import { CSS } from "@dnd-kit/utilities";
 
 import { cn } from "@/lib/utils";
 
 interface DraggableProps {
   children: React.ReactNode;
+  className?: string;
   id: string;
 }
 
-const Draggable: React.FC<DraggableProps> = ({ children, id }) => {
+const Draggable: React.FC<DraggableProps> = ({ children, className, id }) => {
   const uniqueId = useId();
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useDraggable({
@@ -31,7 +31,8 @@ const Draggable: React.FC<DraggableProps> = ({ children, id }) => {
       <div
         className={cn(
           "hidden sm:block border-none outline-none rounded-md",
-          isDragging && "bg-[#66677070] text-white animate-pulse"
+          isDragging && "bg-[#66677070] text-white animate-pulse",
+          className
         )}
         ref={setNodeRef}
         style={style}

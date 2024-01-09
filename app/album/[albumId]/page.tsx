@@ -44,8 +44,10 @@ const Album: NextPage = () => {
 
           <div style={{ backgroundColor }} className="bg-gradient px-2 sm:px-8">
             <TrackList
-              showAlbumName={false}
-              showOrder
+              options={{
+                showAlbumName: false,
+                showPlaybackControls: true,
+              }}
               tracks={album?.tracks.items}
             />
           </div>

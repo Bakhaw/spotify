@@ -1,76 +1,64 @@
-import Link from "next/link";
-
 import usePlaybackControls from "@/hooks/usePlaybackControls";
 import useTrack from "@/hooks/useTrack";
 
-import Cover from "@/components/Cover";
 import { Button } from "@/components/ui/button";
 
-import CoverWithPlayButton from "./CoverWithPlayButton";
-import PlaybackControls from "./PlaybackControls";
 import TrackActions from "./TrackActions";
+import TrackAlbumName from "./TrackAlbumName";
+import TrackCover from "./TrackCover";
+import TrackCoverWithPlayButton from "./TrackCoverWithPlayButton";
 import TrackDetails from "./TrackDetails";
+import TrackDuration from "./TrackDuration";
+import TrackPlaybackControls from "./TrackPlaybackControls";
+
+import { TrackContext } from "./context";
 
 export interface TrackProps {
-  order?: number | null;
-  showAlbumName?: boolean; // default true
-  showCover?: boolean; // default false
-  showVisualizer?: boolean; // default false
-  track: SpotifyApi.TrackObjectFull | SpotifyApi.TrackObjectSimplified;
+  children: React.ReactNode;
+  track: SpotifyApi.TrackObjectFull | SpotifyApi.TrackObjectSimplified | null;
 }
 
-const Track: React.FC<TrackProps> = ({
-  order,
-  showAlbumName = true,
-  showCover = false,
-  showVisualizer = false,
+export interface TrackComposition {
+  Actions: typeof TrackActions;
+  AlbumName: typeof TrackAlbumName;
+  Cover: typeof TrackCover;
+  CoverWithPlayButton: typeof TrackCoverWithPlayButton;
+  Details: typeof TrackDetails;
+  Duration: typeof TrackDuration;
+  PlaybackControls: typeof TrackPlaybackControls;
+}
+
+const Track: React.FC<TrackProps> & TrackComposition = ({
+  children,
   track,
 }) => {
   const { playSong } = usePlaybackControls();
-  const currentTrack = useTrack(track.id);
+  const currentTrack = useTrack(track?.id);
 
   if (!currentTrack) return null;
 
   return (
-    <Button
-      className="group transition-all duration-300 flex justify-between items-center p-0 min-h-[56px] h-full w-full cursor-default bg-transparent hover:bg-[#66677070] hover:text-white"
-      onDoubleClick={() => playSong(currentTrack)}
+    <TrackContext.Provider
+      value={{
+        track: currentTrack,
+      }}
     >
-      <div className="flex justify-between items-center w-full">
-        <div className="flex justify-start items-center w-full">
-          <PlaybackControls order={order} track={currentTrack} />
-
-          {showCover && (
-            <>
-              {order ? (
-                // <div className="h-[60px] w-[60px] border mr-3 relative">
-                <Cover
-                  alt="Cover"
-                  size="small"
-                  src={currentTrack.album.images[0].url}
-                />
-              ) : (
-                // </div>
-                <CoverWithPlayButton track={currentTrack} />
-              )}
-            </>
-          )}
-
-          <TrackDetails showVisualizer={showVisualizer} track={currentTrack} />
-        </div>
-
-        {showAlbumName && (
-          <span className="hidden lg:block text-left w-full hover:underline">
-            <Link href={`/album/${currentTrack.album.id}`}>
-              {currentTrack.album.name}
-            </Link>
-          </span>
-        )}
-
-        <TrackActions track={currentTrack} />
-      </div>
-    </Button>
+      <Button
+        className="group transition-all duration-300 flex items-center justify-between p-0 pr-2 sm:pr-4 min-h-[56px] h-full w-full cursor-default bg-transparent hover:bg-[#66677070] hover:text-white"
+        onDoubleClick={() => playSong(currentTrack)}
+      >
+        {children}
+      </Button>
+    </TrackContext.Provider>
   );
 };
+
+Track.Actions = TrackActions;
+Track.AlbumName = TrackAlbumName;
+Track.Cover = TrackCover;
+Track.CoverWithPlayButton = TrackCoverWithPlayButton;
+Track.Details = TrackDetails;
+Track.Duration = TrackDuration;
+Track.PlaybackControls = TrackPlaybackControls;
 
 export default Track;

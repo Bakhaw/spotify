@@ -1,4 +1,5 @@
 import { PauseIcon, PlayIcon } from "lucide-react";
+
 import { cn } from "@/lib/utils";
 
 import { usePlayerStore } from "@/store/usePlayerStore";
@@ -7,28 +8,25 @@ import usePlaybackControls from "@/hooks/usePlaybackControls";
 
 import Visualizer from "@/components/Visualizer";
 
+import { useTrackContext } from "./context";
+
 interface PlaybackControlsProps {
-  order?: number | null;
-  track: SpotifyApi.TrackObjectFull;
+  trackNumber?: number;
 }
 
-const PlaybackControls: React.FC<PlaybackControlsProps> = ({
-  order,
-  track,
-}) => {
+const PlaybackControls: React.FC<PlaybackControlsProps> = ({ trackNumber }) => {
+  const { track } = useTrackContext();
   const currentPlaybackState = usePlayerStore((s) => s.currentPlaybackState);
   const { pauseSong, playSong } = usePlaybackControls();
 
   const isPlaying = currentPlaybackState?.is_playing;
   const currentTrackId = currentPlaybackState?.item?.id;
 
-  if (!order) return null;
-
   const isCurrentTrack = track.id === currentTrackId;
   const isCurrentTrackPlaying = track.id === currentTrackId && isPlaying;
 
   return (
-    <div className="text-center h-full px-4">
+    <div className="text-center h-full px-2 sm:px-4">
       <div
         className={cn(
           "group-hover:block transition-all duration-300",
@@ -56,8 +54,8 @@ const PlaybackControls: React.FC<PlaybackControlsProps> = ({
         </div>
       )}
 
-      {!isCurrentTrack && (
-        <span className="block w-5 group-hover:hidden">{order}</span>
+      {!isCurrentTrack && trackNumber && (
+        <span className="block w-5 group-hover:hidden">{trackNumber}</span>
       )}
     </div>
   );
