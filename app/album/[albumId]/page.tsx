@@ -39,10 +39,13 @@ const Album: NextPage = () => {
       </div>
 
       <Container className="p-0 sm:p-0">
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-0">
           <TrackListHeader album={album} />
 
-          <div style={{ backgroundColor }} className="bg-gradient px-2 sm:px-8">
+          <div
+            style={{ backgroundColor }}
+            className="bg-gradient px-2 sm:px-8 py-4"
+          >
             <TrackList
               options={{
                 showAlbumName: false,

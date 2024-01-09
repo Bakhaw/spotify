@@ -35,8 +35,8 @@ const TrackList: React.FC<TrackListProps> = ({ options, title, tracks }) => {
   const trackNumber = showRank || showOrder;
 
   return (
-    <div className="space-y-2">
-      <h1 className="text-3xl font-bold lowercase">{title}</h1>
+    <div>
+      {title && <h1 className="text-3xl font-bold lowercase mb-2">{title}</h1>}
 
       <ul className="flex flex-col gap-3 w-full">
         {tracks ? (

@@ -5,7 +5,9 @@ import { NextPage } from "next";
 import { useParams } from "next/navigation";
 
 import formatMs from "@/lib/formatMs";
+import generateRGBString from "@/lib/generateRGBString";
 
+import useDominantColor from "@/hooks/useDominantColor";
 import useFetch from "@/hooks/useFetch";
 import useSpotify from "@/hooks/useSpotify";
 
@@ -23,6 +25,9 @@ const Playlist: NextPage = () => {
   );
 
   const playlist = useFetch(getPlaylist, [playlistId]);
+
+  const dominantColor = useDominantColor(playlist?.images[0].url);
+  const backgroundColor = generateRGBString(dominantColor);
 
   if (!playlist) return null;
 
@@ -42,39 +47,50 @@ const Playlist: NextPage = () => {
   const playlistDuration = formatMs(duration);
 
   return (
-    <Container>
-      <div className="flex flex-col gap-8">
-        <div className="flex flex-col md:flex-row items-center gap-6">
+    <>
+      <Container className="p-0 sm:p-0">
+        <div
+          className="flex flex-col md:flex-row items-center gap-5 p-4 sm:p-8 bg-gradient-secondary"
+          style={{ backgroundColor }}
+        >
           <Cover
             alt={`${playlist.name} cover`}
             src={playlist.images?.[0]?.url}
           />
 
-          <div className="flex flex-col justify-between">
+          <div className="flex flex-col justify-between gap-4">
             <div>
-              <h1 className="capitalize">{playlist.type}</h1>
-              <h1 className="text-6xl font-bold mb-10">{playlist.name}</h1>
+              <h2 className="capitalize">{playlist.type}</h2>
+              <h1 className="text-3xl sm:text-6xl font-bold">
+                {playlist.name}
+              </h1>
+              <h2 className="text-sm">{playlist.description}</h2>
             </div>
 
             <div className="flex gap-2">
-              <h1>
+              <h2>
                 {playlist.tracks.total}{" "}
                 {playlist.tracks.total > 1 ? "tracks" : "track"}
-              </h1>
-              <h1>{playlistDuration}</h1>
+              </h2>
+              <h2>{playlistDuration}</h2>
             </div>
           </div>
         </div>
 
-        <TrackList
-          options={{
-            showCover: true,
-            showPlaybackControls: true,
-          }}
-          tracks={formattedPlaylist?.tracks.items}
-        />
-      </div>
-    </Container>
+        <div
+          style={{ backgroundColor }}
+          className="bg-gradient px-2 sm:px-8 py-4"
+        >
+          <TrackList
+            options={{
+              showCover: true,
+              showPlaybackControls: true,
+            }}
+            tracks={formattedPlaylist?.tracks.items}
+          />
+        </div>
+      </Container>
+    </>
   );
 };
 
