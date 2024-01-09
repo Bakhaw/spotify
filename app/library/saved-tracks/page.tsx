@@ -22,7 +22,14 @@ function SavedTracks() {
 
   return (
     <Container>
-      <TrackList showCover title="saved tracks" tracks={formattedSavedTracks} />
+      <TrackList
+        options={{
+          showCover: true,
+          showPlaybackControls: true,
+        }}
+        title="saved tracks"
+        tracks={formattedSavedTracks}
+      />
     </Container>
   );
 }

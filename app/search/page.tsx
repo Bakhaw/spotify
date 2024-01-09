@@ -58,7 +58,15 @@ const Search = ({ searchParams }: { searchParams?: { query: string } }) => {
 
         {searchResponse && (
           <div className="space-y-6">
-            <TrackList showCover tracks={tracks} title="tracks" />
+            <TrackList
+              options={{
+                showOrder: true,
+                showCoverWithPlayButton: true,
+                showVisualizer: true,
+              }}
+              tracks={tracks}
+              title="tracks"
+            />
 
             <div className="space-y-2">
               <h1 className="text-3xl font-bold lowercase">artists</h1>
