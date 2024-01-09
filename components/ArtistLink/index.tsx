@@ -16,7 +16,7 @@ const ArtistLink: React.FC<ArtistLinkProps> = ({
   if (!artists) return null;
 
   return (
-    <ul className="flex text-span items-center overflow-hidden">
+    <ul className="flex text-foreground items-center overflow-hidden">
       {artists.map((artist, index) => (
         <li key={artist.id} className="flex whitespace-nowrap">
           <Link

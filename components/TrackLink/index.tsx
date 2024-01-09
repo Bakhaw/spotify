@@ -18,7 +18,7 @@ const TrackLink: React.FC<TrackLinkProps> = ({
   <div className="box-border min-w-0">
     <Link
       className={cn(
-        "block truncate text-left text-sm hover:underline",
+        "block truncate text-left text-sm text-foreground hover:underline",
         isActive && "text-green-primary",
         className
       )}

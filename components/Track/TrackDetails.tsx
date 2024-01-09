@@ -31,15 +31,11 @@ const TrackDetails: React.FC<TrackDetailsProps> = ({
         {track.explicit && (
           <svg
             viewBox="0 0 24 24"
-            preserveAspectRatio="xMidYMid meet"
             focusable="false"
-            className="style-scope yt-icon w-[16px] h-[16px] block fill-[rgba(255,255,255,.7)]"
+            className="style-scope w-[16px] h-[16px] block fill-foreground"
           >
-            <g className="style-scope yt-icon">
-              <path
-                d="M3,3v18h18V3H3z M16,9h-6v2h6v2h-6v2h6v2H8V7h8V9z"
-                className="style-scope yt-icon"
-              ></path>
+            <g>
+              <path d="M3,3v18h18V3H3z M16,9h-6v2h6v2h-6v2h6v2H8V7h8V9z"></path>
             </g>
           </svg>
         )}

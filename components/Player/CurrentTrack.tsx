@@ -29,7 +29,7 @@ function CurrentTrack() {
             <div className="font-bold flex gap-3 transition-all hover:scale-105 sm:font-normal">
               <TrackLink track={track} />
             </div>
-            <div className="transition-all hover:scale-105 text-span text-xs">
+            <div className="transition-all hover:scale-105 text-xs">
               <ArtistLink artists={track.artists} />
             </div>
           </div>
