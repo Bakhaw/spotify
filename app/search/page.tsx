@@ -9,6 +9,7 @@ import Container from "@/components/Container";
 import HorizontalSlider from "@/components/HorizontalSlider";
 import SearchBar from "@/components/SearchBar";
 import TrackList from "@/components/TrackList";
+import BlurBackground from "@/components/BlurBackground";
 
 type SearchType =
   | "album"
@@ -51,6 +52,7 @@ const Search = ({ searchParams }: { searchParams?: { query: string } }) => {
 
   return (
     <Container>
+      <BlurBackground />
       <div className="space-y-4 sm:space-y-8">
         <SearchBar />
 
