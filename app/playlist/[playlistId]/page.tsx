@@ -27,16 +27,7 @@ const Playlist: NextPage = () => {
 
   const playlist = useFetch(getPlaylist, [playlistId]);
 
-  const randomTrackIndex = useMemo(() => {
-    if (!playlist) return 0;
-
-    return Math.floor(Math.random() * playlist.tracks.items.length);
-  }, [playlist]);
-
-  const albumCoverUrl =
-    playlist?.tracks.items[randomTrackIndex].track?.album.images[0].url;
-
-  const dominantColor = useDominantColor(albumCoverUrl);
+  const dominantColor = useDominantColor(playlist?.images[0].url);
   const backgroundColor = generateRGBString(dominantColor);
 
   const items = useMemo(
