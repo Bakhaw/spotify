@@ -18,10 +18,19 @@ interface TrackListProps {
   title?: string;
   tracks:
     | (SpotifyApi.TrackObjectFull | null)[]
-    | (SpotifyApi.TrackObjectSimplified | null)[];
+    | (SpotifyApi.TrackObjectSimplified | null)[]
+    | undefined;
 }
 
-const TrackList: React.FC<TrackListProps> = ({ options, title, tracks }) => {
+interface TrackListComposition {
+  Skeleton: typeof TrackListSkeleton;
+}
+
+const TrackList: React.FC<TrackListProps> & TrackListComposition = ({
+  options,
+  title,
+  tracks,
+}) => {
   const {
     showAlbumName = true,
     showCover,
@@ -89,5 +98,7 @@ const TrackList: React.FC<TrackListProps> = ({ options, title, tracks }) => {
     </div>
   );
 };
+
+TrackList.Skeleton = TrackListSkeleton;
 
 export default TrackList;

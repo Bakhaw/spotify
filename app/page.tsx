@@ -6,7 +6,7 @@ import TopTracks from "@/components/TopTracks";
 const Home = () => {
   return (
     <Container>
-      <BlurBackground />
+      {/* <BlurBackground /> */}
 
       <div className="space-y-8">
         <TopArtists />

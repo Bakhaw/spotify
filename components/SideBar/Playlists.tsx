@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
 
 import { useLayoutStore } from "@/store/useLayoutStore";
 
@@ -16,12 +17,28 @@ import {
 } from "@/components/ui/tooltip";
 
 import PlaylistsSkeleton from "./PlaylistsSkeleton";
+import useSpotify from "@/hooks/useSpotify";
 
 function Playlists() {
-  const playlists = usePlaylists();
   const isSideBarCollapsed = useLayoutStore((s) => s.isSideBarCollapsed);
 
-  if (!playlists) return <PlaylistsSkeleton />;
+  const spotifyApi = useSpotify();
+
+  const getUserPlaylists = async () =>
+    (await spotifyApi.getUserPlaylists()).body;
+
+  const {
+    isPending,
+    error,
+    data: playlists,
+  } = useQuery({
+    queryKey: ["getUserPlaylists"],
+    queryFn: getUserPlaylists,
+  });
+
+  if (error) return "Error....";
+
+  if (isPending) return <PlaylistsSkeleton />;
 
   return (
     <div className="flex flex-col gap-2">

@@ -1,9 +1,9 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import { QueryFunction, QueryKey, useQuery } from "@tanstack/react-query";
 
 import { TimeRange } from "@/types";
-import useFetch from "@/hooks/useFetch";
 import useSpotify from "@/hooks/useSpotify";
 
 import TrackList from "@/components/TrackList";
@@ -18,22 +18,15 @@ import {
 const STORAGE_KEY = "topTracks__timeRange";
 
 function TopTracks() {
+  const spotifyApi = useSpotify();
+
   const storedTimeRange =
     typeof window !== "undefined"
       ? (localStorage.getItem(STORAGE_KEY) as TimeRange)
       : undefined;
+
   const defaultTimeRange: TimeRange = storedTimeRange ?? "short_term";
-
   const [timeRange, setTimeRange] = useState<TimeRange>(defaultTimeRange);
-
-  const spotifyApi = useSpotify();
-
-  const getTopTracks = useCallback(
-    () => spotifyApi.getMyTopTracks({ time_range: timeRange }),
-    [spotifyApi, timeRange]
-  );
-
-  const topTracks = useFetch(getTopTracks);
 
   function onTimeRangeChange(timeRange: TimeRange) {
     setTimeRange(timeRange);
@@ -45,6 +38,20 @@ function TopTracks() {
     medium_term: "last 6 months",
     long_term: "all time",
   };
+
+  const getTopTracks = async () =>
+    (await spotifyApi.getMyTopTracks({ time_range: timeRange })).body;
+
+  const {
+    isPending,
+    error,
+    data: topTracks,
+  } = useQuery({
+    queryKey: ["getTopTracks", { timeRange }],
+    queryFn: getTopTracks,
+  });
+
+  if (error) return "Error....";
 
   return (
     <div className="flex flex-col gap-2">
@@ -69,14 +76,18 @@ function TopTracks() {
         </div>
       </div>
 
-      <TrackList
-        options={{
-          showCoverWithPlayButton: true,
-          showOrder: true,
-          showVisualizer: true,
-        }}
-        tracks={topTracks?.items}
-      />
+      {isPending ? (
+        <TrackList.Skeleton />
+      ) : (
+        <TrackList
+          options={{
+            showCoverWithPlayButton: true,
+            showOrder: true,
+            showVisualizer: true,
+          }}
+          tracks={topTracks.items}
+        />
+      )}
     </div>
   );
 }

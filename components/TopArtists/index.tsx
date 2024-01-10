@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 import { TimeRange } from "@/types";
 
@@ -15,19 +16,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import useSpotify from "@/hooks/useSpotify";
 
 const STORAGE_KEY = "topArtists__timeRange";
 
 function TopArtists() {
+  const spotifyApi = useSpotify();
+
   const storedTimeRange =
     typeof window !== "undefined"
       ? (localStorage.getItem(STORAGE_KEY) as TimeRange)
       : undefined;
+
   const defaultTimeRange: TimeRange = storedTimeRange ?? "short_term";
-
   const [timeRange, setTimeRange] = useState<TimeRange>(defaultTimeRange);
-
-  const topArtists = useTopArtists(timeRange);
 
   function onTimeRangeChange(timeRange: TimeRange) {
     setTimeRange(timeRange);
@@ -39,6 +41,20 @@ function TopArtists() {
     medium_term: "last 6 months",
     long_term: "all time",
   };
+
+  const getTopArtists = async () =>
+    (await spotifyApi.getMyTopArtists({ time_range: timeRange })).body;
+
+  const {
+    isPending,
+    error,
+    data: topArtists,
+  } = useQuery({
+    queryKey: ["getTopArtists", { timeRange }],
+    queryFn: getTopArtists,
+  });
+
+  if (error) return "Error....";
 
   return (
     <div className="flex flex-col gap-2">
@@ -63,7 +79,11 @@ function TopArtists() {
         </div>
       </div>
 
-      <HorizontalSlider items={topArtists?.items} rankIcons type="artist" />
+      {isPending ? (
+        <HorizontalSlider.Skeleton />
+      ) : (
+        <HorizontalSlider items={topArtists?.items} rankIcons type="artist" />
+      )}
     </div>
   );
 }

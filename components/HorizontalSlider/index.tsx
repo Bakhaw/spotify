@@ -32,12 +32,12 @@ interface HorizontalSliderProps {
   rankIcons?: boolean;
 }
 
-const HorizontalSlider: React.FC<HorizontalSliderProps> = ({
-  className,
-  items,
-  type,
-  rankIcons,
-}) => {
+interface HorizontalSliderComposition {
+  Skeleton: typeof HorizontalSliderSkeleton;
+}
+
+const HorizontalSlider: React.FC<HorizontalSliderProps> &
+  HorizontalSliderComposition = ({ className, items, type, rankIcons }) => {
   const imageSources = [disqueDiamant, disquePlatine, disqueOr];
 
   return (
@@ -94,5 +94,7 @@ const HorizontalSlider: React.FC<HorizontalSliderProps> = ({
     </>
   );
 };
+
+HorizontalSlider.Skeleton = HorizontalSliderSkeleton;
 
 export default HorizontalSlider;
