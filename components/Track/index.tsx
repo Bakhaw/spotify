@@ -16,6 +16,7 @@ import { TrackContext } from "./context";
 
 export interface TrackProps {
   children: React.ReactNode;
+  contextUri?: string;
   track: TrackType | null;
 }
 
@@ -32,6 +33,7 @@ export interface TrackComposition {
 // TODO handle local track
 const Track: React.FC<TrackProps> & TrackComposition = ({
   children,
+  contextUri,
   track,
 }) => {
   const { playSong } = usePlaybackControls();
@@ -41,12 +43,13 @@ const Track: React.FC<TrackProps> & TrackComposition = ({
   return (
     <TrackContext.Provider
       value={{
+        contextUri,
         track,
       }}
     >
       <Button
         className="group shadow-none transition-all duration-300 flex items-center justify-between p-0 pr-2 sm:pr-4 min-h-[56px] h-full w-full cursor-default bg-transparent hover:bg-[#66677070] hover:text-white"
-        onDoubleClick={() => playSong(track)}
+        onDoubleClick={() => playSong(track, contextUri)}
       >
         {children}
       </Button>

@@ -15,7 +15,7 @@ interface PlaybackControlsProps {
 }
 
 const PlaybackControls: React.FC<PlaybackControlsProps> = ({ trackNumber }) => {
-  const { track } = useTrackContext();
+  const { contextUri, track } = useTrackContext();
   const currentPlaybackState = usePlayerStore((s) => s.currentPlaybackState);
   const { pauseSong, playSong } = usePlaybackControls();
 
@@ -42,7 +42,7 @@ const PlaybackControls: React.FC<PlaybackControlsProps> = ({ trackNumber }) => {
         ) : (
           <PlayIcon
             className="h-5 w-5 cursor-pointer"
-            onClick={() => playSong(track)}
+            onClick={() => playSong(track, contextUri)}
             role="button"
           />
         )}

@@ -7,21 +7,21 @@ import { HeartIcon } from "lucide-react";
 import useSpotify from "@/hooks/useSpotify";
 
 interface LikeButtonProps {
-  track: SpotifyApi.TrackObjectSimplified;
+  trackId: string;
 }
 
-const LikeButton: React.FC<LikeButtonProps> = ({ track }) => {
+const LikeButton: React.FC<LikeButtonProps> = ({ trackId }) => {
   const spotifyApi = useSpotify();
   const [isTrackSaved, setIsTrackSaved] = useState(false);
 
   async function onFavoriteButtonClick() {
-    if (!track) return;
+    if (!trackId) return;
 
     if (isTrackSaved) {
-      await spotifyApi.removeFromMySavedTracks([track.id]);
+      await spotifyApi.removeFromMySavedTracks([trackId]);
       setIsTrackSaved(false);
     } else {
-      await spotifyApi.addToMySavedTracks([track.id]);
+      await spotifyApi.addToMySavedTracks([trackId]);
       setIsTrackSaved(true);
     }
   }

@@ -1,11 +1,10 @@
 "use client";
 
-import { useCallback } from "react";
 import { NextPage } from "next";
 import { useParams } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
 
 import useDominantColor from "@/hooks/useDominantColor";
-import useFetch from "@/hooks/useFetch";
 import useSpotify from "@/hooks/useSpotify";
 
 import generateRGBString from "@/lib/generateRGBString";
@@ -22,15 +21,22 @@ const Album: NextPage = () => {
   const { albumId } = useParams();
   const spotifyApi = useSpotify();
 
-  const getAlbum = useCallback(
-    () => spotifyApi.getAlbum(String(albumId)),
-    [spotifyApi, albumId]
-  );
+  const getAlbum = async () =>
+    (await spotifyApi.getAlbum(String(albumId))).body;
 
-  const album = useFetch<SpotifyApi.SingleAlbumResponse>(getAlbum, [albumId]);
+  const {
+    isPending,
+    error,
+    data: album,
+  } = useQuery({
+    queryKey: ["getAlbum", albumId],
+    queryFn: getAlbum,
+  });
 
   const dominantColor = useDominantColor(album?.images[0].url);
   const backgroundColor = generateRGBString(dominantColor);
+
+  if (error) return "Error....";
 
   return (
     <>
@@ -39,29 +45,32 @@ const Album: NextPage = () => {
       </div>
 
       <Container className="p-0 sm:p-0">
-        <div className="flex flex-col gap-0">
-          <TrackListHeader album={album} />
+        {isPending ? (
+          "Loading...."
+        ) : (
+          <div className="flex flex-col gap-0">
+            <TrackListHeader album={album} />
 
-          <div
-            style={{ backgroundColor }}
-            className="bg-gradient px-2 sm:px-8 py-4"
-          >
-            <TrackList
-              options={{
-                showAlbumName: false,
-                showPlaybackControls: true,
-              }}
-              tracks={album?.tracks.items}
-            />
-          </div>
+            <div
+              style={{ backgroundColor }}
+              className="bg-gradient px-2 sm:px-8 py-4"
+            >
+              <TrackList
+                contextUri={album.uri}
+                options={{
+                  showAlbumName: false,
+                  showPlaybackControls: true,
+                }}
+                tracks={album?.tracks.items}
+              />
+            </div>
 
-          {album && (
             <div className="p-4 sm:px-8">
               <AlbumReleaseDate releaseDate={album.release_date} />
               <AlbumCopyrights copyrights={album.copyrights} />
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </Container>
     </>
   );

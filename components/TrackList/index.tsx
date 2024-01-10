@@ -15,13 +15,24 @@ type TrackListOptions = {
 
 interface TrackListProps {
   options: TrackListOptions;
+  contextUri?: string;
   title?: string;
   tracks:
     | (SpotifyApi.TrackObjectFull | null)[]
-    | (SpotifyApi.TrackObjectSimplified | null)[];
+    | (SpotifyApi.TrackObjectSimplified | null)[]
+    | undefined;
 }
 
-const TrackList: React.FC<TrackListProps> = ({ options, title, tracks }) => {
+interface TrackListComposition {
+  Skeleton: typeof TrackListSkeleton;
+}
+
+const TrackList: React.FC<TrackListProps> & TrackListComposition = ({
+  contextUri,
+  options,
+  title,
+  tracks,
+}) => {
   const {
     showAlbumName = true,
     showCover,
@@ -51,7 +62,7 @@ const TrackList: React.FC<TrackListProps> = ({ options, title, tracks }) => {
 
               <div className="w-full">
                 <Draggable id={`track_list:${track?.id}`}>
-                  <Track track={track}>
+                  <Track contextUri={contextUri} track={track}>
                     {showPlaybackControls && (
                       <Track.PlaybackControls trackNumber={index + 1} />
                     )}
@@ -89,5 +100,7 @@ const TrackList: React.FC<TrackListProps> = ({ options, title, tracks }) => {
     </div>
   );
 };
+
+TrackList.Skeleton = TrackListSkeleton;
 
 export default TrackList;

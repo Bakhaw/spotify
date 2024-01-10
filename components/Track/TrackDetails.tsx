@@ -57,7 +57,7 @@ const TrackDetails: React.FC<TrackDetailsProps> = ({
           </svg>
         )}
 
-        <ArtistLink artists={track.artists} />
+        {"artists" in track && <ArtistLink artists={track.artists} />}
       </span>
     </div>
   );

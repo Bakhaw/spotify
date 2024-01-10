@@ -1,13 +1,13 @@
 import { create } from "zustand";
 
-import { Queue } from "@/types";
+import { Queue, Track } from "@/types";
 
 import spotifyApi from "@/lib/spotify";
 
 type CurrentPlaybackState = {
   device: SpotifyApi.UserDevice;
   is_playing: boolean;
-  item: SpotifyApi.TrackObjectFull | SpotifyApi.EpisodeObject;
+  item: Track;
   progress_ms: number | null;
 };
 

@@ -1,15 +1,15 @@
 "use client";
 
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import { NextPage } from "next";
 import { useParams } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+
+import useDominantColor from "@/hooks/useDominantColor";
+import useSpotify from "@/hooks/useSpotify";
 
 import formatMs from "@/lib/formatMs";
 import generateRGBString from "@/lib/generateRGBString";
-
-import useDominantColor from "@/hooks/useDominantColor";
-import useFetch from "@/hooks/useFetch";
-import useSpotify from "@/hooks/useSpotify";
 
 import AppHeader from "@/components/AppHeader";
 import Container from "@/components/Container";
@@ -21,17 +21,22 @@ const Playlist: NextPage = () => {
   const { playlistId } = useParams();
   const spotifyApi = useSpotify();
 
-  const getPlaylist = useCallback(
-    () => spotifyApi.getPlaylist(String(playlistId)),
-    [spotifyApi, playlistId]
-  );
+  const getPlaylist = async () =>
+    (await spotifyApi.getPlaylist(String(playlistId))).body;
 
-  const playlist = useFetch(getPlaylist, [playlistId]);
+  const {
+    isPending,
+    error,
+    data: playlist,
+  } = useQuery({
+    queryKey: ["getPlaylist", playlistId],
+    queryFn: getPlaylist,
+  });
 
   const dominantColor = useDominantColor(playlist?.images[0].url);
   const backgroundColor = generateRGBString(dominantColor);
 
-  const items = useMemo(
+  const formattedItems = useMemo(
     () =>
       playlist?.tracks.items
         .filter((item) => !item.is_local) // TODO remove this filter when LocalTrack component is ready
@@ -39,23 +44,20 @@ const Playlist: NextPage = () => {
     [playlist]
   );
 
-  if (!playlist) return null;
+  if (error || isPending) return null;
 
-  const formattedPlaylist = {
-    ...playlist,
-    tracks: {
-      ...playlist.tracks,
-      items,
-    },
+  const formattedTracks = {
+    ...playlist.tracks,
+    items: formattedItems ?? [],
   };
 
-  const duration = formattedPlaylist.tracks.items.reduce(
+  const duration = formattedTracks.items.reduce(
     (acc, curr) => (curr?.duration_ms ? acc + curr.duration_ms : 0),
     0
   );
 
   const playlistDuration = formatMs(duration);
-  const totalTracks = formattedPlaylist.tracks.items.length;
+  const totalTracks = formattedTracks.items.length;
 
   return (
     <>
@@ -102,7 +104,7 @@ const Playlist: NextPage = () => {
               showCover: true,
               showPlaybackControls: true,
             }}
-            tracks={formattedPlaylist?.tracks.items}
+            tracks={formattedTracks.items}
           />
         </div>
       </Container>
