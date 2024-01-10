@@ -14,9 +14,8 @@ import useSpotify from "@/hooks/useSpotify";
 import AppHeader from "@/components/AppHeader";
 import Container from "@/components/Container";
 import Cover from "@/components/Cover";
+import PlaylistOwnerDetails from "@/components/PlaylistOwnerDetails";
 import TrackList from "@/components/TrackList";
-
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const Playlist: NextPage = () => {
   const { playlistId } = useParams();
@@ -28,13 +27,6 @@ const Playlist: NextPage = () => {
   );
 
   const playlist = useFetch(getPlaylist, [playlistId]);
-
-  const getUserAvatar = useCallback(
-    () => spotifyApi.getUser(playlist?.owner.id),
-    [spotifyApi, playlist]
-  );
-
-  const userAvatar = useFetch(getUserAvatar)?.images?.[0].url;
 
   const dominantColor = useDominantColor(playlist?.images[0].url);
   const backgroundColor = generateRGBString(dominantColor);
@@ -51,10 +43,6 @@ const Playlist: NextPage = () => {
 
   const formattedPlaylist = {
     ...playlist,
-    owner: {
-      ...playlist.owner,
-      image: userAvatar,
-    },
     tracks: {
       ...playlist.tracks,
       items,
@@ -68,8 +56,6 @@ const Playlist: NextPage = () => {
 
   const playlistDuration = formatMs(duration);
   const totalTracks = formattedPlaylist.tracks.items.length;
-
-  console.log(playlist.owner);
 
   return (
     <>
@@ -96,19 +82,7 @@ const Playlist: NextPage = () => {
               <h2 className="text-sm">{playlist.description}</h2>
             </div>
 
-            <div className="group flex items-center gap-2">
-              <Avatar className="h-6 w-6">
-                <AvatarImage
-                  src={formattedPlaylist.owner.image}
-                  alt={formattedPlaylist.owner.display_name}
-                />
-                <AvatarFallback />
-              </Avatar>
-
-              <span className="group-hover:underline">
-                {playlist.owner.display_name}
-              </span>
-            </div>
+            <PlaylistOwnerDetails playlist={playlist} />
 
             <div className="flex gap-2">
               <h2>
