@@ -16,9 +16,7 @@ type TrackListOptions = {
 interface TrackListProps {
   options: TrackListOptions;
   title?: string;
-  tracks:
-    | (SpotifyApi.TrackObjectFull | null)[]
-    | (SpotifyApi.TrackObjectSimplified | null)[];
+  tracks: (SpotifyApi.TrackObjectFull | null)[];
 }
 
 const TrackList: React.FC<TrackListProps> = ({ options, title, tracks }) => {
