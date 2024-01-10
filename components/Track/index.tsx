@@ -1,3 +1,5 @@
+import { Track as TrackType } from "@/types";
+
 import usePlaybackControls from "@/hooks/usePlaybackControls";
 
 import { Button } from "@/components/ui/button";
@@ -14,7 +16,7 @@ import { TrackContext } from "./context";
 
 export interface TrackProps {
   children: React.ReactNode;
-  track: SpotifyApi.TrackObjectFull | null;
+  track: TrackType | null;
 }
 
 export interface TrackComposition {

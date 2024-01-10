@@ -5,4 +5,6 @@ export type Queue = {
   queue: SpotifyApi.TrackObjectFull[];
 };
 
-export type Track = SpotifyApi.TrackObjectFull;
+export type Track =
+  | SpotifyApi.TrackObjectFull
+  | SpotifyApi.TrackObjectSimplified;

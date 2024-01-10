@@ -2,10 +2,10 @@ import { usePlayerStore } from "@/store/usePlayerStore";
 
 import useTrack from "@/hooks/useTrack";
 
+import AlbumLink from "@/components/AlbumLink";
 import ArtistLink from "@/components/ArtistLink";
 import Cover from "@/components/Cover";
 import LikeButton from "@/components/LikeButton";
-import TrackLink from "@/components/TrackLink";
 
 import { DrawerClose } from "@/components/ui/drawer";
 
@@ -34,7 +34,9 @@ function OpenedPlayer() {
           <div className="flex justify-between items-center w-full">
             <div>
               <DrawerClose asChild>
-                <TrackLink className="text-3xl" track={track} />
+                <AlbumLink className="text-3xl" albumId={track.album.id}>
+                  {track.name}
+                </AlbumLink>
               </DrawerClose>
 
               <DrawerClose asChild>

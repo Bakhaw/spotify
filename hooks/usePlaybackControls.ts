@@ -1,3 +1,5 @@
+import { Track } from "@/types";
+
 import { usePlayerStore } from "@/store/usePlayerStore";
 import { useTimerStore } from "@/store/useTimerStore";
 
@@ -8,8 +10,8 @@ const usePlaybackControls = () => {
   const { currentPlaybackState, setCurrentPlaybackState } = usePlayerStore();
   const setProgressMs = useTimerStore((s) => s.setProgressMs);
 
-  const playSong = async (track: SpotifyApi.TrackObjectFull) => {
-    if (!track) return;
+  const playSong = async (track: Track) => {
+    if (!("album" in track) || !track) return;
 
     const currentTrackId = currentPlaybackState?.item?.id;
 

@@ -2,10 +2,10 @@ import { usePlayerStore } from "@/store/usePlayerStore";
 
 import useTrack from "@/hooks/useTrack";
 
+import AlbumLink from "@/components/AlbumLink";
 import ArtistLink from "@/components/ArtistLink";
 import Cover from "@/components/Cover";
 import Draggable from "@/components/Draggable";
-import TrackLink from "@/components/TrackLink";
 
 function CurrentTrack() {
   const currentPlaybackState = usePlayerStore((s) => s.currentPlaybackState);
@@ -27,7 +27,7 @@ function CurrentTrack() {
 
           <div className="display-arrowicon max-w-[50vw] md:max-w-[30vw]">
             <div className="font-bold flex gap-3 transition-all hover:scale-105 sm:font-normal">
-              <TrackLink track={track} />
+              <AlbumLink albumId={track.album.id}>{track.name}</AlbumLink>
             </div>
             <div className="transition-all hover:scale-105 text-xs">
               <ArtistLink artists={track.artists} />

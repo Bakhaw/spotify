@@ -1,7 +1,9 @@
 import { usePlayerStore } from "@/store/usePlayerStore";
 
+import { cn } from "@/lib/utils";
+
+import AlbumLink from "@/components/AlbumLink";
 import ArtistLink from "@/components/ArtistLink";
-import TrackLink from "@/components/TrackLink";
 import Visualizer from "@/components/Visualizer";
 
 import { useTrackContext } from "./context";
@@ -19,12 +21,27 @@ const TrackDetails: React.FC<TrackDetailsProps> = ({
   const isTrackActive = track.id === currentTrackId;
   const isPlaying = currentPlaybackState?.is_playing;
 
+  const isFullTrack = "album" in track;
+
   return (
     <div className="flex flex-col max-w-[45vw] md:max-w-80">
       <div className="flex items-baseline gap-2">
         {showVisualizer && isTrackActive && isPlaying && <Visualizer />}
 
-        <TrackLink isActive={isTrackActive} track={track} />
+        {isFullTrack ? (
+          <AlbumLink isActive={isTrackActive} albumId={track.album.id}>
+            {track.name}
+          </AlbumLink>
+        ) : (
+          <h2
+            className={cn(
+              "block truncate text-left text-sm text-foreground",
+              isTrackActive && "text-green-primary"
+            )}
+          >
+            {track.name}
+          </h2>
+        )}
       </div>
 
       <span className="flex gap-1 items-center font-light">

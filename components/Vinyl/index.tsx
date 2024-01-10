@@ -14,8 +14,8 @@ import useTrack from "@/hooks/useTrack";
 import generateRGBString from "@/lib/generateRGBString";
 import { cn } from "@/lib/utils";
 
+import AlbumLink from "@/components/AlbumLink";
 import ArtistLink from "@/components/ArtistLink";
-import TrackLink from "@/components/TrackLink";
 import Timer from "@/components/Player/Timer";
 import { Button } from "@/components/ui/button";
 
@@ -143,7 +143,9 @@ const Vinyl = () => {
             />
             {track && (
               <div className="absolute bottom-[-100px] left-0">
-                <TrackLink className="text-4xl" track={track} />
+                <AlbumLink className="text-4xl" albumId={track.album.id}>
+                  {track.name}
+                </AlbumLink>
                 <ArtistLink className="text-3xl" artists={track.artists} />
               </div>
             )}

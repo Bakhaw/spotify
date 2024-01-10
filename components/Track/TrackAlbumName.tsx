@@ -1,17 +1,19 @@
-import { useTrackContext } from "./context";
-import Link from "next/link";
+import AlbumLink from "@/components/AlbumLink";
 
-// TODO create <AlbumLink /> component
+import { useTrackContext } from "./context";
+
 const TrackAlbumName = () => {
   const { track } = useTrackContext();
 
+  if (!("album" in track)) return null;
+
   return (
-    <Link
-      href={`/album/${track.album.id}`}
-      className="truncate text-sm hover:underline"
+    <AlbumLink
+      albumId={track.album.id}
+      className="truncate text-sm w-fit hover:underline"
     >
       {track.album.name}
-    </Link>
+    </AlbumLink>
   );
 };
 
