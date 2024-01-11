@@ -1,7 +1,5 @@
 import Link from "next/link";
 
-import { Track } from "@/types";
-
 import { cn } from "@/lib/utils";
 
 interface AlbumLinkProps {

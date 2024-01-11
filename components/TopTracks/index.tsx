@@ -42,7 +42,7 @@ function TopTracks() {
     error,
     data: topTracks,
   } = useQuery({
-    queryKey: ["getTopTracks", { timeRange }],
+    queryKey: ["getTopTracks", timeRange],
     queryFn: getTopTracks,
   });
 

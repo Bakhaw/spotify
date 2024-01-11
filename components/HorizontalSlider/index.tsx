@@ -27,7 +27,7 @@ type HorizontalSliderItems =
 
 interface HorizontalSliderProps {
   className?: string;
-  items: HorizontalSliderItems;
+  items?: HorizontalSliderItems;
   type: "artist" | "album" | "playlist";
   rankIcons?: boolean;
 }

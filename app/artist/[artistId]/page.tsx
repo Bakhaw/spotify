@@ -1,68 +1,91 @@
 "use client";
 
-import { useCallback, useState } from "react";
 import { NextPage } from "next";
-import { useParams } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
 
-import useFetch from "@/hooks/useFetch";
-import useSpotify from "@/hooks/useSpotify";
 import useDominantColor from "@/hooks/useDominantColor";
+import useSpotify from "@/hooks/useSpotify";
 
 import generateRGBString from "@/lib/generateRGBString";
-import { cn } from "@/lib/utils";
 
 import AppHeader from "@/components/AppHeader";
 import Container from "@/components/Container";
-import Cover from "@/components/Cover";
 import HorizontalSlider from "@/components/HorizontalSlider";
 
 import { Button } from "@/components/ui/button";
 
-import MonthlyListeners from "./MonthlyListeners";
+import ArtistHeader from "./ArtistHeader";
 
-const ArtistDetails: NextPage = () => {
-  const { artistId } = useParams();
+type FilterType = "album" | "single" | "appears_on";
+
+const ArtistDetails: NextPage = ({
+  searchParams,
+}: {
+  searchParams?: { filter: FilterType };
+}) => {
   const spotifyApi = useSpotify();
 
-  const getArtist = useCallback(
-    () => spotifyApi.getArtist(String(artistId)),
-    [spotifyApi, artistId]
-  );
+  const { artistId } = useParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
 
-  const getProjects = useCallback(
-    () => spotifyApi.getArtistAlbums(String(artistId)),
-    [spotifyApi, artistId]
-  );
+  const currentFilter: FilterType = searchParams?.filter ?? "album";
 
-  const artist = useFetch<SpotifyApi.ArtistObjectFull>(getArtist, [artistId]);
-  const projects = useFetch<SpotifyApi.ArtistsAlbumsResponse>(getProjects, [
-    artistId,
-  ]);
+  const handleFilterClick = (filter: FilterType) => {
+    if (filter === currentFilter) return;
 
-  const seen = new Set();
-  const removeDuplicatesAlbums = projects?.items
-    .filter((project) => project.album_group === "album")
-    .filter((el) => {
-      const duplicate = seen.has(el.name);
-      seen.add(el.name);
+    const params = new URLSearchParams(searchParams);
 
-      return Boolean(!duplicate);
+    if (filter) {
+      params.set("filter", filter);
+    } else {
+      params.delete("filter");
+    }
+
+    replace(`${pathname}?${params.toString()}`);
+  };
+
+  const getArtist = async () =>
+    (await spotifyApi.getArtist(String(artistId))).body;
+
+  const {
+    isPending,
+    error,
+    data: artist,
+  } = useQuery({
+    queryKey: ["getArtist", artistId],
+    queryFn: getArtist,
+  });
+
+  const getProjects = async (filter: FilterType) => {
+    const { body } = await spotifyApi.getArtistAlbums(String(artistId), {
+      include_groups: filter,
     });
 
-  const singles = projects?.items.filter(
-    (project) => project.album_group === "single"
-  );
-  const appearsOn = projects?.items.filter(
-    (project) => project.album_group === "appears_on"
-  );
+    return body.items;
+  };
+
+  const { data: albums } = useQuery({
+    queryKey: ["getProjects", artistId, currentFilter],
+    queryFn: () => getProjects("album"),
+    enabled: currentFilter === "album",
+  });
+
+  const { data: singles } = useQuery({
+    queryKey: ["getProjects", artistId, currentFilter],
+    queryFn: () => getProjects("single"),
+    enabled: currentFilter === "single",
+  });
+
+  const { data: appearsOn } = useQuery({
+    queryKey: ["getProjects", artistId, currentFilter],
+    queryFn: () => getProjects("appears_on"),
+    enabled: currentFilter === "appears_on",
+  });
 
   const dominantColor = useDominantColor(artist?.images[0].url);
   const backgroundColor = generateRGBString(dominantColor);
-
-  const [currentFilter, setCurrentFilter] = useState<string>("albums");
-  const handleFilterClick = (filter: string) => {
-    setCurrentFilter(filter);
-  };
 
   // TODO skeleton
   return (
@@ -72,19 +95,9 @@ const ArtistDetails: NextPage = () => {
       </div>
 
       <Container className="p-0 sm:p-0">
-        <div
-          className="flex flex-col justify-center items-center gap-2 bg-gradient-secondary py-4"
-          style={{ backgroundColor }}
-        >
-          <Cover
-            alt={`${artist?.name} cover`}
-            rounded
-            size="medium"
-            src={artist?.images[0].url}
-          />
-          <h1 className="text-7xl font-bold text-white">{artist?.name}</h1>
-          {artist && <MonthlyListeners artistId={artist.id} />}
-        </div>
+        {artist && (
+          <ArtistHeader artist={artist} backgroundColor={backgroundColor} />
+        )}
 
         <div
           style={{ backgroundColor }}
@@ -92,46 +105,52 @@ const ArtistDetails: NextPage = () => {
         >
           <div className="flex gap-4 px-4 sm:px-8">
             <Button
-              onClick={() => handleFilterClick("albums")}
+              className="w-auto justify-start rounded-full text-xs"
+              onClick={() => handleFilterClick("album")}
+              size="sm"
               style={{
-                ...(currentFilter === "albums" && {
+                ...(currentFilter === "album" && {
                   backgroundColor: generateRGBString(dominantColor, 0.7),
                 }),
               }}
-              size="sm"
-              className={cn(
-                "w-auto justify-start rounded-full text-xs",
-                currentFilter === "albums" && "text-white hover:bg-white"
-              )}
             >
               Albums
             </Button>
             <Button
+              className="w-auto justify-start rounded-full text-xs"
+              onClick={() => handleFilterClick("single")}
               size="sm"
               style={{
-                ...(currentFilter === "singles" && {
+                ...(currentFilter === "single" && {
                   backgroundColor: generateRGBString(dominantColor, 0.7),
                 }),
               }}
-              className={cn(
-                "w-auto justify-start rounded-full text-xs",
-                currentFilter === "singles" && "text-white hover:bg-white"
-              )}
-              onClick={() => handleFilterClick("singles")}
             >
               Singles & EP
             </Button>
+            <Button
+              className="w-auto justify-start rounded-full text-xs"
+              onClick={() => handleFilterClick("appears_on")}
+              size="sm"
+              style={{
+                ...(currentFilter === "appears_on" && {
+                  backgroundColor: generateRGBString(dominantColor, 0.7),
+                }),
+              }}
+            >
+              Appears on
+            </Button>
           </div>
 
-          {currentFilter === "albums" && (
+          {currentFilter === "album" && (
             <div className="space-y-2 px-4 sm:px-8">
               <h1 className="text-3xl font-bold lowercase">albums</h1>
 
-              <HorizontalSlider items={removeDuplicatesAlbums} type="album" />
+              <HorizontalSlider items={albums} type="album" />
             </div>
           )}
 
-          {currentFilter === "singles" && (
+          {currentFilter === "single" && (
             <div className="space-y-2 px-4 sm:px-8">
               <h1 className="text-3xl font-bold lowercase">singles & ep</h1>
 
@@ -139,7 +158,7 @@ const ArtistDetails: NextPage = () => {
             </div>
           )}
 
-          {appearsOn?.length > 0 && (
+          {currentFilter === "appears_on" && (
             <div className="space-y-2 px-4 sm:px-8">
               <h1 className="text-3xl font-bold lowercase">appears on</h1>
 

@@ -5,7 +5,6 @@ import { useQuery } from "@tanstack/react-query";
 
 import { TimeRange } from "@/types";
 
-
 import HorizontalSlider from "@/components/HorizontalSlider";
 
 import {
@@ -43,7 +42,7 @@ function TopArtists() {
     error,
     data: topArtists,
   } = useQuery({
-    queryKey: ["getTopArtists", { timeRange }],
+    queryKey: ["getTopArtists", timeRange],
     queryFn: getTopArtists,
   });
 

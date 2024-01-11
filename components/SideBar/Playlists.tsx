@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { useLayoutStore } from "@/store/useLayoutStore";
 
-import usePlaylists from "@/hooks/usePlaylists";
+import useSpotify from "@/hooks/useSpotify";
 
 import Cover from "@/components/Cover";
 import Droppable from "@/components/Droppable";
@@ -17,12 +17,10 @@ import {
 } from "@/components/ui/tooltip";
 
 import PlaylistsSkeleton from "./PlaylistsSkeleton";
-import useSpotify from "@/hooks/useSpotify";
 
 function Playlists() {
-  const isSideBarCollapsed = useLayoutStore((s) => s.isSideBarCollapsed);
-
   const spotifyApi = useSpotify();
+  const isSideBarCollapsed = useLayoutStore((s) => s.isSideBarCollapsed);
 
   const getUserPlaylists = async () =>
     (await spotifyApi.getUserPlaylists()).body;

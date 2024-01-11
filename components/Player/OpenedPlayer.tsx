@@ -44,7 +44,7 @@ function OpenedPlayer() {
               </DrawerClose>
             </div>
 
-            <LikeButton track={track} />
+            <LikeButton trackId={track.id} />
           </div>
 
           <Timer className="w-full text-xl" />
