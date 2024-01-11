@@ -5,7 +5,6 @@ import { useQuery } from "@tanstack/react-query";
 
 import { TimeRange } from "@/types";
 
-import useTopArtists from "@/hooks/useTopArtists";
 
 import HorizontalSlider from "@/components/HorizontalSlider";
 
@@ -36,12 +35,6 @@ function TopArtists() {
     localStorage.setItem(STORAGE_KEY, timeRange);
   }
 
-  const labels = {
-    short_term: "last month",
-    medium_term: "last 6 months",
-    long_term: "all time",
-  };
-
   const getTopArtists = async () =>
     (await spotifyApi.getMyTopArtists({ time_range: timeRange })).body;
 
@@ -67,7 +60,7 @@ function TopArtists() {
             onValueChange={onTimeRangeChange}
             disabled={!topArtists}
           >
-            <SelectTrigger aria-label={labels[timeRange]} className="px-1">
+            <SelectTrigger className="px-1">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>

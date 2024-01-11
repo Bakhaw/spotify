@@ -1,9 +1,10 @@
 "use client";
 
-import { useCallback, useState } from "react";
-import { QueryFunction, QueryKey, useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 import { TimeRange } from "@/types";
+
 import useSpotify from "@/hooks/useSpotify";
 
 import TrackList from "@/components/TrackList";
@@ -33,12 +34,6 @@ function TopTracks() {
     localStorage.setItem(STORAGE_KEY, timeRange);
   }
 
-  const labels = {
-    short_term: "last month",
-    medium_term: "last 6 months",
-    long_term: "all time",
-  };
-
   const getTopTracks = async () =>
     (await spotifyApi.getMyTopTracks({ time_range: timeRange })).body;
 
@@ -64,7 +59,7 @@ function TopTracks() {
             onValueChange={onTimeRangeChange}
             disabled={!topTracks}
           >
-            <SelectTrigger aria-label={labels[timeRange]}>
+            <SelectTrigger>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
