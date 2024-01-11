@@ -15,6 +15,7 @@ type TrackListOptions = {
 
 interface TrackListProps {
   options: TrackListOptions;
+  contextUri?: string;
   title?: string;
   tracks:
     | (SpotifyApi.TrackObjectFull | null)[]
@@ -27,6 +28,7 @@ interface TrackListComposition {
 }
 
 const TrackList: React.FC<TrackListProps> & TrackListComposition = ({
+  contextUri,
   options,
   title,
   tracks,
@@ -60,7 +62,7 @@ const TrackList: React.FC<TrackListProps> & TrackListComposition = ({
 
               <div className="w-full">
                 <Draggable id={`track_list:${track?.id}`}>
-                  <Track track={track}>
+                  <Track contextUri={contextUri} track={track}>
                     {showPlaybackControls && (
                       <Track.PlaybackControls trackNumber={index + 1} />
                     )}
