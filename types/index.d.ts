@@ -7,4 +7,5 @@ export type Queue = {
 
 export type Track =
   | SpotifyApi.TrackObjectFull
-  | SpotifyApi.TrackObjectSimplified;
+  | SpotifyApi.TrackObjectSimplified
+  | SpotifyApi.EpisodeObject;
