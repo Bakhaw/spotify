@@ -1,12 +1,14 @@
-import type { Metadata, Viewport } from "next";
+import type { Metadata } from "next";
+import { getServerSession } from "next-auth";
 
 import localFont from "next/font/local";
+
+import { authOptions } from "@/lib/authOptions";
+import { cn } from "@/lib/utils";
 
 import Layout from "@/components/Layout";
 import Providers from "@/components/Providers";
 import SessionProvider from "@/components/SessionProvider";
-
-import { cn } from "@/lib/utils";
 
 import "@/app/styles/globals.css";
 import "@/app/styles/vinyl.scss";
@@ -47,7 +49,9 @@ type Props = {
   children?: React.ReactNode;
 };
 
-function RootLayout({ children }: Props) {
+async function RootLayout({ children }: Props) {
+  const session = await getServerSession(authOptions);
+
   return (
     <html lang="en">
       <body
@@ -56,7 +60,7 @@ function RootLayout({ children }: Props) {
           "h-[calc(100dvh-80px)] sm:h-auto overflow-hidden"
         )}
       >
-        <SessionProvider>
+        <SessionProvider session={session}>
           <Providers>
             <Layout>{children}</Layout>
           </Providers>
