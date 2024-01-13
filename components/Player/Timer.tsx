@@ -43,6 +43,7 @@ const Timer: React.FC<TimerProps> = ({ className }) => {
     initProgressMs();
   }, [spotifyApi, session, setProgressMs]);
 
+  // [Progress MS -> Next Track]
   // used to increment progressMs value every second AND to handle nextTrack
   useEffect(() => {
     if (!currentPlaybackState?.is_playing) return;
@@ -80,35 +81,45 @@ const Timer: React.FC<TimerProps> = ({ className }) => {
     setRefetch,
   ]);
 
+  // [Next Track]
   // used to catch if we approach the end of a song, the "refetch" value is true whenever it's the case (updates in setInterval)
   useEffect(() => {
     if (refetch) {
       const handleRefetch = async () => {
-        const queue = await fetchQueue();
+        try {
+          const queue = await fetchQueue();
 
-        if (!queue || !currentPlaybackState) return;
+          if (!queue || !currentPlaybackState) return;
 
-        // sometimes we have desynchro due to fetch duration, and the next track already started inside Spotify
-        // so we check if the Spotify current playing track
-        // if different from our playbackState => it means this is the nextTrack and we'll use it
-        if (queue.currentlyPlaying.id !== currentPlaybackState.item.id) {
-          const { body } = await spotifyApi.getMyCurrentPlaybackState();
+          const { currentlyPlaying } = queue;
+          const { item: currentPlaybackItem } = currentPlaybackState;
 
-          if (!body.item) return;
+          if (currentlyPlaying.id !== currentPlaybackItem.id) {
+            // Desynchronization check due to fetch duration.
+            // If the Spotify currentPlayingTrack is different from our playbackState,
+            // it means the "currentlyPlaying" response from Spotify is the next track.
+            // Otherwise, the next track stored in "currentlyPlaying" will be skipped.
+            const { body } = await spotifyApi.getMyCurrentPlaybackState();
 
-          setCurrentPlaybackState({
-            device: body.device,
-            item: body.item,
-            is_playing: body.is_playing,
-            progress_ms: body.progress_ms,
-          });
+            if (!body.item) return;
 
-          setProgressMs(body.progress_ms);
-          setRefetch(false);
-        } else {
-          // this case is fired most of the time
-          const nextTrack = queue.queue[0];
-          setNextTrack(nextTrack);
+            setCurrentPlaybackState({
+              device: body.device,
+              item: body.item,
+              is_playing: body.is_playing,
+              progress_ms: body.progress_ms,
+            });
+
+            setProgressMs(body.progress_ms);
+            setRefetch(false);
+          } else {
+            // Default behavior when next track is not detected.
+            // This case is fired most of the time.
+            const nextTrack = queue.queue[0];
+            setNextTrack(nextTrack);
+          }
+        } catch (error) {
+          console.error("Error handling refetch:", error);
         }
       };
 
