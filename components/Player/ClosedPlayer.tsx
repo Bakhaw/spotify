@@ -29,7 +29,7 @@ function ClosedPlayer() {
   return (
     <div className="flex items-center justify-between h-16 w-full px-2">
       <div className="w-full">
-        <CurrentTrack />
+        <CurrentTrack asLink />
       </div>
 
       <div className="block md:hidden">

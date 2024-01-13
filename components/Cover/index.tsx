@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Image from "next/image";
 
 import { cn } from "@/lib/utils";
@@ -5,8 +6,10 @@ import { cn } from "@/lib/utils";
 import CoverFallback from "../../assets/cover-fallback.svg";
 
 interface CoverProps {
-  alt: string;
   additionalCss?: string;
+  alt: string;
+  asLink?: boolean; // default false
+  href?: string;
   priority?: boolean; // default: false
   rounded?: boolean;
   size?: "full" | "small" | "medium" | "large"; // default: "medium"
@@ -14,8 +17,9 @@ interface CoverProps {
 }
 
 const Cover: React.FC<CoverProps> = ({
-  alt,
   additionalCss,
+  alt,
+  href,
   priority,
   rounded,
   size = "medium",
@@ -28,7 +32,22 @@ const Cover: React.FC<CoverProps> = ({
     large: "h-[300px] w-[300px]",
   };
 
-  return (
+  return href ? (
+    <Link href={href}>
+      <Image
+        alt={alt}
+        className={cn(
+          `block object-cover z-0 ${sizes[size]}`,
+          rounded && "rounded-full",
+          additionalCss
+        )}
+        priority={priority}
+        src={src ?? CoverFallback}
+        height={640}
+        width={640}
+      />
+    </Link>
+  ) : (
     <Image
       alt={alt}
       className={cn(
