@@ -26,6 +26,6 @@ export const config = {
     "/library",
     "/profile",
     "/studio",
-    "/(artist|album|playlist|)/([^/.]*)",
+    "/(artist|album|playlist|user|)/([^/.]*)",
   ],
 };

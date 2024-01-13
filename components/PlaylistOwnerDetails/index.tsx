@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 
 import useSpotify from "@/hooks/useSpotify";
@@ -46,9 +47,12 @@ const PlaylistOwnerDetails: React.FC<PlaylistOwnerDetailsProps> = ({
         <AvatarFallback />
       </Avatar>
 
-      <span className="group-hover:underline">
+      <Link
+        className="group-hover:underline"
+        href={`/user/${formattedPlaylist.owner.id}`}
+      >
         {formattedPlaylist.owner.display_name}
-      </span>
+      </Link>
     </div>
   );
 };
