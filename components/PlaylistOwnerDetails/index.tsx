@@ -1,31 +1,40 @@
-"use client";
+import { useQuery } from "@tanstack/react-query";
 
-import { useCallback } from "react";
-
-import useFetch from "@/hooks/useFetch";
 import useSpotify from "@/hooks/useSpotify";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-function PlaylistOwnerDetails({
-  playlist,
-}: {
+interface PlaylistOwnerDetailsProps {
   playlist: SpotifyApi.SinglePlaylistResponse;
-}) {
+}
+
+const PlaylistOwnerDetails: React.FC<PlaylistOwnerDetailsProps> = ({
+  playlist,
+}) => {
   const spotifyApi = useSpotify();
 
-  const getUserAvatar = useCallback(
-    () => spotifyApi.getUser(playlist?.owner.id),
-    [spotifyApi, playlist]
-  );
+  const getUser = async () =>
+    (await spotifyApi.getUser(playlist.owner.id)).body;
 
-  const userAvatar = useFetch(getUserAvatar)?.images?.[0].url;
+  const {
+    isPending,
+    error,
+    data: user,
+  } = useQuery({
+    queryKey: ["getUser", playlist.owner.id],
+    queryFn: getUser,
+  });
+
+  const userAvatar = user?.images?.[0].url;
+
   const formattedPlaylist = {
     owner: {
       ...playlist.owner,
       image: userAvatar,
     },
   };
+
+  if (error || isPending) return null;
 
   return (
     <div className="group flex items-center gap-2">
@@ -38,10 +47,10 @@ function PlaylistOwnerDetails({
       </Avatar>
 
       <span className="group-hover:underline">
-        {playlist.owner.display_name}
+        {formattedPlaylist.owner.display_name}
       </span>
     </div>
   );
-}
+};
 
 export default PlaylistOwnerDetails;

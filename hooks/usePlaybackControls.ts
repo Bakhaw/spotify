@@ -10,8 +10,8 @@ const usePlaybackControls = () => {
   const { currentPlaybackState, setCurrentPlaybackState } = usePlayerStore();
   const setProgressMs = useTimerStore((s) => s.setProgressMs);
 
-  const playSong = async (track: Track) => {
-    if (!("album" in track) || !track) return;
+  const playSong = async (track: Track, contextUri?: string) => {
+    if (!track) return;
 
     const currentTrackId = currentPlaybackState?.item?.id;
 
@@ -39,7 +39,7 @@ const usePlaybackControls = () => {
       spotifyApi.play({
         device_id:
           currentPlaybackState?.device.id ?? String(devices.devices[0].id),
-        context_uri: track.album.uri,
+        context_uri: "album" in track ? track.album.uri : contextUri,
         offset: { uri: track.uri },
       });
     }

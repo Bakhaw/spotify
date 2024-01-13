@@ -7,7 +7,7 @@ function PlaylistsSkeleton() {
     <ul className="flex flex-col gap-5">
       {fakePlaylists.map((d) => (
         <div key={d} className="flex flex-col gap-3">
-          <Skeleton className="h-11 w-full" />
+          <Skeleton className="h-11 w-full bg-muted transition-colors" />
         </div>
       ))}
     </ul>
