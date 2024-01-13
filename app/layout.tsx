@@ -1,4 +1,5 @@
-import type { Metadata, Viewport } from "next";
+import type { Metadata } from "next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import localFont from "next/font/local";
 
@@ -58,7 +59,10 @@ function RootLayout({ children }: Props) {
       >
         <SessionProvider>
           <Providers>
-            <Layout>{children}</Layout>
+            <Layout>
+              {children}
+              <SpeedInsights />
+            </Layout>
           </Providers>
         </SessionProvider>
       </body>
