@@ -38,15 +38,14 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
           <ContextMenuSubTrigger inset>Add to a playlist</ContextMenuSubTrigger>
           <ContextMenuSubContent className="w-48">
             {playlists?.items.map((playlist) => (
-              <ContextMenuItem key={playlist.id}>
+              <ContextMenuItem key={playlist.id} className="px-4">
                 {playlist.name}
-                <ContextMenuShortcut>⇧⌘S</ContextMenuShortcut>
               </ContextMenuItem>
             ))}
           </ContextMenuSubContent>
         </ContextMenuSub>
 
-        <ContextMenuItem inset className="cursor-pointer">
+        <ContextMenuItem inset>
           Add to saved tracks
           <ContextMenuShortcut>⌘S</ContextMenuShortcut>
         </ContextMenuItem>
@@ -54,11 +53,19 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
         <ContextMenuSeparator />
 
         {"album" in track && (
-          <ContextMenuItem inset className="cursor-pointer">
-            <AlbumLink albumId={track.album.id} className="hover:no-underline">
-              Go to Album
-            </AlbumLink>
-          </ContextMenuItem>
+          <ContextMenuSub>
+            <ContextMenuSubTrigger inset>Go to Album</ContextMenuSubTrigger>
+            <ContextMenuSubContent className="w-48">
+              <AlbumLink
+                albumId={track.album.id}
+                className="hover:no-underline"
+              >
+                <ContextMenuItem className="px-4 cursor-pointer">
+                  {track.album.name}
+                </ContextMenuItem>
+              </AlbumLink>
+            </ContextMenuSubContent>
+          </ContextMenuSub>
         )}
 
         {"artists" in track && (
@@ -69,10 +76,10 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
                 <Link
                   key={`${artist.id}_${index}`}
                   href={`/artist/${artist.id}`}
+                  className="block"
                 >
-                  <ContextMenuItem className="cursor-pointer">
+                  <ContextMenuItem className="cursor-pointer px-4">
                     {artist.name}
-                    <ContextMenuShortcut>⇧⌘S</ContextMenuShortcut>
                   </ContextMenuItem>
                 </Link>
               ))}
