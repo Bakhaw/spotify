@@ -30,7 +30,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
   if (!track) return null;
   return (
     <ContextMenuWrapper>
-      <ContextMenuTrigger className="flex w-full items-center justify-center rounded-md text-sm">
+      <ContextMenuTrigger className="flex w-full items-center justify-center rounded-md text-sm data-[state=open]:bg-[#66677070]">
         {children}
       </ContextMenuTrigger>
       <ContextMenuContent className="w-64">

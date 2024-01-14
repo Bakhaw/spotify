@@ -36,6 +36,8 @@ const TrackList: React.FC<TrackListProps> & TrackListComposition = ({
   title,
   tracks,
 }) => {
+  const { error, isPending, playlists } = usePlaylists();
+
   const {
     showAlbumName = true,
     showCover,
@@ -45,7 +47,6 @@ const TrackList: React.FC<TrackListProps> & TrackListComposition = ({
     showRank,
     showVisualizer,
   } = options;
-  const { error, isPending, playlists } = usePlaylists();
 
   const trackNumber = showRank || showOrder;
 
