@@ -1,20 +1,28 @@
 "use client";
 
-import { useCallback } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 import useSpotify from "@/hooks/useSpotify";
-import useFetch from "@/hooks/useFetch";
 
 function usePlaylists() {
   const spotifyApi = useSpotify();
+  const getUserPlaylists = async () =>
+    (await spotifyApi.getUserPlaylists()).body;
 
-  const getPlaylists = useCallback(
-    () => spotifyApi.getUserPlaylists(),
-    [spotifyApi]
-  );
+  const {
+    isPending,
+    error,
+    data: playlists,
+  } = useQuery({
+    queryKey: ["getUserPlaylists"],
+    queryFn: getUserPlaylists,
+  });
 
-  const playlists = useFetch(getPlaylists);
-  return playlists;
+  return {
+    isPending,
+    error,
+    playlists,
+  };
 }
 
 export default usePlaylists;

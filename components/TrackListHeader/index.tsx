@@ -38,9 +38,6 @@ const TrackListHeader: React.FC<TrackListHeaderProps> = ({ album }) => {
           <h1 className="w-full text-3xl font-bold sm:mb-10 sm:text-6xl">
             {album.name}
           </h1>
-        </div>
-
-        <div className="flex-col gap-2">
           <ArtistLink artists={album.artists} />
           <div className="flex gap-1 text-white text-span text-sm">
             <span>{albumReleaseDate}</span>

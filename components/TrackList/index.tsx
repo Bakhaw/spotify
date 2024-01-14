@@ -1,3 +1,6 @@
+import usePlaylists from "@/hooks/usePlaylists";
+
+import ContextMenu from "@/components/ContextMenu";
 import Draggable from "@/components/Draggable";
 import Track from "@/components/Track";
 
@@ -42,6 +45,7 @@ const TrackList: React.FC<TrackListProps> & TrackListComposition = ({
     showRank,
     showVisualizer,
   } = options;
+  const { error, isPending, playlists } = usePlaylists();
 
   const trackNumber = showRank || showOrder;
 
@@ -62,33 +66,37 @@ const TrackList: React.FC<TrackListProps> & TrackListComposition = ({
 
               <div className="w-full">
                 <Draggable id={`track_list:${track?.id}`}>
-                  <Track contextUri={contextUri} track={track}>
-                    {showPlaybackControls && (
-                      <Track.PlaybackControls trackNumber={index + 1} />
-                    )}
+                  <ContextMenu playlists={playlists} track={track}>
+                    <Track contextUri={contextUri} track={track}>
+                      {showPlaybackControls && (
+                        <Track.PlaybackControls trackNumber={index + 1} />
+                      )}
 
-                    <div className="flex items-center gap-2 flex-1">
-                      {showCoverWithPlayButton && <Track.CoverWithPlayButton />}
+                      <div className="flex items-center gap-2 flex-1">
+                        {showCoverWithPlayButton && (
+                          <Track.CoverWithPlayButton />
+                        )}
 
-                      {showCover && <Track.Cover />}
+                        {showCover && <Track.Cover />}
 
-                      <Track.Details showVisualizer={showVisualizer} />
-                    </div>
-
-                    {showAlbumName && (
-                      <div className="hidden lg:block text-left flex-1">
-                        <Track.AlbumName />
+                        <Track.Details showVisualizer={showVisualizer} />
                       </div>
-                    )}
 
-                    <div className="flex items-center gap-2 flex-1 justify-end">
-                      <Track.Actions />
+                      {showAlbumName && (
+                        <div className="hidden lg:block text-left flex-1">
+                          <Track.AlbumName />
+                        </div>
+                      )}
 
-                      <div className="hidden sm:block">
-                        <Track.Duration />
+                      <div className="flex items-center gap-2 flex-1 justify-end">
+                        <Track.Actions />
+
+                        <div className="hidden sm:block">
+                          <Track.Duration />
+                        </div>
                       </div>
-                    </div>
-                  </Track>
+                    </Track>
+                  </ContextMenu>
                 </Draggable>
               </div>
             </li>
