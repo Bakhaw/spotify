@@ -133,7 +133,7 @@ function DragOverlayWrapper() {
           setOpen={setIsDialogOpen}
           description={`Your playlist « ${overItem.data.current?.name} » already contain this track`}
           submitButtonText="Add anyway"
-          title="Already added !"
+          title="Already added"
         />
       )}
     </>
