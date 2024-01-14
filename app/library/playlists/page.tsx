@@ -8,10 +8,11 @@ import Container from "@/components/Container";
 import Cover from "@/components/Cover";
 
 function Playlists() {
-  const playlists = usePlaylists();
+  const { playlists } = usePlaylists();
 
   if (!playlists) return null;
 
+  // TODO skeleton
   return (
     <Container>
       <ul className="flex flex-wrap justify-start items-center gap-2 w-full">
