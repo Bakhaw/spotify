@@ -26,8 +26,8 @@ function Playlists() {
     (await spotifyApi.getUserPlaylists()).body;
 
   const {
-    isPending,
     error,
+    isPending,
     data: playlists,
   } = useQuery({
     queryKey: ["getUserPlaylists"],

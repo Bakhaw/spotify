@@ -35,7 +35,7 @@ function Volume() {
     spotifyApi.setVolume(volume);
   }, 300);
 
-  const isVolumeMuted = currentPlaybackState?.device.volume_percent === 0;
+  const isVolumeMuted = currentPlaybackState?.device?.volume_percent === 0;
 
   function toggleMuteVolume() {
     if (!currentPlaybackState) return;

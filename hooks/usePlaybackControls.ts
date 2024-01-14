@@ -36,6 +36,10 @@ const usePlaybackControls = () => {
 
       setProgressMs(0);
 
+      if (devices.devices.length === 0) {
+        throw new Error("No active device found");
+      }
+
       spotifyApi.play({
         device_id:
           currentPlaybackState?.device.id ?? String(devices.devices[0].id),
