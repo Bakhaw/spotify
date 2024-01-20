@@ -19,6 +19,7 @@ const hosts = [
   "thisis-images.spotifycdn.com",
   "seeded-session-images.scdn.co",
   "seed-mix-image.spotifycdn.com",
+  "newjams-images.scdn.co",
 ];
 
 const nextConfig = withPWA({
