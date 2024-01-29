@@ -1,6 +1,7 @@
 import { Track } from "@/types";
 
 import { usePlayerStore } from "@/store/usePlayerStore";
+import { useSearchProviderStore } from "@/store/useSearchProviderStore";
 import { useTimerStore } from "@/store/useTimerStore";
 
 import useSpotify from "@/hooks/useSpotify";
@@ -8,10 +9,23 @@ import useSpotify from "@/hooks/useSpotify";
 const usePlaybackControls = () => {
   const spotifyApi = useSpotify();
   const { currentPlaybackState, setCurrentPlaybackState } = usePlayerStore();
+  const searchProvider = useSearchProviderStore((s) => s.searchProvider);
+
   const setProgressMs = useTimerStore((s) => s.setProgressMs);
 
   const playSong = async (track: Track, contextUri?: string) => {
     if (!track) return;
+
+    if (searchProvider === "youtube") {
+      setCurrentPlaybackState({
+        device: null,
+        is_playing: true,
+        item: track,
+        progress_ms: 0,
+      });
+
+      return;
+    }
 
     const currentTrackId = currentPlaybackState?.item?.id;
 
@@ -42,7 +56,7 @@ const usePlaybackControls = () => {
 
       spotifyApi.play({
         device_id:
-          currentPlaybackState?.device.id ?? String(devices.devices[0].id),
+          currentPlaybackState?.device?.id ?? String(devices.devices[0].id),
         context_uri: "album" in track ? track.album.uri : contextUri,
         offset: { uri: track.uri },
       });
@@ -50,14 +64,21 @@ const usePlaybackControls = () => {
   };
 
   const pauseSong = () => {
+    console.log("here", searchProvider);
     if (!currentPlaybackState) return;
 
-    setCurrentPlaybackState({
-      ...currentPlaybackState,
-      is_playing: false,
-    });
-
-    spotifyApi.pause();
+    if (searchProvider === "youtube") {
+      setCurrentPlaybackState({
+        ...currentPlaybackState,
+        is_playing: false,
+      });
+    } else {
+      setCurrentPlaybackState({
+        ...currentPlaybackState,
+        is_playing: false,
+      });
+      spotifyApi.pause();
+    }
   };
 
   return { playSong, pauseSong };
