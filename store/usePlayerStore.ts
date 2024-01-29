@@ -5,7 +5,7 @@ import { Queue, Track } from "@/types";
 import spotifyApi from "@/lib/spotify";
 
 type CurrentPlaybackState = {
-  device: SpotifyApi.UserDevice;
+  device: SpotifyApi.UserDevice | null;
   is_playing: boolean;
   item: Track;
   progress_ms: number | null;

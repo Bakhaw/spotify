@@ -21,10 +21,11 @@ function DeviceSelector() {
 
   const devices = useFetch<SpotifyApi.UserDevicesResponse>(getDevices);
 
-  async function onDeviceClick(device: SpotifyApi.UserDevice) {
+  async function onDeviceClick(device: SpotifyApi.UserDevice | null) {
     if (
+      !device ||
       typeof device.id !== "string" ||
-      currentPlaybackState?.device.id === device.id
+      currentPlaybackState?.device?.id === device.id
     )
       return;
 
@@ -38,7 +39,7 @@ function DeviceSelector() {
   if (!devices || !devices.devices) return null;
 
   const sortedDevices = devices.devices.filter(
-    (device) => currentPlaybackState?.device.id !== device.id
+    (device) => currentPlaybackState?.device?.id !== device.id
   );
 
   if (!currentPlaybackState?.device) return null;

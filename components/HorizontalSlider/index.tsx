@@ -23,6 +23,7 @@ type HorizontalSliderItems =
   | SpotifyApi.ArtistObjectFull[]
   | SpotifyApi.AlbumObjectFull[]
   | SpotifyApi.AlbumObjectSimplified[]
+  // | SpotifyApi.TrackObjectFull[]
   | SpotifyApi.PlaylistObjectSimplified[];
 
 interface HorizontalSliderProps {

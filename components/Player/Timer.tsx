@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { debounce } from "lodash";
 
@@ -20,6 +21,8 @@ interface TimerProps {
 const Timer: React.FC<TimerProps> = ({ className }) => {
   const spotifyApi = useSpotify();
   const { data: session } = useSession();
+  const searchParams = useSearchParams();
+  const provider = searchParams.get("provider");
 
   const { currentPlaybackState, fetchQueue, setCurrentPlaybackState } =
     usePlayerStore();
@@ -46,7 +49,7 @@ const Timer: React.FC<TimerProps> = ({ className }) => {
   // [Progress MS -> Next Track]
   // used to increment progressMs value every second AND to handle nextTrack
   useEffect(() => {
-    if (!currentPlaybackState?.is_playing) return;
+    if (!currentPlaybackState?.is_playing || provider === "youtube") return;
 
     const intervalId = setInterval(() => {
       if (progressMs === null || !currentPlaybackState?.item) return;
@@ -94,14 +97,14 @@ const Timer: React.FC<TimerProps> = ({ className }) => {
           const { currentlyPlaying } = queue;
           const { item: currentPlaybackItem } = currentPlaybackState;
 
-          if (currentlyPlaying.id !== currentPlaybackItem.id) {
+          if (currentlyPlaying?.id !== currentPlaybackItem?.id) {
             // Desynchronization check due to fetch duration.
             // If the Spotify currentPlayingTrack is different from our playbackState,
             // it means the "currentlyPlaying" response from Spotify is the next track.
             // Otherwise, the next track stored in "currentlyPlaying" will be skipped.
             const { body } = await spotifyApi.getMyCurrentPlaybackState();
 
-            if (!body.item) return;
+            if (!body?.item) return;
 
             setCurrentPlaybackState({
               device: body.device,

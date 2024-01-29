@@ -1,4 +1,6 @@
-import { Track } from "@/types";
+import { useSearchParams } from "next/navigation";
+
+import { SearchProvider, Track } from "@/types";
 
 import { usePlayerStore } from "@/store/usePlayerStore";
 import { useTimerStore } from "@/store/useTimerStore";
@@ -8,6 +10,9 @@ import useSpotify from "@/hooks/useSpotify";
 const usePlaybackControls = () => {
   const spotifyApi = useSpotify();
   const { currentPlaybackState, setCurrentPlaybackState } = usePlayerStore();
+  const searchParams = useSearchParams();
+  const provider = searchParams.get("provider") as SearchProvider;
+
   const setProgressMs = useTimerStore((s) => s.setProgressMs);
 
   const playSong = async (track: Track, contextUri?: string) => {
@@ -15,6 +20,19 @@ const usePlaybackControls = () => {
 
     if (!devices || devices.devices.length === 0)
       return Promise.reject("NO_ACTIVE_DEVICE_FOUND");
+
+    if (provider === "youtube") {
+      setCurrentPlaybackState({
+        device: null,
+        is_playing: true,
+        item: track,
+        progress_ms: 0,
+      });
+
+      // spotifyApi.pause();
+
+      return;
+    }
 
     const currentTrackId = currentPlaybackState?.item?.id;
 
@@ -39,7 +57,7 @@ const usePlaybackControls = () => {
 
       spotifyApi.play({
         device_id:
-          currentPlaybackState?.device.id ?? String(devices.devices[0].id),
+          currentPlaybackState?.device?.id ?? String(devices.devices[0].id),
         context_uri: contextUri,
         offset: { uri: track.uri },
       });
@@ -49,12 +67,18 @@ const usePlaybackControls = () => {
   const pauseSong = () => {
     if (!currentPlaybackState) return;
 
-    setCurrentPlaybackState({
-      ...currentPlaybackState,
-      is_playing: false,
-    });
-
-    spotifyApi.pause();
+    if (provider === "youtube") {
+      setCurrentPlaybackState({
+        ...currentPlaybackState,
+        is_playing: false,
+      });
+    } else {
+      setCurrentPlaybackState({
+        ...currentPlaybackState,
+        is_playing: false,
+      });
+      spotifyApi.pause();
+    }
   };
 
   return { playSong, pauseSong };

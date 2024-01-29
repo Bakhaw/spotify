@@ -36,7 +36,7 @@ const Player: React.FC = () => {
   const backgroundColor = generateRGBString(dominantColor);
   const isWhiteBg = isWhite(dominantColor);
 
-  if (pathname === "/login" || pathname === "/studio" || !track) return null;
+  if (pathname === "/login" || pathname === "/studio") return null;
 
   return (
     <div

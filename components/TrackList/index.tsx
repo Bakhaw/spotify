@@ -21,8 +21,8 @@ interface TrackListProps {
   contextUri?: string;
   title?: string;
   tracks:
-    | (SpotifyApi.TrackObjectFull | null)[]
-    | (SpotifyApi.TrackObjectSimplified | null)[]
+    | SpotifyApi.TrackObjectFull[]
+    | SpotifyApi.TrackObjectSimplified[]
     | undefined;
 }
 
