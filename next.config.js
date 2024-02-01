@@ -24,6 +24,9 @@ const hosts = [
   // from youtube api
   "i.ytimg.com",
   "yt3.ggpht.com",
+
+  // 🤡
+  "localhost",
 ];
 
 const nextConfig = withPWA({

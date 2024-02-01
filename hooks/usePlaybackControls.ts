@@ -1,7 +1,8 @@
-import { Track } from "@/types";
+import { useSearchParams } from "next/navigation";
+
+import { SearchProvider, Track } from "@/types";
 
 import { usePlayerStore } from "@/store/usePlayerStore";
-import { useSearchProviderStore } from "@/store/useSearchProviderStore";
 import { useTimerStore } from "@/store/useTimerStore";
 
 import useSpotify from "@/hooks/useSpotify";
@@ -9,20 +10,25 @@ import useSpotify from "@/hooks/useSpotify";
 const usePlaybackControls = () => {
   const spotifyApi = useSpotify();
   const { currentPlaybackState, setCurrentPlaybackState } = usePlayerStore();
-  const searchProvider = useSearchProviderStore((s) => s.searchProvider);
+  const searchParams = useSearchParams();
+  const provider = searchParams.get("provider") as SearchProvider;
 
   const setProgressMs = useTimerStore((s) => s.setProgressMs);
 
   const playSong = async (track: Track, contextUri?: string) => {
     if (!track) return;
 
-    if (searchProvider === "youtube") {
+    if (provider === "youtube") {
       setCurrentPlaybackState({
         device: null,
         is_playing: true,
         item: track,
         progress_ms: 0,
       });
+
+      // spotifyApi.pause();
+
+      console.log("youtube provider function");
 
       return;
     }
@@ -54,6 +60,8 @@ const usePlaybackControls = () => {
         throw new Error("No active device found");
       }
 
+      console.log("reached here");
+
       spotifyApi.play({
         device_id:
           currentPlaybackState?.device?.id ?? String(devices.devices[0].id),
@@ -64,10 +72,9 @@ const usePlaybackControls = () => {
   };
 
   const pauseSong = () => {
-    console.log("here", searchProvider);
     if (!currentPlaybackState) return;
 
-    if (searchProvider === "youtube") {
+    if (provider === "youtube") {
       setCurrentPlaybackState({
         ...currentPlaybackState,
         is_playing: false,

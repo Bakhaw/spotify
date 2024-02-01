@@ -1,3 +1,7 @@
+import { useSearchParams } from "next/navigation";
+
+import { SearchProvider } from "@/types";
+
 import { usePlayerStore } from "@/store/usePlayerStore";
 
 import useTrack from "@/hooks/useTrack";
@@ -6,7 +10,6 @@ import AlbumLink from "@/components/AlbumLink";
 import ArtistLink from "@/components/ArtistLink";
 import Cover from "@/components/Cover";
 import Draggable from "@/components/Draggable";
-import { useSearchProviderStore } from "@/store/useSearchProviderStore";
 
 export interface CurrentTrackProps {
   asLink?: boolean; // default false
@@ -14,16 +17,18 @@ export interface CurrentTrackProps {
 
 const CurrentTrack: React.FC<CurrentTrackProps> = ({ asLink = false }) => {
   const currentPlaybackState = usePlayerStore((s) => s.currentPlaybackState);
-  const searchProvider = useSearchProviderStore((s) => s.searchProvider);
+  const searchParams = useSearchParams();
+  const provider = searchParams.get("provider") as SearchProvider;
   const track = useTrack(currentPlaybackState?.item?.id);
 
   const youtubeTrack = currentPlaybackState?.item as SpotifyApi.TrackObjectFull;
 
+  console.log("youtube track", youtubeTrack);
   // if (!spotifyTrack) return null; // TODO skeleton
 
   return (
     <div className="flex">
-      {searchProvider === "spotify" && track && (
+      {provider !== "youtube" && track && (
         <Draggable id={`closed_player:${track.id}`}>
           <div className="flex flex-1 justify-start items-center gap-3 h-full pr-2 rounded-md">
             <div className="w-[48px] transition-all hover:scale-105">
@@ -48,10 +53,10 @@ const CurrentTrack: React.FC<CurrentTrackProps> = ({ asLink = false }) => {
         </Draggable>
       )}
 
-      {searchProvider === "youtube" && youtubeTrack && (
+      {provider === "youtube" && youtubeTrack && (
         <div>
           <div className="flex flex-1 justify-start items-center gap-3 h-full pr-2 rounded-md">
-            <div className="w-[48px]">
+            {/* <div className="w-[48px]">
               <Cover
                 alt={`${youtubeTrack.name} cover`}
                 asLink={asLink}
@@ -59,7 +64,17 @@ const CurrentTrack: React.FC<CurrentTrackProps> = ({ asLink = false }) => {
                 size="full"
                 src={youtubeTrack.album.images[0].url}
               />
-            </div>
+            </div> */}
+
+            <iframe
+              className="mb-[400px]"
+              height="48"
+              width="48"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+              src={`https://www.youtube.com/embed/${youtubeTrack.id}?autoplay=1&color=white`}
+              title="YouTube video player"
+            ></iframe>
 
             <div className="display-arrowicon max-w-[50vw] md:max-w-[30vw]">
               <div className="font-bold flex gap-3 sm:font-normal">

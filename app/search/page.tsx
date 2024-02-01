@@ -1,11 +1,11 @@
 "use client";
 
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 
-import {
-  SearchProvider,
-  useSearchProviderStore,
-} from "@/store/useSearchProviderStore";
+import { SearchProvider, SearchYoutubeResponse } from "@/types";
+
+import { useSearchProviderStore } from "@/store/useSearchProviderStore";
 
 import useSpotify from "@/hooks/useSpotify";
 
@@ -15,6 +15,7 @@ import HorizontalSlider from "@/components/HorizontalSlider";
 import SearchBar from "@/components/SearchBar";
 import TrackList from "@/components/TrackList";
 import { Button } from "@/components/ui/button";
+import searchMapper from "@/lib/searchMapper";
 
 type SearchType =
   | "album"
@@ -24,90 +25,85 @@ type SearchType =
   | "show"
   | "episode";
 
-const Search = ({ searchParams }: { searchParams?: { query: string } }) => {
+const Search = () => {
   const spotifyApi = useSpotify();
-  const { searchProvider, setSearchProvider } = useSearchProviderStore();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
+
+  const setSearchProvider = useSearchProviderStore((s) => s.setSearchProvider);
+
+  const query = searchParams.get("query");
+  const provider = searchParams.get("provider") as SearchProvider;
 
   const search = async () => {
-    if (!searchParams?.query) return;
+    if (!query) return;
 
     const types: SearchType[] = ["album", "artist", "playlist", "track"];
 
-    const { body } = await spotifyApi.search(searchParams.query, types, {
+    const { body } = await spotifyApi.search(query, types, {
       limit: 5,
     });
 
     return body;
   };
 
-  const { isFetching, data: searchResponse } = useQuery({
-    queryKey: ["search", searchParams?.query],
+  const { isPending, data: searchResponse } = useQuery({
+    queryKey: ["search", query],
     queryFn: search,
-    enabled: searchProvider === "spotify",
+    enabled: provider !== "youtube",
   });
 
-  const searchYtb = async () => {
-    if (!searchParams?.query) return;
+  const searchYoutube = async () => {
+    if (!query) return;
 
-    const url = `https://youtube.googleapis.com/youtube/v3/search?part=snippet&q=${searchParams.query}&key=${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY}`;
+    const url = `https://youtube.googleapis.com/youtube/v3/search?part=snippet&q=${query}&key=${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY}`;
 
     const res = await fetch(url);
-    const json = await res.json();
+    const result = await res.json();
 
-    return json;
+    return result as SearchYoutubeResponse;
   };
 
-  const { isFetching: isYtbFetching, data: searchYtbResponse } = useQuery({
-    queryKey: ["search-ytb", searchParams?.query],
-    queryFn: searchYtb,
-    enabled: searchProvider === "youtube",
+  const { isPending: isYtbPending, data: searchYoutubeResponse } = useQuery({
+    queryKey: ["search-ytb", query],
+    queryFn: searchYoutube,
+    enabled: provider === "youtube",
   });
 
-  const formatted = searchYtbResponse?.items?.map(
-    (item: any, index: number) => ({
-      id: index,
-      album: {
-        images: [
-          {
-            url: item.snippet.thumbnails.high.url,
-          },
-        ],
-      },
-      artists: [
-        {
-          id: index,
-          name: item.snippet.channelTitle,
-        },
-      ],
-      // explicit: true,
-      name: item.snippet.title,
-    })
+  const formattedSearchResponse = searchMapper(
+    searchYoutubeResponse?.items ?? []
   );
-
-  // console.log(formatted);
 
   const artists = searchResponse?.artists?.items;
   const albums = searchResponse?.albums?.items;
   const playlists = searchResponse?.playlists?.items;
-  const tracks =
-    searchProvider === "youtube" ? formatted : searchResponse?.tracks?.items;
 
   function toggleSearchProvider() {
-    const newProvider: SearchProvider =
-      searchProvider === "spotify" ? "youtube" : "spotify";
-    setSearchProvider(newProvider);
+    const params = new URLSearchParams(searchParams);
+    const provider = params.get("provider");
+
+    if (provider === "youtube") {
+      params.delete("provider");
+      setSearchProvider("spotify");
+    } else {
+      params.set("provider", "youtube");
+      setSearchProvider("youtube");
+    }
+
+    replace(`${pathname}?${params.toString()}`);
   }
 
   return (
     <Container>
       <BlurBackground />
       <div className="space-y-4 sm:space-y-8">
-        <div>provider: {searchProvider}</div>
+        <div>provider: {provider}</div>
         <Button onClick={toggleSearchProvider}>toggle provider</Button>
 
         <SearchBar />
 
-        {isFetching && (
+        {provider !== "youtube" && isPending && (
           <div className="space-y-6">
             <div>
               <h1 className="text-3xl font-bold lowercase mb-2">tracks</h1>
@@ -129,7 +125,7 @@ const Search = ({ searchParams }: { searchParams?: { query: string } }) => {
           </div>
         )}
 
-        {searchResponse && (
+        {provider !== "youtube" && searchResponse && (
           <div className="space-y-6">
             <TrackList
               options={{
@@ -137,7 +133,7 @@ const Search = ({ searchParams }: { searchParams?: { query: string } }) => {
                 showOrder: true,
                 showVisualizer: true,
               }}
-              tracks={tracks}
+              tracks={searchResponse?.tracks?.items}
               title="tracks"
             />
 
@@ -158,14 +154,14 @@ const Search = ({ searchParams }: { searchParams?: { query: string } }) => {
           </div>
         )}
 
-        {isYtbFetching && (
+        {isYtbPending && (
           <div className="space-y-6">
             <h1 className="text-3xl font-bold lowercase mb-2">tracks</h1>
             <TrackList.Skeleton length={5} />
           </div>
         )}
 
-        {searchYtbResponse && (
+        {searchYoutubeResponse && (
           <div className="space-y-6">
             <TrackList
               options={{
@@ -173,11 +169,24 @@ const Search = ({ searchParams }: { searchParams?: { query: string } }) => {
                 showOrder: true,
                 showVisualizer: true,
               }}
-              tracks={tracks}
+              tracks={formattedSearchResponse}
               title="tracks"
             />
           </div>
         )}
+
+        {/* 
+        <div className="space-y-6">
+          <TrackList
+            options={{
+              showCoverWithPlayButton: true,
+              showOrder: true,
+              showVisualizer: true,
+            }}
+            tracks={tracks}
+            title="tracks"
+          />
+        </div> */}
       </div>
     </Container>
   );

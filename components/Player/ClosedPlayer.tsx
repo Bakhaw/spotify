@@ -26,8 +26,6 @@ function ClosedPlayer() {
   const dominantColor = useDominantColor(track?.album.images[0].url);
   const backgroundColor = generateRGBString(dominantColor);
 
-  console.log("currentPlaybackState", currentPlaybackState);
-
   return (
     <div className="flex items-center justify-between h-16 w-full px-2">
       <div className="w-full">
