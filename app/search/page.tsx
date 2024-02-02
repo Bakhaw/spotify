@@ -78,6 +78,7 @@ const Search = ({ searchParams }: { searchParams?: { query: string } }) => {
         {searchResponse && (
           <div className="space-y-6">
             <TrackList
+              contextUri={tracks[0].album.uri}
               options={{
                 showCoverWithPlayButton: true,
                 showOrder: true,

@@ -11,7 +11,10 @@ const usePlaybackControls = () => {
   const setProgressMs = useTimerStore((s) => s.setProgressMs);
 
   const playSong = async (track: Track, contextUri?: string) => {
-    if (!track) return;
+    const { body: devices } = await spotifyApi.getMyDevices();
+
+    if (!devices || devices.devices.length === 0)
+      return Promise.reject("NO_ACTIVE_DEVICE_FOUND");
 
     const currentTrackId = currentPlaybackState?.item?.id;
 
@@ -25,8 +28,6 @@ const usePlaybackControls = () => {
       });
     } else {
       // play a new track
-      const { body: devices } = await spotifyApi.getMyDevices();
-
       setCurrentPlaybackState({
         device: devices.devices[0],
         is_playing: true,
@@ -36,14 +37,10 @@ const usePlaybackControls = () => {
 
       setProgressMs(0);
 
-      if (devices.devices.length === 0) {
-        throw new Error("No active device found");
-      }
-
       spotifyApi.play({
         device_id:
           currentPlaybackState?.device.id ?? String(devices.devices[0].id),
-        context_uri: "album" in track ? track.album.uri : contextUri,
+        context_uri: contextUri,
         offset: { uri: track.uri },
       });
     }

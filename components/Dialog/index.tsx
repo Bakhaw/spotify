@@ -37,7 +37,11 @@ const Dialog: React.FC<DialogProps> = ({
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button onClick={onSubmit} variant="outline">
+          <Button
+            className="bg-green-primary"
+            onClick={onSubmit}
+            variant="outline"
+          >
             {submitButtonText}
           </Button>
           <Button onClick={() => setOpen(false)}>{cancelButtonText}</Button>

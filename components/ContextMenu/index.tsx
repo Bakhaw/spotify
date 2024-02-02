@@ -126,7 +126,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
             </ContextMenuSubContent>
           </ContextMenuSub>
 
-          <ContextMenuItem inset>
+          <ContextMenuItem inset disabled>
             Add to saved tracks
             <ContextMenuShortcut>⌘S</ContextMenuShortcut>
           </ContextMenuItem>

@@ -10,12 +10,23 @@ import TrackCover from "./TrackCover";
 import { useTrackContext } from "./context";
 
 const TrackCoverWithPlayButton = () => {
-  const { track } = useTrackContext();
+  const { contextUri, track } = useTrackContext();
   const currentPlaybackState = usePlayerStore((s) => s.currentPlaybackState);
   const { pauseSong, playSong } = usePlaybackControls();
 
   const isPlaying = currentPlaybackState?.is_playing;
   const currentTrackId = currentPlaybackState?.item?.id;
+
+  async function handlePlayClick() {
+    try {
+      await playSong(track, contextUri);
+    } catch (error) {
+      if (error === "NO_ACTIVE_DEVICE_FOUND") {
+        console.log("NO_ACTIVE_DEVICE_FOUND");
+        // todo show alert message to the user
+      }
+    }
+  }
 
   return (
     <div className="h-[60px] w-[60px] shrink-0 relative">
@@ -27,7 +38,7 @@ const TrackCoverWithPlayButton = () => {
         ) : (
           <IoPlay
             className="h-5 w-5 cursor-pointer"
-            onClick={() => playSong(track)}
+            onClick={handlePlayClick}
           />
         )}
       </div>

@@ -40,16 +40,36 @@ const Track: React.FC<TrackProps> & TrackComposition = ({
 
   if (!track) return null;
 
+  function handleDoubleClick() {
+    if (!track) return null;
+
+    let fallbackContextUri = track?.uri;
+
+    if (contextUri) {
+      fallbackContextUri = contextUri;
+    }
+
+    if ("album" in track) {
+      fallbackContextUri = track.album.uri;
+    }
+
+    playSong(track, fallbackContextUri);
+  }
+
   return (
     <TrackContext.Provider
       value={{
-        contextUri,
         track,
+        contextUri: contextUri
+          ? contextUri
+          : "album" in track
+          ? track.album.uri
+          : track.uri,
       }}
     >
       <Button
         className="group shadow-none transition-all duration-300 flex items-center justify-between p-0 pr-2 sm:pr-4 min-h-[56px] h-full w-full cursor-default bg-transparent hover:bg-[#66677070] hover:text-white"
-        onDoubleClick={() => playSong(track, contextUri)}
+        onDoubleClick={handleDoubleClick}
       >
         {children}
       </Button>

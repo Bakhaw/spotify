@@ -19,6 +19,17 @@ const PlaybackControls: React.FC<PlaybackControlsProps> = ({ trackNumber }) => {
   const currentPlaybackState = usePlayerStore((s) => s.currentPlaybackState);
   const { pauseSong, playSong } = usePlaybackControls();
 
+  async function handlePlayClick() {
+    try {
+      await playSong(track, contextUri);
+    } catch (error) {
+      if (error === "NO_ACTIVE_DEVICE_FOUND") {
+        console.log("NO_ACTIVE_DEVICE_FOUND");
+        // todo show alert message to the user
+      }
+    }
+  }
+
   const isPlaying = currentPlaybackState?.is_playing;
   const currentTrackId = currentPlaybackState?.item?.id;
 
@@ -42,7 +53,7 @@ const PlaybackControls: React.FC<PlaybackControlsProps> = ({ trackNumber }) => {
         ) : (
           <PlayIcon
             className="h-5 w-5 cursor-pointer"
-            onClick={() => playSong(track, contextUri)}
+            onClick={handlePlayClick}
             role="button"
           />
         )}

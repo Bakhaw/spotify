@@ -100,6 +100,7 @@ const Playlist: NextPage = () => {
           className="bg-gradient px-2 sm:px-8 py-4"
         >
           <TrackList
+            contextUri={playlist.uri}
             options={{
               showCover: true,
               showPlaybackControls: true,
