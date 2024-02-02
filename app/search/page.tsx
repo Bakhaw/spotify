@@ -9,13 +9,16 @@ import { useSearchProviderStore } from "@/store/useSearchProviderStore";
 
 import useSpotify from "@/hooks/useSpotify";
 
+import searchMapper from "@/lib/searchMapper";
+
 import BlurBackground from "@/components/BlurBackground";
 import Container from "@/components/Container";
 import HorizontalSlider from "@/components/HorizontalSlider";
 import SearchBar from "@/components/SearchBar";
 import TrackList from "@/components/TrackList";
+import YouTubePlayer from "@/components/YoutubePlayer";
+
 import { Button } from "@/components/ui/button";
-import searchMapper from "@/lib/searchMapper";
 
 type SearchType =
   | "album"
@@ -103,6 +106,8 @@ const Search = () => {
 
         <SearchBar />
 
+        <YouTubePlayer />
+
         {provider !== "youtube" && isPending && (
           <div className="space-y-6">
             <div>
@@ -154,7 +159,7 @@ const Search = () => {
           </div>
         )}
 
-        {isYtbPending && (
+        {provider === "youtube" && isYtbPending && (
           <div className="space-y-6">
             <h1 className="text-3xl font-bold lowercase mb-2">tracks</h1>
             <TrackList.Skeleton length={5} />

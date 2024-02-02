@@ -23,7 +23,6 @@ const CurrentTrack: React.FC<CurrentTrackProps> = ({ asLink = false }) => {
 
   const youtubeTrack = currentPlaybackState?.item as SpotifyApi.TrackObjectFull;
 
-  console.log("youtube track", youtubeTrack);
   // if (!spotifyTrack) return null; // TODO skeleton
 
   return (
