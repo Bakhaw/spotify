@@ -40,7 +40,7 @@ const Track: React.FC<TrackProps> & TrackComposition = ({
 
   if (!track) return null;
 
-  function handleDoubleClick() {
+  async function handleDoubleClick() {
     if (!track) return null;
 
     let fallbackContextUri = track?.uri;
@@ -53,7 +53,14 @@ const Track: React.FC<TrackProps> & TrackComposition = ({
       fallbackContextUri = track.album.uri;
     }
 
-    playSong(track, fallbackContextUri);
+    try {
+      await playSong(track, fallbackContextUri);
+    } catch (error) {
+      if (error === "NO_ACTIVE_DEVICE_FOUND") {
+        console.log("NO_ACTIVE_DEVICE_FOUND");
+        // todo show alert message to the user
+      }
+    }
   }
 
   return (
