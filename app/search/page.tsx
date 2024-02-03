@@ -106,8 +106,6 @@ const Search = () => {
 
         <SearchBar />
 
-        <YouTubePlayer />
-
         {provider !== "youtube" && isPending && (
           <div className="space-y-6">
             <div>
@@ -167,7 +165,7 @@ const Search = () => {
         )}
 
         {searchYoutubeResponse && (
-          <div className="space-y-6">
+          <div className="flex items-center justify-between gap-6">
             <TrackList
               options={{
                 showCoverWithPlayButton: true,
@@ -177,21 +175,10 @@ const Search = () => {
               tracks={formattedSearchResponse}
               title="tracks"
             />
+
+            <YouTubePlayer />
           </div>
         )}
-
-        {/* 
-        <div className="space-y-6">
-          <TrackList
-            options={{
-              showCoverWithPlayButton: true,
-              showOrder: true,
-              showVisualizer: true,
-            }}
-            tracks={tracks}
-            title="tracks"
-          />
-        </div> */}
       </div>
     </Container>
   );

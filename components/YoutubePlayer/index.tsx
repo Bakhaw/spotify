@@ -1,11 +1,17 @@
 "use client";
 
-import { usePlayerStore } from "@/store/usePlayerStore";
 import React, { useEffect, useRef } from "react";
+import { useSearchParams } from "next/navigation";
+
+import { SearchProvider } from "@/types";
+
+import { usePlayerStore } from "@/store/usePlayerStore";
+
+import { Button } from "../ui/button";
 
 declare global {
   interface Window {
-    onYouTubeIframeAPIReady?: (videoId: string) => void;
+    onYouTubeIframeAPIReady?: () => void;
     YT: {
       Player: new (
         container: string | HTMLDivElement,
@@ -27,15 +33,16 @@ declare global {
 }
 
 const YouTubePlayer: React.FC = () => {
+  const { currentPlaybackState, setCurrentPlaybackState } = usePlayerStore();
+  const searchParams = useSearchParams();
+  const provider = searchParams.get("provider") as SearchProvider;
+
   const playerRef = useRef<YT.Player | null>(null);
-  const currentPlaybackState = usePlayerStore((s) => s.currentPlaybackState);
 
   const initializeYouTubePlayer = () => {
     const videoId = currentPlaybackState?.item.id;
 
-    console.log("here", videoId);
-
-    if (!videoId) return;
+    if (provider !== "youtube" || !videoId) return;
 
     playerRef.current = new window.YT.Player("player", {
       height: "360",
@@ -55,18 +62,9 @@ const YouTubePlayer: React.FC = () => {
     }
   };
 
-  let done = false;
-
   const onPlayerStateChange: (event: { data: number }) => void = (event) => {
     // Callback when the player's state changes
-    if (
-      playerRef.current &&
-      event.data === window.YT.PlayerState.PLAYING &&
-      !done
-    ) {
-      setTimeout(stopVideo, 6000);
-      done = true;
-    }
+    console.log("onPlayerStateChange");
   };
 
   useEffect(() => {
@@ -77,35 +75,71 @@ const YouTubePlayer: React.FC = () => {
       firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
     };
 
-    if (!window.YT || !window.YT.Player) {
-      // If the YouTube API is not available, load the script and wait for it to be ready
-      window.onYouTubeIframeAPIReady = initializeYouTubePlayer;
-      loadYouTubeScript();
-    } else {
-      initializeYouTubePlayer();
-    }
+    window.onYouTubeIframeAPIReady = initializeYouTubePlayer;
+    loadYouTubeScript();
 
     // Clean up function to remove global event listener when component unmounts
     return () => {
       window.onYouTubeIframeAPIReady = undefined;
     };
+  }, []);
+
+  useEffect(() => {
+    if (!currentPlaybackState) return;
+
+    initializeYouTubePlayer();
   }, [currentPlaybackState?.item.id]);
 
   const playVideo = () => {
-    playerRef.current?.playVideo();
+    if (!currentPlaybackState || !playerRef.current) return;
+
+    setCurrentPlaybackState({
+      ...currentPlaybackState,
+      is_playing: true,
+    });
+
+    playerRef.current.playVideo();
+  };
+
+  const pauseVideo = () => {
+    if (!currentPlaybackState || !playerRef.current) return;
+
+    setCurrentPlaybackState({
+      ...currentPlaybackState,
+      is_playing: false,
+    });
+
+    playerRef.current.pauseVideo();
   };
 
   const stopVideo = () => {
-    playerRef.current?.stopVideo();
+    if (!currentPlaybackState || !playerRef.current) return;
+
+    setCurrentPlaybackState({
+      ...currentPlaybackState,
+      is_playing: false,
+    });
+
+    playerRef.current.stopVideo();
   };
+
+  if (!currentPlaybackState) return null;
 
   return (
     <div>
-      {/* The <iframe> (and video player) will replace this <div> tag. */}
-      <div id="player"></div>
-      <button onClick={stopVideo}>PAUSE</button>
-      <br />
-      <button onClick={playVideo}>PLAY</button>
+      <iframe
+        id="player"
+        width="640"
+        height="360"
+        src={`http://www.youtube.com/embed/${currentPlaybackState.item.id}?enablejsapi=1`}
+      />
+
+      <div>{currentPlaybackState.item.id}</div>
+      <div>{currentPlaybackState.item.name}</div>
+
+      <Button onClick={pauseVideo}>PAUSE</Button>
+      <Button onClick={playVideo}>PLAY</Button>
+      <Button onClick={stopVideo}>STOP</Button>
     </div>
   );
 };

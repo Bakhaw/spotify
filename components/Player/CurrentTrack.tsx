@@ -55,25 +55,13 @@ const CurrentTrack: React.FC<CurrentTrackProps> = ({ asLink = false }) => {
       {provider === "youtube" && youtubeTrack && (
         <div>
           <div className="flex flex-1 justify-start items-center gap-3 h-full pr-2 rounded-md">
-            {/* <div className="w-[48px]">
+            <div className="w-[48px]">
               <Cover
                 alt={`${youtubeTrack.name} cover`}
-                asLink={asLink}
-                href={asLink ? `/album/${youtubeTrack.album.id}` : undefined}
                 size="full"
                 src={youtubeTrack.album.images[0].url}
               />
-            </div> */}
-
-            <iframe
-              className="mb-[400px]"
-              height="48"
-              width="48"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowFullScreen
-              src={`https://www.youtube.com/embed/${youtubeTrack.id}?autoplay=1&color=white`}
-              title="YouTube video player"
-            ></iframe>
+            </div>
 
             <div className="display-arrowicon max-w-[50vw] md:max-w-[30vw]">
               <div className="font-bold flex gap-3 sm:font-normal">

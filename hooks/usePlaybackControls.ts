@@ -28,8 +28,6 @@ const usePlaybackControls = () => {
 
       // spotifyApi.pause();
 
-      console.log("youtube provider function");
-
       return;
     }
 

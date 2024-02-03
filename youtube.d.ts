@@ -4,6 +4,7 @@ declare namespace YT {
   interface Player {
     playVideo(): void;
     stopVideo(): void;
+    pauseVideo(): void;
   }
 
   interface PlayerEvent {
