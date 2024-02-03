@@ -2,6 +2,7 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
+import YTMusic from "ytmusic-api";
 
 import { SearchProvider, SearchYoutubeResponse } from "@/types";
 
@@ -19,6 +20,7 @@ import TrackList from "@/components/TrackList";
 import YouTubePlayer from "@/components/YoutubePlayer";
 
 import { Button } from "@/components/ui/button";
+import { useEffect } from "react";
 
 type SearchType =
   | "album"
@@ -38,6 +40,8 @@ const Search = () => {
 
   const query = searchParams.get("query");
   const provider = searchParams.get("provider") as SearchProvider;
+
+  const ytmusic = new YTMusic();
 
   const search = async () => {
     if (!query) return;
@@ -60,6 +64,12 @@ const Search = () => {
   const searchYoutube = async () => {
     if (!query) return;
 
+    try {
+      await ytmusic.search(query);
+    } catch (error) {
+      console.log("heheheh", error);
+    }
+
     const url = `https://youtube.googleapis.com/youtube/v3/search?part=snippet&q=${query}&key=${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY}`;
 
     const res = await fetch(url);
@@ -67,6 +77,14 @@ const Search = () => {
 
     return result as SearchYoutubeResponse;
   };
+
+  useEffect(() => {
+    const init = async () => {
+      await ytmusic.initialize(/* Optional: Custom cookies */);
+    };
+
+    init();
+  }, [ytmusic]);
 
   const { isPending: isYtbPending, data: searchYoutubeResponse } = useQuery({
     queryKey: ["search-ytb", query],
