@@ -26,6 +26,10 @@ const hosts = [
   "i.ytimg.com",
   "yt3.ggpht.com",
 
+  // from youtube-music (unofficial) api
+  "lh3.googleusercontent.com",
+  "yt3.googleusercontent.com",
+
   // 🤡
   "localhost",
 ];
