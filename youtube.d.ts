@@ -1,10 +1,14 @@
-// youtube.d.ts
-
 declare namespace YT {
   interface Player {
     playVideo(): void;
     stopVideo(): void;
     pauseVideo(): void;
+    seekTo(ms: number): void;
+
+    playerInfo: {
+      currentTime: number;
+      volume: number;
+    };
   }
 
   interface PlayerEvent {
@@ -13,5 +17,7 @@ declare namespace YT {
 
   enum PlayerState {
     PLAYING = 1,
+    PAUSE = 2,
+    STOP = 3,
   }
 }

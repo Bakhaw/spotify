@@ -2,9 +2,8 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import YTMusic from "ytmusic-api";
 
-import { SearchProvider, SearchYoutubeResponse } from "@/types";
+import { SearchProvider, YTMusicSongDetailed } from "@/types";
 
 import { useSearchProviderStore } from "@/store/useSearchProviderStore";
 
@@ -20,7 +19,6 @@ import TrackList from "@/components/TrackList";
 import YouTubePlayer from "@/components/YoutubePlayer";
 
 import { Button } from "@/components/ui/button";
-import { useEffect } from "react";
 
 type SearchType =
   | "album"
@@ -41,8 +39,6 @@ const Search = () => {
   const query = searchParams.get("query");
   const provider = searchParams.get("provider") as SearchProvider;
 
-  const ytmusic = new YTMusic();
-
   const search = async () => {
     if (!query) return;
 
@@ -61,30 +57,24 @@ const Search = () => {
     enabled: provider !== "youtube",
   });
 
+  const artists = searchResponse?.artists?.items;
+  const albums = searchResponse?.albums?.items;
+  const playlists = searchResponse?.playlists?.items;
+
   const searchYoutube = async () => {
     if (!query) return;
 
     try {
-      await ytmusic.search(query);
+      const res = await fetch(`/api/search/youtube?query=${query}`);
+      const json = await res.json();
+
+      const result = json.result as YTMusicSongDetailed[];
+
+      return result;
     } catch (error) {
-      console.log("heheheh", error);
+      console.error(error);
     }
-
-    const url = `https://youtube.googleapis.com/youtube/v3/search?part=snippet&q=${query}&key=${process.env.NEXT_PUBLIC_YOUTUBE_API_KEY}`;
-
-    const res = await fetch(url);
-    const result = await res.json();
-
-    return result as SearchYoutubeResponse;
   };
-
-  useEffect(() => {
-    const init = async () => {
-      await ytmusic.initialize(/* Optional: Custom cookies */);
-    };
-
-    init();
-  }, [ytmusic]);
 
   const { isPending: isYtbPending, data: searchYoutubeResponse } = useQuery({
     queryKey: ["search-ytb", query],
@@ -92,13 +82,7 @@ const Search = () => {
     enabled: provider === "youtube",
   });
 
-  const formattedSearchResponse = searchMapper(
-    searchYoutubeResponse?.items ?? []
-  );
-
-  const artists = searchResponse?.artists?.items;
-  const albums = searchResponse?.albums?.items;
-  const playlists = searchResponse?.playlists?.items;
+  const formattedSearchResponse = searchMapper(searchYoutubeResponse ?? []);
 
   function toggleSearchProvider() {
     const params = new URLSearchParams(searchParams);
@@ -184,7 +168,7 @@ const Search = () => {
         )}
 
         {searchYoutubeResponse && (
-          <div className="flex items-center justify-between gap-6">
+          <div className="flex items-start justify-between gap-6">
             <TrackList
               options={{
                 showCoverWithPlayButton: true,

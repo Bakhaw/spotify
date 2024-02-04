@@ -5,6 +5,8 @@ import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { debounce } from "lodash";
 
+import { SearchProvider } from "@/types";
+
 import { usePlayerStore } from "@/store/usePlayerStore";
 import { useTimerStore } from "@/store/useTimerStore";
 
@@ -16,13 +18,14 @@ import { Slider } from "@/components/ui/slider";
 
 interface TimerProps {
   className?: string;
+  onProgressChange?: (ms: number) => void; // this is used to override default handleProgressChange behavior
 }
 
-const Timer: React.FC<TimerProps> = ({ className }) => {
+const Timer: React.FC<TimerProps> = ({ className, onProgressChange }) => {
   const spotifyApi = useSpotify();
   const { data: session } = useSession();
   const searchParams = useSearchParams();
-  const provider = searchParams.get("provider");
+  const provider = searchParams.get("provider") as SearchProvider;
 
   const { currentPlaybackState, fetchQueue, setCurrentPlaybackState } =
     usePlayerStore();
@@ -49,10 +52,15 @@ const Timer: React.FC<TimerProps> = ({ className }) => {
   // [Progress MS -> Next Track]
   // used to increment progressMs value every second AND to handle nextTrack
   useEffect(() => {
-    if (!currentPlaybackState?.is_playing || provider === "youtube") return;
+    if (!currentPlaybackState?.is_playing) return;
 
     const intervalId = setInterval(() => {
-      if (progressMs === null || !currentPlaybackState?.item) return;
+      if (
+        progressMs === null ||
+        !currentPlaybackState?.item ||
+        progressMs > currentPlaybackState.item.duration_ms
+      )
+        return;
 
       if (nextTrack && progressMs > currentPlaybackState.item.duration_ms) {
         setCurrentPlaybackState({
@@ -87,6 +95,8 @@ const Timer: React.FC<TimerProps> = ({ className }) => {
   // [Next Track]
   // used to catch if we approach the end of a song, the "refetch" value is true whenever it's the case (updates in setInterval)
   useEffect(() => {
+    if (provider === "youtube") return;
+
     if (refetch) {
       const handleRefetch = async () => {
         try {
@@ -129,6 +139,7 @@ const Timer: React.FC<TimerProps> = ({ className }) => {
       handleRefetch();
     }
   }, [
+    provider,
     refetch,
     currentPlaybackState,
     spotifyApi,
@@ -138,17 +149,22 @@ const Timer: React.FC<TimerProps> = ({ className }) => {
     setRefetch,
   ]);
 
-  function onProgressChange(value: number[]) {
+  function handleProgressChange(value: number[]) {
     const newProgressMs = value[0];
 
     if (!newProgressMs || newProgressMs === progressMs) return;
 
     setProgressMs(newProgressMs);
-    spotifyApi.seek(newProgressMs);
+
+    if (onProgressChange) {
+      onProgressChange(newProgressMs);
+    } else {
+      spotifyApi.seek(newProgressMs);
+    }
   }
 
   const debounceOnProgressChange = debounce((value: number[]) => {
-    onProgressChange(value);
+    handleProgressChange(value);
   }, 300);
 
   if (progressMs === null || !currentPlaybackState?.item) return null;
