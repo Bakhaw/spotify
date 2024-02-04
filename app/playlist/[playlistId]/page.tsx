@@ -40,7 +40,7 @@ const Playlist: NextPage = () => {
     () =>
       playlist?.tracks.items
         .filter((item) => !item.is_local) // TODO remove this filter when LocalTrack component is ready
-        .map((item) => item.track),
+        .map((item) => item.track as SpotifyApi.TrackObjectFull),
     [playlist]
   );
 

@@ -12,7 +12,7 @@ function Volume() {
   const { currentPlaybackState, setCurrentPlaybackState } = usePlayerStore();
 
   function onVolumeChange(value: number[]) {
-    if (!currentPlaybackState) return;
+    if (!currentPlaybackState?.device) return;
 
     const newVolume = value[0];
 
@@ -38,7 +38,7 @@ function Volume() {
   const isVolumeMuted = currentPlaybackState?.device?.volume_percent === 0;
 
   function toggleMuteVolume() {
-    if (!currentPlaybackState) return;
+    if (!currentPlaybackState?.device) return;
 
     const defaultVolume = 30;
     const newVolume = isVolumeMuted ? defaultVolume : 0;
