@@ -15,13 +15,13 @@ import useSpotify from "@/hooks/useSpotify";
 import { cn } from "@/lib/utils";
 
 import { Slider } from "@/components/ui/slider";
+import { useYTPlayerStore } from "@/store/useYTPlayerStore";
 
 interface TimerProps {
   className?: string;
-  onProgressChange?: (ms: number) => void; // this is used to override default handleProgressChange behavior
 }
 
-const Timer: React.FC<TimerProps> = ({ className, onProgressChange }) => {
+const Timer: React.FC<TimerProps> = ({ className }) => {
   const spotifyApi = useSpotify();
   const { data: session } = useSession();
   const searchParams = useSearchParams();
@@ -30,6 +30,7 @@ const Timer: React.FC<TimerProps> = ({ className, onProgressChange }) => {
   const { currentPlaybackState, fetchQueue, setCurrentPlaybackState } =
     usePlayerStore();
   const { progressMs, refetch, setProgressMs, setRefetch } = useTimerStore();
+  const YTPlayer = useYTPlayerStore((s) => s.player);
 
   const [nextTrack, setNextTrack] = useState<SpotifyApi.TrackObjectFull | null>(
     null
@@ -156,8 +157,10 @@ const Timer: React.FC<TimerProps> = ({ className, onProgressChange }) => {
 
     setProgressMs(newProgressMs);
 
-    if (onProgressChange) {
-      onProgressChange(newProgressMs);
+    if (provider === "youtube") {
+      // we divide by 1000 because the seekTo function parameter needs to be in seconds
+      // BUT newProgressMs is in milliseconds (quick maths)
+      YTPlayer?.seekTo(newProgressMs / 1000);
     } else {
       spotifyApi.seek(newProgressMs);
     }

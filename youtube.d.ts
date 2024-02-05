@@ -3,7 +3,8 @@ declare namespace YT {
     playVideo(): void;
     stopVideo(): void;
     pauseVideo(): void;
-    seekTo(ms: number): void;
+    seekTo(timestamp: number): void; // timestamp is in seconds
+    setVolume(volume: number): void;
 
     playerInfo: {
       currentTime: number;
@@ -18,6 +19,5 @@ declare namespace YT {
   enum PlayerState {
     PLAYING = 1,
     PAUSE = 2,
-    STOP = 3,
   }
 }

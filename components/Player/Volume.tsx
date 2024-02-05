@@ -1,7 +1,11 @@
+import { useSearchParams } from "next/navigation";
 import { debounce } from "lodash";
 import { TbVolume, TbVolumeOff } from "react-icons/tb";
 
+import { SearchProvider } from "@/types";
+
 import { usePlayerStore } from "@/store/usePlayerStore";
+import { useYTPlayerStore } from "@/store/useYTPlayerStore";
 
 import useSpotify from "@/hooks/useSpotify";
 
@@ -9,7 +13,11 @@ import { Slider } from "@/components/ui/slider";
 
 function Volume() {
   const spotifyApi = useSpotify();
+  const searchParams = useSearchParams();
+  const provider = searchParams.get("provider") as SearchProvider;
+
   const { currentPlaybackState, setCurrentPlaybackState } = usePlayerStore();
+  const YTPlayer = useYTPlayerStore((s) => s.player);
 
   function onVolumeChange(value: number[]) {
     if (!currentPlaybackState?.device) return;
@@ -25,8 +33,12 @@ function Volume() {
     });
 
     if (newVolume > 0 && newVolume < 100) {
-      if (spotifyApi.getAccessToken()) {
-        debounceAdjustVolume(newVolume);
+      if (provider === "youtube") {
+        YTPlayer?.setVolume(newVolume);
+      } else {
+        if (spotifyApi.getAccessToken()) {
+          debounceAdjustVolume(newVolume);
+        }
       }
     }
   }

@@ -28,7 +28,11 @@ type SearchType =
   | "show"
   | "episode";
 
-const Search = ({ searchParams }: { searchParams: { provider?: SearchProvider; query?: string; } }) => {
+const Search = ({
+  searchParams,
+}: {
+  searchParams: { provider?: SearchProvider; query?: string };
+}) => {
   const spotifyApi = useSpotify();
   // const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -169,16 +173,18 @@ const Search = ({ searchParams }: { searchParams: { provider?: SearchProvider; q
         )}
 
         {searchYoutubeResponse && (
-          <div className="flex items-start justify-between gap-6">
-            <TrackList
-              options={{
-                showCoverWithPlayButton: true,
-                showOrder: true,
-                showVisualizer: true,
-              }}
-              tracks={formattedSearchResponse}
-              title="tracks"
-            />
+          <div className="flex items-start justify-between gap-4">
+            <div className="w-full">
+              <TrackList
+                options={{
+                  showCoverWithPlayButton: true,
+                  showOrder: true,
+                  showVisualizer: true,
+                }}
+                tracks={formattedSearchResponse}
+                title="tracks"
+              />
+            </div>
 
             <YouTubePlayer />
           </div>
