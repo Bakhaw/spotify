@@ -51,10 +51,10 @@ const Search = () => {
     return body;
   };
 
-  const { isPending, data: searchResponse } = useQuery({
+  const { isFetching, data: searchResponse } = useQuery({
     queryKey: ["search", query],
     queryFn: search,
-    enabled: provider !== "youtube",
+    enabled: Boolean(query) && provider !== "youtube",
   });
 
   const artists = searchResponse?.artists?.items;
@@ -76,10 +76,10 @@ const Search = () => {
     }
   };
 
-  const { isPending: isYtbPending, data: searchYoutubeResponse } = useQuery({
+  const { isFetching: isYtbFetching, data: searchYoutubeResponse } = useQuery({
     queryKey: ["search-ytb", query],
     queryFn: searchYoutube,
-    enabled: provider === "youtube",
+    enabled: Boolean(query) && provider === "youtube",
   });
 
   const formattedSearchResponse = searchMapper(searchYoutubeResponse ?? []);
@@ -108,7 +108,7 @@ const Search = () => {
 
         <SearchBar />
 
-        {provider !== "youtube" && isPending && (
+        {provider !== "youtube" && isFetching && (
           <div className="space-y-6">
             <div>
               <h1 className="text-3xl font-bold lowercase mb-2">tracks</h1>
@@ -160,7 +160,7 @@ const Search = () => {
           </div>
         )}
 
-        {provider === "youtube" && isYtbPending && (
+        {provider === "youtube" && isYtbFetching && (
           <div className="space-y-6">
             <h1 className="text-3xl font-bold lowercase mb-2">tracks</h1>
             <TrackList.Skeleton length={5} />
