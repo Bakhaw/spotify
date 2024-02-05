@@ -6,11 +6,12 @@ import { useSearchParams } from "next/navigation";
 import { SearchProvider } from "@/types";
 
 import { usePlayerStore } from "@/store/usePlayerStore";
+import { useTimerStore } from "@/store/useTimerStore";
+import { useYTPlayerStore } from "@/store/useYTPlayerStore";
 
 import Timer from "@/components/Player/Timer";
 
 import { Button } from "../ui/button";
-import { useTimerStore } from "@/store/useTimerStore";
 
 declare global {
   interface Window {
@@ -39,41 +40,44 @@ declare global {
 }
 
 const YouTubePlayer: React.FC = () => {
-  const { currentPlaybackState, setCurrentPlaybackState } = usePlayerStore();
-  const setProgressMs = useTimerStore((s) => s.setProgressMs);
   const searchParams = useSearchParams();
   const provider = searchParams.get("provider") as SearchProvider;
 
-  const playerRef = useRef<YT.Player | null>(null);
+  const { currentPlaybackState, setCurrentPlaybackState } = usePlayerStore();
+  const { player, setPlayer } = useYTPlayerStore();
+  const setProgressMs = useTimerStore((s) => s.setProgressMs);
+
   const videoId = currentPlaybackState?.item.id;
 
   const onPlayerReady: (event: YT.PlayerEvent) => void = (event) => {
-    playerRef.current = event.target;
-    setProgressMs(0);
+    setPlayer(event.target);
   };
 
   const initializeYouTubePlayer = () => {
     if (provider !== "youtube" || !videoId) return;
 
-    new window.YT.Player("player", {
-      height: "360",
-      width: "640",
-      videoId,
-      events: {
-        onReady: onPlayerReady,
-        onStateChange: onPlayerStateChange,
-      },
-    });
+    if (window.YT) {
+      new window.YT.Player("player", {
+        height: "360",
+        width: "640",
+        videoId,
+        events: {
+          onReady: onPlayerReady,
+          onStateChange: onPlayerStateChange,
+        },
+      });
+    }
   };
 
   const onPlayerStateChange = (event: { data: number; target: YT.Player }) => {
     if (!currentPlaybackState) return;
 
-    setProgressMs(event.target.playerInfo.currentTime * 1000);
     setCurrentPlaybackState({
       ...currentPlaybackState,
       is_playing: event.data === YT.PlayerState.PLAYING, // if 1 (means "play" action) then it's true, otheriwse it's false
     });
+
+    setProgressMs(event.target.playerInfo.currentTime * 1000);
   };
 
   useEffect(() => {
@@ -102,29 +106,29 @@ const YouTubePlayer: React.FC = () => {
   if (!currentPlaybackState) return null;
 
   const playVideo = () => {
-    if (!playerRef.current) return;
+    if (!player) return;
 
     setCurrentPlaybackState({
       ...currentPlaybackState,
       is_playing: true,
     });
 
-    playerRef.current.playVideo();
+    player.playVideo();
   };
 
   const pauseVideo = () => {
-    if (!playerRef.current) return;
+    if (!player) return;
 
     setCurrentPlaybackState({
       ...currentPlaybackState,
       is_playing: false,
     });
 
-    playerRef.current.pauseVideo();
+    player.pauseVideo();
   };
 
   const stopVideo = () => {
-    if (!playerRef.current) return;
+    if (!player) return;
 
     setProgressMs(0);
 
@@ -134,13 +138,13 @@ const YouTubePlayer: React.FC = () => {
       progress_ms: 0,
     });
 
-    playerRef.current.stopVideo();
+    player.stopVideo();
   };
 
   const onProgressChange = (newPos: number) => {
     // we divide by 1000 because the seekTo function parameter needs to be in seconds
     // BUT we receive the newPos in milliseconds
-    playerRef.current?.seekTo(newPos / 1000);
+    player?.seekTo(newPos / 1000);
   };
 
   const iframeParams = "?enablejsapi=1&autoplay=1&controls=2&disablekb=1&rel=1";
@@ -162,7 +166,7 @@ const YouTubePlayer: React.FC = () => {
       <Button onClick={stopVideo}>STOP</Button>
       <Timer onProgressChange={onProgressChange} />
 
-      <p>Volume: {playerRef.current?.playerInfo.volume}</p>
+      <p>Volume: {player?.playerInfo.volume}</p>
     </div>
   );
 };

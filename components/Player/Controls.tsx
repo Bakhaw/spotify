@@ -2,12 +2,15 @@ import { useSearchParams } from "next/navigation";
 
 import { usePlayerStore } from "@/store/usePlayerStore";
 import { useTimerStore } from "@/store/useTimerStore";
+import { useYTPlayerStore } from "@/store/useYTPlayerStore";
 
 import isWhite from "@/lib/isWhite";
 
 import useDominantColor from "@/hooks/useDominantColor";
+import usePlaybackControls from "@/hooks/usePlaybackControls";
 import useSpotify from "@/hooks/useSpotify";
 import useTrack from "@/hooks/useTrack";
+
 import { Button } from "../ui/button";
 
 const Controls = () => {
@@ -15,12 +18,14 @@ const Controls = () => {
   const searchParams = useSearchParams();
   const provider = searchParams.get("provider");
 
+  const { pauseSong, resumeSong } = usePlaybackControls();
   const {
     currentPlaybackState,
     fetchPlaybackState,
     fetchQueue,
     setCurrentPlaybackState,
   } = usePlayerStore();
+  const YTPlayer = useYTPlayerStore((s) => s.player);
   const setProgressMs = useTimerStore((s) => s.setProgressMs);
   const currentTrack = useTrack(currentPlaybackState?.item?.id);
 
@@ -52,25 +57,16 @@ const Controls = () => {
     await spotifyApi.skipToNext();
   }
 
-  async function onTogglePlay() {
+  function onTogglePlay() {
     if (!currentPlaybackState) return;
 
     if (currentPlaybackState.is_playing) {
-      setCurrentPlaybackState({
-        ...currentPlaybackState,
-        is_playing: false,
-      });
-
-      spotifyApi.pause();
+      pauseSong();
     } else {
-      setCurrentPlaybackState({
-        ...currentPlaybackState,
-        is_playing: true,
-      });
-
-      spotifyApi.play();
+      resumeSong();
     }
   }
+
   const dominantColor = useDominantColor(currentTrack?.album.images[0].url);
   const isWhiteBg = isWhite(dominantColor);
 
@@ -95,9 +91,9 @@ const Controls = () => {
 
       {currentPlaybackState?.is_playing ? (
         <Button
-          disabled={provider === "youtube"}
+          disabled={provider === "youtube" && !YTPlayer}
           variant="ghost"
-          className="h-full p-2 rounded-full bg-white cursor-pointer transition-all hover:scale-105"
+          className="h-full p-2 rounded-full bg-white cursor-pointer transition-all hover:scale-105 hover:bg-white"
           onClick={onTogglePlay}
         >
           <svg
@@ -112,9 +108,9 @@ const Controls = () => {
         </Button>
       ) : (
         <Button
-          disabled={provider === "youtube"}
+          disabled={provider === "youtube" && !YTPlayer}
           variant="ghost"
-          className="h-full p-2 rounded-full bg-white cursor-pointer transition-all	hover:scale-105"
+          className="h-full p-2 rounded-full bg-white cursor-pointer transition-all	hover:scale-105 hover:bg-white"
           onClick={onTogglePlay}
         >
           <svg
