@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 
 import { SearchProvider, YTMusicSongDetailed } from "@/types";
@@ -28,16 +28,17 @@ type SearchType =
   | "show"
   | "episode";
 
-const Search = () => {
+const Search = ({ searchParams }: { searchParams: { provider?: SearchProvider; query?: string; } }) => {
   const spotifyApi = useSpotify();
-  const searchParams = useSearchParams();
+  // const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
+  const { provider, query } = searchParams;
 
   const setSearchProvider = useSearchProviderStore((s) => s.setSearchProvider);
 
-  const query = searchParams.get("query");
-  const provider = searchParams.get("provider") as SearchProvider;
+  // const query = searchParams.get("query");
+  // const provider = searchParams.get("provider") as SearchProvider;
 
   const search = async () => {
     if (!query) return;

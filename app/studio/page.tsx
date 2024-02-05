@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { NextPage } from "next";
 import { LightbulbIcon, LightbulbOffIcon } from "lucide-react";
 import { SlSizeFullscreen } from "react-icons/sl";
 import { MdCloseFullscreen } from "react-icons/md";
@@ -15,7 +14,7 @@ import generateRGBString from "@/lib/generateRGBString";
 import Vinyl from "@/components/Vinyl";
 import { Button } from "@/components/ui/button";
 
-const Studio: NextPage = () => {
+const Studio = () => {
   const currentPlaybackState = usePlayerStore((s) => s.currentPlaybackState);
   const [useAlbumColor, setUseAlbumColor] = useState(true);
   const [isFullScreen, setIsFullScreen] = useState<boolean>(false);
