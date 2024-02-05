@@ -16,7 +16,6 @@ import Container from "@/components/Container";
 import HorizontalSlider from "@/components/HorizontalSlider";
 import SearchBar from "@/components/SearchBar";
 import TrackList from "@/components/TrackList";
-import YouTubePlayer from "@/components/YoutubePlayer";
 
 import { Button } from "@/components/ui/button";
 
@@ -34,15 +33,11 @@ const Search = ({
   searchParams: { provider?: SearchProvider; query?: string };
 }) => {
   const spotifyApi = useSpotify();
-  // const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
   const { provider, query } = searchParams;
 
   const setSearchProvider = useSearchProviderStore((s) => s.setSearchProvider);
-
-  // const query = searchParams.get("query");
-  // const provider = searchParams.get("provider") as SearchProvider;
 
   const search = async () => {
     if (!query) return;
@@ -185,8 +180,6 @@ const Search = ({
                 title="tracks"
               />
             </div>
-
-            <YouTubePlayer />
           </div>
         )}
       </div>

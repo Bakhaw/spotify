@@ -50,8 +50,8 @@ const YouTubePlayer: React.FC = () => {
 
     if (window.YT) {
       new window.YT.Player("player", {
-        height: "360",
-        width: "640",
+        height: "48",
+        width: "48",
         videoId,
         events: {
           onReady: onPlayerReady,
@@ -120,11 +120,12 @@ const YouTubePlayer: React.FC = () => {
   return (
     <iframe
       id="player"
+      className="hidden"
       allow="autoplay"
       allowFullScreen
       src={iframeSrc}
-      height="360"
-      width="640"
+      height="48"
+      width="48"
     />
   );
 };
