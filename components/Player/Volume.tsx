@@ -63,7 +63,11 @@ function Volume() {
       },
     });
 
-    spotifyApi.setVolume(newVolume);
+    if (provider === "youtube") {
+      YTPlayer?.setVolume(newVolume);
+    } else {
+      spotifyApi.setVolume(newVolume);
+    }
   }
 
   if (!currentPlaybackState?.device) return null;
