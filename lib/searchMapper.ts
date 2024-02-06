@@ -1,12 +1,10 @@
-import { SearchYoutubeResponseObject } from "@/types";
+import { YTMusicSongDetailed } from "@/types";
 
-function searchMapper(
-  searchYoutubeResponse: SearchYoutubeResponseObject[]
-): SpotifyApi.TrackObjectFull[] {
+function searchMapper(searchYoutubeResponse: YTMusicSongDetailed[]) {
   const formattedSearchResponse: SpotifyApi.TrackObjectFull[] =
     searchYoutubeResponse.map((item, index: number) => ({
       disc_number: 0,
-      duration_ms: 0,
+      duration_ms: item.duration ? item.duration * 1000 : 0,
       explicit: false,
       external_ids: {},
       external_urls: {
@@ -18,13 +16,13 @@ function searchMapper(
       track_number: 0,
       type: "track",
       uri: "",
-      id: item.id.videoId,
-      name: item.snippet.title,
+      id: item.videoId,
+      name: item.name,
       album: {
         artists: [
           {
-            id: index.toString(),
-            name: item.snippet.channelTitle,
+            id: item.artist.artistId ?? "",
+            name: item.artist.name,
             external_urls: {
               spotify: "",
             },
@@ -48,16 +46,16 @@ function searchMapper(
         images: [
           {
             // url: "http://localhost:3000/_next/image?url=https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5ebd72e35d806567888976a24db&w=1920&q=75",
-            url: item.snippet.thumbnails.high.url,
-            height: item.snippet.thumbnails.high.height,
-            width: item.snippet.thumbnails.high.width,
+            url: item.thumbnails[0].url,
+            height: item.thumbnails[0].height,
+            width: item.thumbnails[0].width,
           },
         ],
       },
       artists: [
         {
-          id: index.toString(),
-          name: item.snippet.channelTitle,
+          id: item.artist.artistId ?? "",
+          name: item.artist.name,
           external_urls: {
             spotify: "",
           },

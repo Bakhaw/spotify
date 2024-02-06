@@ -10,6 +10,7 @@ import AlbumLink from "@/components/AlbumLink";
 import ArtistLink from "@/components/ArtistLink";
 import Cover from "@/components/Cover";
 import Draggable from "@/components/Draggable";
+import YouTubePlayer from "@/components/YoutubePlayer";
 
 export interface CurrentTrackProps {
   asLink?: boolean; // default false
@@ -62,6 +63,8 @@ const CurrentTrack: React.FC<CurrentTrackProps> = ({ asLink = false }) => {
                 src={youtubeTrack.album.images[0].url}
               />
             </div>
+
+            <YouTubePlayer />
 
             <div className="display-arrowicon max-w-[50vw] md:max-w-[30vw]">
               <div className="font-bold flex gap-3 sm:font-normal">

@@ -1,9 +1,7 @@
-import { NextPage } from "next";
-
 import Container from "@/components/Container";
 import CustomLink from "@/components/CustomLink";
 
-const Library: NextPage = () => {
+const Library = () => {
   return (
     <Container>
       <div className="space-y-2">

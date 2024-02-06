@@ -20,10 +20,15 @@ const hosts = [
   "seeded-session-images.scdn.co",
   "seed-mix-image.spotifycdn.com",
   "newjams-images.scdn.co",
+  "daily-mix.scdn.co",
 
   // from youtube api
   "i.ytimg.com",
   "yt3.ggpht.com",
+
+  // from youtube-music (unofficial) api
+  "lh3.googleusercontent.com",
+  "yt3.googleusercontent.com",
 
   // 🤡
   "localhost",

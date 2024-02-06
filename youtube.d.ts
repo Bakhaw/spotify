@@ -5,6 +5,13 @@ declare namespace YT {
     playVideo(): void;
     stopVideo(): void;
     pauseVideo(): void;
+    seekTo(timestamp: number): void; // timestamp is in seconds
+    setVolume(volume: number): void;
+
+    playerInfo: {
+      currentTime: number;
+      volume: number;
+    };
   }
 
   interface PlayerEvent {

@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 
 import { SearchProvider } from "@/types";
 
 import { usePlayerStore } from "@/store/usePlayerStore";
-
-import { Button } from "../ui/button";
+import { useTimerStore } from "@/store/useTimerStore";
+import { useYTPlayerStore } from "@/store/useYTPlayerStore";
 
 declare global {
   interface Window {
@@ -16,13 +16,16 @@ declare global {
       Player: new (
         container: string | HTMLDivElement,
         options: {
-          height: string;
-          width: string;
-          videoId: string;
           events: {
             onReady: (event: YT.PlayerEvent) => void;
-            onStateChange: (event: { data: number }) => void;
+            onStateChange: (event: {
+              data: number;
+              target: YT.PlayerEvent["target"];
+            }) => void;
           };
+          height: string;
+          videoId: string;
+          width: string;
         }
       ) => YT.Player;
       PlayerState: {
@@ -33,38 +36,57 @@ declare global {
 }
 
 const YouTubePlayer: React.FC = () => {
-  const { currentPlaybackState, setCurrentPlaybackState } = usePlayerStore();
   const searchParams = useSearchParams();
   const provider = searchParams.get("provider") as SearchProvider;
 
-  const playerRef = useRef<YT.Player | null>(null);
+  const { currentPlaybackState, setCurrentPlaybackState } = usePlayerStore();
+  const setPlayer = useYTPlayerStore((s) => s.setPlayer);
+  const setProgressMs = useTimerStore((s) => s.setProgressMs);
+
+  const videoId = currentPlaybackState?.item.id;
 
   const initializeYouTubePlayer = () => {
-    const videoId = currentPlaybackState?.item.id;
-
     if (provider !== "youtube" || !videoId) return;
 
-    playerRef.current = new window.YT.Player("player", {
-      height: "360",
-      width: "640",
-      videoId,
-      events: {
-        onReady: onPlayerReady,
-        onStateChange: onPlayerStateChange,
-      },
-    });
-  };
-
-  const onPlayerReady: (event: YT.PlayerEvent) => void = (event) => {
-    // Callback when the video player is ready
-    if (playerRef.current) {
-      event.target.playVideo();
+    if (window.YT) {
+      new window.YT.Player("player", {
+        height: "48",
+        width: "48",
+        videoId,
+        events: {
+          onReady: onPlayerReady,
+          onStateChange: onPlayerStateChange,
+        },
+      });
     }
   };
 
-  const onPlayerStateChange: (event: { data: number }) => void = (event) => {
-    // Callback when the player's state changes
-    console.log("onPlayerStateChange");
+  const onPlayerReady: (event: YT.PlayerEvent) => void = (event) => {
+    setPlayer(event.target);
+  };
+
+  const onPlayerStateChange = (event: { data: number; target: YT.Player }) => {
+    if (!currentPlaybackState) return;
+
+    const playerVolume = event.target.playerInfo.volume;
+
+    setCurrentPlaybackState({
+      ...currentPlaybackState,
+      ...(playerVolume && {
+        device: {
+          id: "",
+          is_active: true,
+          is_private_session: false,
+          is_restricted: false,
+          name: "",
+          type: "",
+          volume_percent: playerVolume,
+        },
+      }),
+      is_playing: event.data === YT.PlayerState.PLAYING, // if 1 (means "play" action) then it's true, otheriwse it's false
+    });
+
+    setProgressMs(event.target.playerInfo.currentTime * 1000);
   };
 
   useEffect(() => {
@@ -75,8 +97,8 @@ const YouTubePlayer: React.FC = () => {
       firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
     };
 
-    window.onYouTubeIframeAPIReady = initializeYouTubePlayer;
     loadYouTubeScript();
+    window.onYouTubeIframeAPIReady = initializeYouTubePlayer;
 
     // Clean up function to remove global event listener when component unmounts
     return () => {
@@ -85,62 +107,26 @@ const YouTubePlayer: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!currentPlaybackState) return;
+    if (!currentPlaybackState || !videoId) return;
 
     initializeYouTubePlayer();
-  }, [currentPlaybackState?.item.id]);
-
-  const playVideo = () => {
-    if (!currentPlaybackState || !playerRef.current) return;
-
-    setCurrentPlaybackState({
-      ...currentPlaybackState,
-      is_playing: true,
-    });
-
-    playerRef.current.playVideo();
-  };
-
-  const pauseVideo = () => {
-    if (!currentPlaybackState || !playerRef.current) return;
-
-    setCurrentPlaybackState({
-      ...currentPlaybackState,
-      is_playing: false,
-    });
-
-    playerRef.current.pauseVideo();
-  };
-
-  const stopVideo = () => {
-    if (!currentPlaybackState || !playerRef.current) return;
-
-    setCurrentPlaybackState({
-      ...currentPlaybackState,
-      is_playing: false,
-    });
-
-    playerRef.current.stopVideo();
-  };
+  }, [currentPlaybackState, videoId, provider]);
 
   if (!currentPlaybackState) return null;
 
+  const iframeParams = "?enablejsapi=1&autoplay=1&controls=2&disablekb=1&rel=1";
+  const iframeSrc = `https://www.youtube.com/embed/${currentPlaybackState.item.id}${iframeParams}`;
+
   return (
-    <div>
-      <iframe
-        id="player"
-        width="640"
-        height="360"
-        src={`http://www.youtube.com/embed/${currentPlaybackState.item.id}?enablejsapi=1`}
-      />
-
-      <div>{currentPlaybackState.item.id}</div>
-      <div>{currentPlaybackState.item.name}</div>
-
-      <Button onClick={pauseVideo}>PAUSE</Button>
-      <Button onClick={playVideo}>PLAY</Button>
-      <Button onClick={stopVideo}>STOP</Button>
-    </div>
+    <iframe
+      id="player"
+      className="hidden"
+      allow="autoplay"
+      allowFullScreen
+      src={iframeSrc}
+      height="48"
+      width="48"
+    />
   );
 };
 

@@ -40,7 +40,7 @@ const Playlist: NextPage = () => {
     () =>
       playlist?.tracks.items
         .filter((item) => !item.is_local) // TODO remove this filter when LocalTrack component is ready
-        .map((item) => item.track),
+        .map((item) => item.track as SpotifyApi.TrackObjectFull),
     [playlist]
   );
 
@@ -100,6 +100,7 @@ const Playlist: NextPage = () => {
           className="bg-gradient px-2 sm:px-8 py-4"
         >
           <TrackList
+            contextUri={playlist.uri}
             options={{
               showCover: true,
               showPlaybackControls: true,

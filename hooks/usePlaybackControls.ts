@@ -4,19 +4,51 @@ import { SearchProvider, Track } from "@/types";
 
 import { usePlayerStore } from "@/store/usePlayerStore";
 import { useTimerStore } from "@/store/useTimerStore";
+import { useYTPlayerStore } from "@/store/useYTPlayerStore";
 
 import useSpotify from "@/hooks/useSpotify";
 
 const usePlaybackControls = () => {
   const spotifyApi = useSpotify();
-  const { currentPlaybackState, setCurrentPlaybackState } = usePlayerStore();
   const searchParams = useSearchParams();
   const provider = searchParams.get("provider") as SearchProvider;
 
+  const { currentPlaybackState, setCurrentPlaybackState } = usePlayerStore();
+
   const setProgressMs = useTimerStore((s) => s.setProgressMs);
+  const player = useYTPlayerStore((s) => s.player);
+
+  const currentTrackId = currentPlaybackState?.item?.id;
+
+  const resumeSong = () => {
+    if (!currentPlaybackState) return;
+
+    setCurrentPlaybackState({
+      ...currentPlaybackState,
+      is_playing: true,
+    });
+
+    if (provider === "youtube") {
+      player?.playVideo();
+    } else {
+      spotifyApi.play();
+    }
+  };
 
   const playSong = async (track: Track, contextUri?: string) => {
-    if (!track) return;
+    const isReplayingSameTrack =
+      track.id === currentTrackId && currentPlaybackState?.is_playing; // prevent from <Restriction violated UNKNOWN> spotify error
+
+    if (!track || isReplayingSameTrack) return;
+
+    const { body: devices } = await spotifyApi.getMyDevices();
+    const device = devices.devices[0];
+
+    if (track.id === currentTrackId) {
+      resumeSong();
+
+      return;
+    }
 
     if (provider === "youtube") {
       setCurrentPlaybackState({
@@ -26,27 +58,20 @@ const usePlaybackControls = () => {
         progress_ms: 0,
       });
 
-      // spotifyApi.pause();
+      setProgressMs(0);
+
+      if (device.is_active) {
+        spotifyApi.pause();
+      }
 
       return;
-    }
-
-    const currentTrackId = currentPlaybackState?.item?.id;
-
-    // resume the paused track
-    if (currentPlaybackState && track.id === currentTrackId) {
-      spotifyApi.play();
-
-      setCurrentPlaybackState({
-        ...currentPlaybackState,
-        is_playing: true,
-      });
     } else {
-      // play a new track
-      const { body: devices } = await spotifyApi.getMyDevices();
+      if (devices.devices.length === 0) {
+        throw new Error("No active device found");
+      }
 
       setCurrentPlaybackState({
-        device: devices.devices[0],
+        device,
         is_playing: true,
         item: track,
         progress_ms: 0,
@@ -54,15 +79,8 @@ const usePlaybackControls = () => {
 
       setProgressMs(0);
 
-      if (devices.devices.length === 0) {
-        throw new Error("No active device found");
-      }
-
-      console.log("reached here");
-
       spotifyApi.play({
-        device_id:
-          currentPlaybackState?.device?.id ?? String(devices.devices[0].id),
+        device_id: currentPlaybackState?.device?.id ?? String(device.id),
         context_uri: "album" in track ? track.album.uri : contextUri,
         offset: { uri: track.uri },
       });
@@ -72,21 +90,19 @@ const usePlaybackControls = () => {
   const pauseSong = () => {
     if (!currentPlaybackState) return;
 
+    setCurrentPlaybackState({
+      ...currentPlaybackState,
+      is_playing: false,
+    });
+
     if (provider === "youtube") {
-      setCurrentPlaybackState({
-        ...currentPlaybackState,
-        is_playing: false,
-      });
+      player?.pauseVideo();
     } else {
-      setCurrentPlaybackState({
-        ...currentPlaybackState,
-        is_playing: false,
-      });
       spotifyApi.pause();
     }
   };
 
-  return { playSong, pauseSong };
+  return { playSong, pauseSong, resumeSong };
 };
 
 export default usePlaybackControls;
