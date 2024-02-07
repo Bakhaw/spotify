@@ -2,12 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 
-import {
-  FullTrack,
-  SearchProvider,
-  TrackOrigin,
-  YTMusicSongDetailed,
-} from "@/types";
+import { FullTrack, SearchProvider, TrackOrigin, YTMusicSong } from "@/types";
 
 import useSpotify from "@/hooks/useSpotify";
 
@@ -64,7 +59,7 @@ const Search = ({
       const res = await fetch(`/api/search/youtube?query=${query}`);
       const json = await res.json();
 
-      const result = json.result as YTMusicSongDetailed[];
+      const result = json.result as YTMusicSong[];
 
       return result;
     } catch (error) {
@@ -86,10 +81,6 @@ const Search = ({
   );
 
   const formattedSearchResponse = searchMapper(searchYoutubeResponse ?? []);
-  const ytbTracks: FullTrack[] = formattedSearchResponse.map((item) => ({
-    ...item,
-    origin: TrackOrigin.YOUTUBE,
-  }));
 
   return (
     <Container>
@@ -164,7 +155,7 @@ const Search = ({
                   showOrder: true,
                   showVisualizer: true,
                 }}
-                tracks={ytbTracks}
+                tracks={formattedSearchResponse}
                 title="tracks"
               />
             </div>

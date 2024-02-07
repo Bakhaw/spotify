@@ -1,8 +1,9 @@
-import { YTMusicSongDetailed } from "@/types";
+import { FullTrack, TrackOrigin, YTMusicSearchResponse } from "@/types";
 
-function searchMapper(searchYoutubeResponse: YTMusicSongDetailed[]) {
-  const formattedSearchResponse: SpotifyApi.TrackObjectFull[] =
-    searchYoutubeResponse.map((item, index: number) => ({
+function searchMapper(searchYoutubeResponse: YTMusicSearchResponse) {
+  const formattedSearchResponse: FullTrack[] = searchYoutubeResponse.map(
+    (item, index: number) => ({
+      origin: TrackOrigin.YOUTUBE,
       disc_number: 0,
       duration_ms: item.duration ? item.duration * 1000 : 0,
       explicit: false,
@@ -33,8 +34,8 @@ function searchMapper(searchYoutubeResponse: YTMusicSongDetailed[]) {
         ],
         album_type: "album",
         href: "",
-        id: "",
-        name: "",
+        id: "album" in item && item.album?.albumId,
+        name: "album" in item && item.album?.name,
         release_date: "",
         release_date_precision: "day",
         total_tracks: 1,
@@ -64,7 +65,8 @@ function searchMapper(searchYoutubeResponse: YTMusicSongDetailed[]) {
           uri: "",
         },
       ],
-    }));
+    })
+  );
 
   return formattedSearchResponse;
 }

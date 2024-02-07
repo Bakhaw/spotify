@@ -25,7 +25,7 @@ export type Track =
   | SpotifyApi.EpisodeObject;
 
 // Youtube Music API (ytmuci-api)
-export type YTMusicSongDetailed = {
+export type YTMusicSong = {
   type: "SONG";
   videoId: string;
   name: string;
@@ -45,7 +45,25 @@ export type YTMusicSongDetailed = {
   }[];
 };
 
-export type YTMusicSearchResult =
+export type YTMusicVideo = {
+  type: "VIDEO";
+  videoId: string;
+  name: string;
+  artist: {
+    artistId: string | null;
+    name: string;
+  };
+  duration: number | null;
+  thumbnails: {
+    url: string;
+    width: number;
+    height: number;
+  }[];
+};
+
+export type YTMusicSearchResponse = (YTMusicSong | YTMusicVideo)[];
+
+type __YTMusicSearchResult =
   | {
       type: "SONG";
       videoId: string;
