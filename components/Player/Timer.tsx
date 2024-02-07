@@ -53,7 +53,7 @@ const Timer: React.FC<TimerProps> = ({ className }) => {
   // [Progress MS -> Next Track]
   // used to increment progressMs value every second AND to handle nextTrack
   useEffect(() => {
-    if (!currentPlaybackState?.is_playing || provider === "youtube") return;
+    if (!currentPlaybackState?.is_playing) return;
 
     const intervalId = setInterval(() => {
       if (
