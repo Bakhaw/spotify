@@ -139,7 +139,7 @@ const Search = ({
           </div>
         )}
 
-        {searchYoutubeResponse && (
+        {provider === "youtube" && searchYoutubeResponse && !isYtbFetching && (
           <div className="flex items-start justify-between gap-4">
             <div className="w-full">
               <TrackList
