@@ -91,26 +91,24 @@ function SearchBar() {
             }
             onValueChange={handleSelectChange}
           >
-            <SelectTrigger className="px-2 rounded-full">
+            <SelectTrigger className="px-2 rounded-full shadow-none">
               <SelectValue placeholder="Search with" />
             </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                {searchProviders.map((provider) => (
-                  <SelectItem
-                    key={provider}
-                    value={provider}
-                    defaultValue={provider}
-                  >
-                    <Image
-                      alt={provider}
-                      height={24}
-                      width={24}
-                      src={providersIcons[provider]}
-                    />
-                  </SelectItem>
-                ))}
-              </SelectGroup>
+            <SelectContent className="min-w-0">
+              {searchProviders.map((provider) => (
+                <SelectItem
+                  key={provider}
+                  defaultValue={provider}
+                  value={provider}
+                >
+                  <Image
+                    alt={provider}
+                    height={24}
+                    width={24}
+                    src={providersIcons[provider]}
+                  />
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
