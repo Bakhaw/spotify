@@ -2,7 +2,12 @@
 
 import { useQuery } from "@tanstack/react-query";
 
-import { SearchProvider, YTMusicSongDetailed } from "@/types";
+import {
+  FullTrack,
+  SearchProvider,
+  TrackOrigin,
+  YTMusicSongDetailed,
+} from "@/types";
 
 import useSpotify from "@/hooks/useSpotify";
 
@@ -73,7 +78,18 @@ const Search = ({
     enabled: Boolean(query) && provider === "youtube",
   });
 
+  const tracks: FullTrack[] | undefined = searchResponse?.tracks?.items.map(
+    (item) => ({
+      ...item,
+      origin: TrackOrigin.SPOTIFY,
+    })
+  );
+
   const formattedSearchResponse = searchMapper(searchYoutubeResponse ?? []);
+  const ytbTracks: FullTrack[] = formattedSearchResponse.map((item) => ({
+    ...item,
+    origin: TrackOrigin.YOUTUBE,
+  }));
 
   return (
     <Container>
@@ -111,7 +127,7 @@ const Search = ({
                 showOrder: true,
                 showVisualizer: true,
               }}
-              tracks={searchResponse?.tracks?.items}
+              tracks={tracks}
               title="tracks"
             />
 
@@ -148,7 +164,7 @@ const Search = ({
                   showOrder: true,
                   showVisualizer: true,
                 }}
-                tracks={formattedSearchResponse}
+                tracks={ytbTracks}
                 title="tracks"
               />
             </div>

@@ -5,6 +5,8 @@ import { NextPage } from "next";
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 
+import { FullTrack, TrackOrigin } from "@/types";
+
 import useDominantColor from "@/hooks/useDominantColor";
 import useSpotify from "@/hooks/useSpotify";
 
@@ -59,6 +61,11 @@ const Playlist: NextPage = () => {
   const playlistDuration = formatMs(duration);
   const totalTracks = formattedTracks.items.length;
 
+  const tracks: FullTrack[] | undefined = formattedTracks.items.map((item) => ({
+    ...item,
+    origin: TrackOrigin.SPOTIFY,
+  }));
+
   return (
     <>
       <div className="sm:relative">
@@ -105,7 +112,7 @@ const Playlist: NextPage = () => {
               showCover: true,
               showPlaybackControls: true,
             }}
-            tracks={formattedTracks.items}
+            tracks={tracks}
           />
         </div>
       </Container>

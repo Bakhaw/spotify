@@ -11,8 +11,11 @@ export async function GET(req: Request) {
 
   try {
     await ytmusic.initialize();
-    // const result = await ytmusic.searchSongs(query);
-    const result = await ytmusic.searchVideos(query);
+    const songs = await ytmusic.searchSongs(query);
+    const videos = await ytmusic.searchVideos(query);
+
+    // TODO display the most closest to the search
+    const result = await Promise.all([...songs, ...videos]);
 
     return NextResponse.json({ result });
   } catch (error) {

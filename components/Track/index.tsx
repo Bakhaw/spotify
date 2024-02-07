@@ -1,4 +1,4 @@
-import { Track as TrackType } from "@/types";
+import { FullTrack } from "@/types";
 
 import usePlaybackControls from "@/hooks/usePlaybackControls";
 
@@ -17,7 +17,7 @@ import { TrackContext } from "./context";
 export interface TrackProps {
   children: React.ReactNode;
   contextUri?: string;
-  track: TrackType | null;
+  track: FullTrack | null;
 }
 
 export interface TrackComposition {

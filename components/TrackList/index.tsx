@@ -1,3 +1,5 @@
+import { FullTrack } from "@/types";
+
 import usePlaylists from "@/hooks/usePlaylists";
 
 import ContextMenu from "@/components/ContextMenu";
@@ -20,10 +22,7 @@ interface TrackListProps {
   options: TrackListOptions;
   contextUri?: string;
   title?: string;
-  tracks:
-    | SpotifyApi.TrackObjectFull[]
-    | SpotifyApi.TrackObjectSimplified[]
-    | undefined;
+  tracks: FullTrack[] | undefined;
 }
 
 interface TrackListComposition {
