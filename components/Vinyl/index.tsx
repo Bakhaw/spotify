@@ -4,6 +4,8 @@ import Image from "next/image";
 import { IoPlaySkipBack, IoPlaySkipForward } from "react-icons/io5";
 import { FaPause, FaPlay } from "react-icons/fa6";
 
+import { TrackOrigin } from "@/types";
+
 import { usePlayerStore } from "@/store/usePlayerStore";
 import { useTimerStore } from "@/store/useTimerStore";
 
@@ -76,7 +78,10 @@ const Vinyl = () => {
     setTimeout(async () => {
       setCurrentPlaybackState({
         ...currentPlaybackState,
-        item: nextTrack,
+        item: {
+          ...nextTrack,
+          origin: TrackOrigin.SPOTIFY,
+        },
         is_playing: true,
         progress_ms: 0,
       });

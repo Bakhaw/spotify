@@ -1,7 +1,11 @@
+import { useSearchParams } from "next/navigation";
 import { debounce } from "lodash";
 import { TbVolume, TbVolumeOff } from "react-icons/tb";
 
+import { SearchProvider } from "@/types";
+
 import { usePlayerStore } from "@/store/usePlayerStore";
+import { useYTPlayerStore } from "@/store/useYTPlayerStore";
 
 import useSpotify from "@/hooks/useSpotify";
 
@@ -9,10 +13,14 @@ import { Slider } from "@/components/ui/slider";
 
 function Volume() {
   const spotifyApi = useSpotify();
+  const searchParams = useSearchParams();
+  const provider = searchParams.get("provider") as SearchProvider;
+
   const { currentPlaybackState, setCurrentPlaybackState } = usePlayerStore();
+  const YTPlayer = useYTPlayerStore((s) => s.player);
 
   function onVolumeChange(value: number[]) {
-    if (!currentPlaybackState) return;
+    if (!currentPlaybackState?.device) return;
 
     const newVolume = value[0];
 
@@ -25,8 +33,12 @@ function Volume() {
     });
 
     if (newVolume > 0 && newVolume < 100) {
-      if (spotifyApi.getAccessToken()) {
-        debounceAdjustVolume(newVolume);
+      if (provider === "youtube") {
+        YTPlayer?.setVolume(newVolume);
+      } else {
+        if (spotifyApi.getAccessToken()) {
+          debounceAdjustVolume(newVolume);
+        }
       }
     }
   }
@@ -38,7 +50,7 @@ function Volume() {
   const isVolumeMuted = currentPlaybackState?.device?.volume_percent === 0;
 
   function toggleMuteVolume() {
-    if (!currentPlaybackState) return;
+    if (!currentPlaybackState?.device) return;
 
     const defaultVolume = 30;
     const newVolume = isVolumeMuted ? defaultVolume : 0;
@@ -51,7 +63,11 @@ function Volume() {
       },
     });
 
-    spotifyApi.setVolume(newVolume);
+    if (provider === "youtube") {
+      YTPlayer?.setVolume(newVolume);
+    } else {
+      spotifyApi.setVolume(newVolume);
+    }
   }
 
   if (!currentPlaybackState?.device) return null;

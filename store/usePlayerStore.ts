@@ -1,13 +1,13 @@
 import { create } from "zustand";
 
-import { Queue, Track } from "@/types";
+import { FullTrack, Queue, TrackOrigin } from "@/types";
 
 import spotifyApi from "@/lib/spotify";
 
 type CurrentPlaybackState = {
-  device: SpotifyApi.UserDevice;
+  device: SpotifyApi.UserDevice | null;
   is_playing: boolean;
-  item: Track;
+  item: FullTrack;
   progress_ms: number | null;
 };
 
@@ -29,7 +29,10 @@ export const usePlayerStore = create<PlayerStore>()((set) => ({
       currentPlaybackState: {
         device: body.device,
         is_playing: body.is_playing,
-        item: body.item,
+        item: {
+          ...body.item,
+          origin: TrackOrigin.SPOTIFY,
+        },
         progress_ms: body.progress_ms,
       },
     });

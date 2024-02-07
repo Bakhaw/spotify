@@ -5,6 +5,8 @@ import { NextPage } from "next";
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 
+import { FullTrack, TrackOrigin } from "@/types";
+
 import useDominantColor from "@/hooks/useDominantColor";
 import useSpotify from "@/hooks/useSpotify";
 
@@ -36,18 +38,21 @@ const Playlist: NextPage = () => {
   const dominantColor = useDominantColor(playlist?.images[0].url);
   const backgroundColor = generateRGBString(dominantColor);
 
-  const formattedItems = useMemo(
+  const formattedItems: FullTrack[] | undefined = useMemo(
     () =>
       playlist?.tracks.items
         .filter((item) => !item.is_local) // TODO remove this filter when LocalTrack component is ready
-        .map((item) => item.track),
+        .map((item) => ({
+          ...(item.track as SpotifyApi.TrackObjectFull),
+          origin: TrackOrigin.SPOTIFY,
+        })),
     [playlist]
   );
 
   if (error || isPending) return null;
 
   const formattedTracks = {
-    ...playlist.tracks,
+    ...playlist?.tracks,
     items: formattedItems ?? [],
   };
 

@@ -2,6 +2,8 @@
 
 import { useCallback } from "react";
 
+import { FullTrack, TrackOrigin } from "@/types";
+
 import useFetch from "@/hooks/useFetch";
 import useSpotify from "@/hooks/useSpotify";
 
@@ -16,7 +18,12 @@ function SavedTracks() {
     [spotifyApi]
   );
   const savedTracks = useFetch(getSavedTracks);
-  const formattedSavedTracks = savedTracks?.items.map((item) => item.track);
+  const formattedSavedTracks: FullTrack[] | undefined = savedTracks?.items.map(
+    (item) => ({
+      ...item.track,
+      origin: TrackOrigin.SPOTIFY,
+    })
+  );
 
   if (!savedTracks) return null;
 

@@ -1,8 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { debounce } from "lodash";
+
+import { SearchProvider, TrackOrigin } from "@/types";
 
 import { usePlayerStore } from "@/store/usePlayerStore";
 import { useTimerStore } from "@/store/useTimerStore";
@@ -12,6 +15,7 @@ import useSpotify from "@/hooks/useSpotify";
 import { cn } from "@/lib/utils";
 
 import { Slider } from "@/components/ui/slider";
+import { useYTPlayerStore } from "@/store/useYTPlayerStore";
 
 interface TimerProps {
   className?: string;
@@ -20,10 +24,13 @@ interface TimerProps {
 const Timer: React.FC<TimerProps> = ({ className }) => {
   const spotifyApi = useSpotify();
   const { data: session } = useSession();
+  const searchParams = useSearchParams();
+  const provider = searchParams.get("provider") as SearchProvider;
 
   const { currentPlaybackState, fetchQueue, setCurrentPlaybackState } =
     usePlayerStore();
   const { progressMs, refetch, setProgressMs, setRefetch } = useTimerStore();
+  const YTPlayer = useYTPlayerStore((s) => s.player);
 
   const [nextTrack, setNextTrack] = useState<SpotifyApi.TrackObjectFull | null>(
     null
@@ -51,11 +58,20 @@ const Timer: React.FC<TimerProps> = ({ className }) => {
     const intervalId = setInterval(() => {
       if (progressMs === null || !currentPlaybackState?.item) return;
 
+      if (
+        provider === "youtube" &&
+        progressMs > currentPlaybackState.item.duration_ms
+      )
+        return;
+
       if (nextTrack && progressMs > currentPlaybackState.item.duration_ms) {
         setCurrentPlaybackState({
           ...currentPlaybackState,
           is_playing: true,
-          item: nextTrack,
+          item: {
+            ...nextTrack,
+            origin: TrackOrigin.SPOTIFY,
+          },
           progress_ms: 0,
         });
 
@@ -73,6 +89,7 @@ const Timer: React.FC<TimerProps> = ({ className }) => {
 
     return () => clearInterval(intervalId);
   }, [
+    provider,
     currentPlaybackState,
     nextTrack,
     progressMs,
@@ -84,6 +101,8 @@ const Timer: React.FC<TimerProps> = ({ className }) => {
   // [Next Track]
   // used to catch if we approach the end of a song, the "refetch" value is true whenever it's the case (updates in setInterval)
   useEffect(() => {
+    if (provider === "youtube") return;
+
     if (refetch) {
       const handleRefetch = async () => {
         try {
@@ -94,18 +113,21 @@ const Timer: React.FC<TimerProps> = ({ className }) => {
           const { currentlyPlaying } = queue;
           const { item: currentPlaybackItem } = currentPlaybackState;
 
-          if (currentlyPlaying.id !== currentPlaybackItem.id) {
+          if (currentlyPlaying?.id !== currentPlaybackItem?.id) {
             // Desynchronization check due to fetch duration.
             // If the Spotify currentPlayingTrack is different from our playbackState,
             // it means the "currentlyPlaying" response from Spotify is the next track.
             // Otherwise, the next track stored in "currentlyPlaying" will be skipped.
             const { body } = await spotifyApi.getMyCurrentPlaybackState();
 
-            if (!body.item) return;
+            if (!body?.item) return;
 
             setCurrentPlaybackState({
               device: body.device,
-              item: body.item,
+              item: {
+                ...body.item,
+                origin: TrackOrigin.SPOTIFY,
+              },
               is_playing: body.is_playing,
               progress_ms: body.progress_ms,
             });
@@ -126,6 +148,7 @@ const Timer: React.FC<TimerProps> = ({ className }) => {
       handleRefetch();
     }
   }, [
+    provider,
     refetch,
     currentPlaybackState,
     spotifyApi,
@@ -135,17 +158,24 @@ const Timer: React.FC<TimerProps> = ({ className }) => {
     setRefetch,
   ]);
 
-  function onProgressChange(value: number[]) {
+  function handleProgressChange(value: number[]) {
     const newProgressMs = value[0];
 
     if (!newProgressMs || newProgressMs === progressMs) return;
 
     setProgressMs(newProgressMs);
-    spotifyApi.seek(newProgressMs);
+
+    if (provider === "youtube") {
+      // we divide by 1000 because the seekTo function parameter needs to be in seconds
+      // BUT newProgressMs is in milliseconds (quick maths)
+      YTPlayer?.seekTo(newProgressMs / 1000);
+    } else {
+      spotifyApi.seek(newProgressMs);
+    }
   }
 
   const debounceOnProgressChange = debounce((value: number[]) => {
-    onProgressChange(value);
+    handleProgressChange(value);
   }, 300);
 
   if (progressMs === null || !currentPlaybackState?.item) return null;

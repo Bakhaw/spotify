@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
-import { TimeRange } from "@/types";
+import { FullTrack, TimeRange, TrackOrigin } from "@/types";
 
 import useSpotify from "@/hooks/useSpotify";
 
@@ -48,6 +48,11 @@ function TopTracks() {
 
   if (error) return "Error....";
 
+  const tracks: FullTrack[] | undefined = topTracks?.items.map((item) => ({
+    ...item,
+    origin: TrackOrigin.SPOTIFY,
+  }));
+
   return (
     <div className="flex flex-col gap-2">
       <div className="flex justify-between items-center">
@@ -80,7 +85,7 @@ function TopTracks() {
             showOrder: true,
             showVisualizer: true,
           }}
-          tracks={topTracks.items}
+          tracks={tracks}
         />
       )}
     </div>

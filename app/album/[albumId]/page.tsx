@@ -16,6 +16,7 @@ import TrackListHeader from "@/components/TrackListHeader";
 
 import AlbumCopyrights from "./AlbumCopyrights";
 import AlbumReleaseDate from "./AlbumReleaseDate";
+import { FullTrack, TrackOrigin } from "@/types";
 
 const Album: NextPage = () => {
   const { albumId } = useParams();
@@ -37,6 +38,11 @@ const Album: NextPage = () => {
   const backgroundColor = generateRGBString(dominantColor);
 
   if (error) return "Error....";
+
+  const tracks: FullTrack[] | undefined = album?.tracks.items.map((item) => ({
+    ...item,
+    origin: TrackOrigin.SPOTIFY,
+  }));
 
   return (
     <>
@@ -61,7 +67,7 @@ const Album: NextPage = () => {
                   showAlbumName: false,
                   showPlaybackControls: true,
                 }}
-                tracks={album?.tracks.items}
+                tracks={tracks}
               />
             </div>
 

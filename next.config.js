@@ -5,8 +5,8 @@ const withPWA = require("next-pwa")({
   disable: process.env.NODE_ENV === "development",
 });
 
-// from spotify api
 const hosts = [
+  // from spotify api
   "i.scdn.co",
   "t.scdn.co",
   "mosaic.scdn.co",
@@ -21,6 +21,17 @@ const hosts = [
   "seed-mix-image.spotifycdn.com",
   "newjams-images.scdn.co",
   "daily-mix.scdn.co",
+
+  // from youtube api
+  "i.ytimg.com",
+  "yt3.ggpht.com",
+
+  // from youtube-music (unofficial) api
+  "lh3.googleusercontent.com",
+  "yt3.googleusercontent.com",
+
+  // 🤡
+  "localhost",
 ];
 
 const nextConfig = withPWA({

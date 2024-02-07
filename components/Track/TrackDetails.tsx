@@ -7,6 +7,7 @@ import ArtistLink from "@/components/ArtistLink";
 import Visualizer from "@/components/Visualizer";
 
 import { useTrackContext } from "./context";
+import { TrackOrigin } from "@/types";
 
 interface TrackDetailsProps {
   showVisualizer?: boolean; // default false
@@ -17,18 +18,20 @@ const TrackDetails: React.FC<TrackDetailsProps> = ({
   const { track } = useTrackContext();
   const currentPlaybackState = usePlayerStore((s) => s.currentPlaybackState);
 
-  const currentTrackId = currentPlaybackState?.item?.id;
-  const isTrackActive = track.id === currentTrackId;
   const isPlaying = currentPlaybackState?.is_playing;
 
-  const isFullTrack = "album" in track;
+  const currentTrackId = currentPlaybackState?.item?.id;
+  const isTrackActive = track.id === currentTrackId;
+
+  const showAlbumLink =
+    track.origin === TrackOrigin.SPOTIFY && "album" in track;
 
   return (
     <div className="flex flex-col max-w-[45vw] md:max-w-80">
       <div className="flex items-baseline gap-2">
         {showVisualizer && isTrackActive && isPlaying && <Visualizer />}
 
-        {isFullTrack ? (
+        {showAlbumLink ? (
           <AlbumLink isActive={isTrackActive} albumId={track.album.id}>
             {track.name}
           </AlbumLink>
@@ -57,7 +60,26 @@ const TrackDetails: React.FC<TrackDetailsProps> = ({
           </svg>
         )}
 
-        {"artists" in track && <ArtistLink artists={track.artists} />}
+        {"artists" in track && (
+          <>
+            {track.origin === TrackOrigin.SPOTIFY ? (
+              <ArtistLink artists={track.artists} />
+            ) : (
+              <ul className="flex text-foreground items-center overflow-hidden">
+                {track.artists.map((artist) => (
+                  <li key={artist.id} className="flex whitespace-nowrap">
+                    <h3
+                    // className="block text-left hover:underline"
+                    // onClick={onClick}
+                    >
+                      {artist.name}
+                    </h3>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </>
+        )}
       </span>
     </div>
   );

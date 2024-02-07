@@ -1,16 +1,13 @@
+import Link from "next/link";
 import { ChevronUpIcon } from "lucide-react";
 import { AiOutlineArrowsAlt } from "react-icons/ai";
 
 import { usePlayerStore } from "@/store/usePlayerStore";
-
 import useTrack from "@/hooks/useTrack";
 import useDominantColor from "@/hooks/useDominantColor";
-
 import generateRGBString from "@/lib/generateRGBString";
 
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
-
-import Link from "next/link";
 
 import Controls from "./Controls";
 import CurrentTrack from "./CurrentTrack";

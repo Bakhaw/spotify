@@ -1,5 +1,8 @@
 import { useCallback } from "react";
+import { useSearchParams } from "next/navigation";
 import { LuMonitorSpeaker } from "react-icons/lu";
+
+import { SearchProvider } from "@/types";
 
 import { usePlayerStore } from "@/store/usePlayerStore";
 
@@ -15,16 +18,20 @@ import {
 
 function DeviceSelector() {
   const spotifyApi = useSpotify();
+  const searchParams = useSearchParams();
+  const provider = searchParams.get("provider") as SearchProvider;
+
   const { currentPlaybackState, fetchPlaybackState } = usePlayerStore();
 
   const getDevices = useCallback(() => spotifyApi.getMyDevices(), [spotifyApi]);
 
   const devices = useFetch<SpotifyApi.UserDevicesResponse>(getDevices);
 
-  async function onDeviceClick(device: SpotifyApi.UserDevice) {
+  async function onDeviceClick(device: SpotifyApi.UserDevice | null) {
     if (
+      !device ||
       typeof device.id !== "string" ||
-      currentPlaybackState?.device.id === device.id
+      currentPlaybackState?.device?.id === device.id
     )
       return;
 
@@ -38,10 +45,10 @@ function DeviceSelector() {
   if (!devices || !devices.devices) return null;
 
   const sortedDevices = devices.devices.filter(
-    (device) => currentPlaybackState?.device.id !== device.id
+    (device) => currentPlaybackState?.device?.id !== device.id
   );
 
-  if (!currentPlaybackState?.device) return null;
+  if (!currentPlaybackState?.device || provider === "youtube") return null;
 
   return (
     <>
