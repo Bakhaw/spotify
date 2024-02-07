@@ -48,7 +48,7 @@ const YouTubePlayer: React.FC = () => {
   const initializeYouTubePlayer = () => {
     if (provider !== "youtube" || !videoId) return;
 
-    if (window.YT) {
+    if (window.YT?.Player) {
       new window.YT.Player("player", {
         height: "48",
         width: "48",

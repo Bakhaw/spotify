@@ -1,11 +1,8 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 
 import { SearchProvider, YTMusicSongDetailed } from "@/types";
-
-import { useSearchProviderStore } from "@/store/useSearchProviderStore";
 
 import useSpotify from "@/hooks/useSpotify";
 
@@ -16,9 +13,6 @@ import Container from "@/components/Container";
 import HorizontalSlider from "@/components/HorizontalSlider";
 import SearchBar from "@/components/SearchBar";
 import TrackList from "@/components/TrackList";
-import YouTubePlayer from "@/components/YoutubePlayer";
-
-import { Button } from "@/components/ui/button";
 
 type SearchType =
   | "album"
@@ -34,11 +28,7 @@ const Search = ({
   searchParams: { provider?: SearchProvider; query?: string };
 }) => {
   const spotifyApi = useSpotify();
-  const pathname = usePathname();
-  const { replace } = useRouter();
   const { provider, query } = searchParams;
-
-  const setSearchProvider = useSearchProviderStore((s) => s.setSearchProvider);
 
   const search = async () => {
     if (!query) return;
@@ -85,28 +75,10 @@ const Search = ({
 
   const formattedSearchResponse = searchMapper(searchYoutubeResponse ?? []);
 
-  function toggleSearchProvider() {
-    const params = new URLSearchParams(searchParams);
-    const provider = params.get("provider");
-
-    if (provider === "youtube") {
-      params.delete("provider");
-      setSearchProvider("spotify");
-    } else {
-      params.set("provider", "youtube");
-      setSearchProvider("youtube");
-    }
-
-    replace(`${pathname}?${params.toString()}`);
-  }
-
   return (
     <Container>
       <BlurBackground />
       <div className="space-y-4 sm:space-y-8">
-        <div>provider: {provider}</div>
-        <Button onClick={toggleSearchProvider}>toggle provider</Button>
-
         <SearchBar />
 
         {provider !== "youtube" && isFetching && (
