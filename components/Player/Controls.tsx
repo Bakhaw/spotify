@@ -1,5 +1,7 @@
 import { useSearchParams } from "next/navigation";
 
+import { TrackOrigin } from "@/types";
+
 import { usePlayerStore } from "@/store/usePlayerStore";
 import { useTimerStore } from "@/store/useTimerStore";
 import { useYTPlayerStore } from "@/store/useYTPlayerStore";
@@ -47,7 +49,10 @@ const Controls = () => {
 
     setCurrentPlaybackState({
       ...currentPlaybackState,
-      item: nextTrack,
+      item: {
+        ...nextTrack,
+        origin: TrackOrigin.SPOTIFY,
+      },
       is_playing: true,
       progress_ms: 0,
     });

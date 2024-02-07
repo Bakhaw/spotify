@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { debounce } from "lodash";
 
-import { SearchProvider } from "@/types";
+import { SearchProvider, TrackOrigin } from "@/types";
 
 import { usePlayerStore } from "@/store/usePlayerStore";
 import { useTimerStore } from "@/store/useTimerStore";
@@ -56,9 +56,10 @@ const Timer: React.FC<TimerProps> = ({ className }) => {
     if (!currentPlaybackState?.is_playing) return;
 
     const intervalId = setInterval(() => {
+      if (progressMs === null || !currentPlaybackState?.item) return;
+
       if (
-        progressMs === null ||
-        !currentPlaybackState?.item ||
+        provider === "youtube" &&
         progressMs > currentPlaybackState.item.duration_ms
       )
         return;
@@ -67,7 +68,10 @@ const Timer: React.FC<TimerProps> = ({ className }) => {
         setCurrentPlaybackState({
           ...currentPlaybackState,
           is_playing: true,
-          item: nextTrack,
+          item: {
+            ...nextTrack,
+            origin: TrackOrigin.SPOTIFY,
+          },
           progress_ms: 0,
         });
 
@@ -85,6 +89,7 @@ const Timer: React.FC<TimerProps> = ({ className }) => {
 
     return () => clearInterval(intervalId);
   }, [
+    provider,
     currentPlaybackState,
     nextTrack,
     progressMs,
@@ -119,7 +124,10 @@ const Timer: React.FC<TimerProps> = ({ className }) => {
 
             setCurrentPlaybackState({
               device: body.device,
-              item: body.item,
+              item: {
+                ...body.item,
+                origin: TrackOrigin.SPOTIFY,
+              },
               is_playing: body.is_playing,
               progress_ms: body.progress_ms,
             });

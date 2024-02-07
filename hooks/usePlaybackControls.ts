@@ -1,6 +1,6 @@
 import { useSearchParams } from "next/navigation";
 
-import { SearchProvider, Track } from "@/types";
+import { SearchProvider, Track, TrackOrigin } from "@/types";
 
 import { usePlayerStore } from "@/store/usePlayerStore";
 import { useTimerStore } from "@/store/useTimerStore";
@@ -54,7 +54,10 @@ const usePlaybackControls = () => {
       setCurrentPlaybackState({
         device: null,
         is_playing: true,
-        item: track,
+        item: {
+          ...track,
+          origin: TrackOrigin.YOUTUBE,
+        },
         progress_ms: 0,
       });
 
@@ -73,7 +76,10 @@ const usePlaybackControls = () => {
       setCurrentPlaybackState({
         device,
         is_playing: true,
-        item: track,
+        item: {
+          ...track,
+          origin: TrackOrigin.YOUTUBE,
+        },
         progress_ms: 0,
       });
 

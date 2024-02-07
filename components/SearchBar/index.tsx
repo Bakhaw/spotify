@@ -5,8 +5,6 @@ import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { IoSearchOutline } from "react-icons/io5";
 
-import { useSearchProviderStore } from "@/store/useSearchProviderStore";
-
 import { SearchProvider } from "@/types/index";
 
 import getSearchProviders from "@/lib/getSearchProviders";
@@ -17,7 +15,6 @@ import YoutubeIcon from "@/assets/youtube-icon.svg";
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -27,7 +24,6 @@ function SearchBar() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
-  const setSearchProvider = useSearchProviderStore((s) => s.setSearchProvider);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const defaultValue = searchParams.get("query")?.toString();
@@ -55,10 +51,8 @@ function SearchBar() {
 
     if (selectValue === "youtube") {
       params.set("provider", "youtube");
-      setSearchProvider("youtube");
     } else {
       params.delete("provider");
-      setSearchProvider("spotify");
     }
 
     replace(`${pathname}?${params.toString()}`);

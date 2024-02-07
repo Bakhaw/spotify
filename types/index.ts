@@ -10,6 +10,15 @@ export type Queue = {
   queue: SpotifyApi.TrackObjectFull[];
 };
 
+export enum TrackOrigin {
+  SPOTIFY = "spotify",
+  YOUTUBE = "youtube",
+}
+
+export type FullTrack = Track & {
+  origin: TrackOrigin;
+};
+
 export type Track =
   | SpotifyApi.TrackObjectFull
   | SpotifyApi.TrackObjectSimplified
