@@ -146,7 +146,11 @@ const ArtistDetails: NextPage = ({
             <div className="space-y-2 px-4 sm:px-8">
               <h1 className="text-3xl font-bold lowercase">albums</h1>
 
-              <HorizontalSlider items={albums} type="album" />
+              <HorizontalSlider
+                items={albums}
+                type="album"
+                showArtistName={false}
+              />
             </div>
           )}
 
@@ -154,7 +158,11 @@ const ArtistDetails: NextPage = ({
             <div className="space-y-2 px-4 sm:px-8">
               <h1 className="text-3xl font-bold lowercase">singles & ep</h1>
 
-              <HorizontalSlider items={singles} type="album" />
+              <HorizontalSlider
+                items={singles}
+                type="album"
+                showArtistName={false}
+              />
             </div>
           )}
 

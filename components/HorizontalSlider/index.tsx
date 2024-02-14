@@ -5,6 +5,7 @@ import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 
 import { cn } from "@/lib/utils";
 
+import ArtistLink from "@/components/ArtistLink";
 import Cover from "@/components/Cover";
 
 import {
@@ -31,6 +32,7 @@ interface HorizontalSliderProps {
   items?: HorizontalSliderItems;
   type: "artist" | "album" | "playlist";
   rankIcons?: boolean;
+  showArtistName?: boolean; // default true
 }
 
 interface HorizontalSliderComposition {
@@ -38,7 +40,13 @@ interface HorizontalSliderComposition {
 }
 
 const HorizontalSlider: React.FC<HorizontalSliderProps> &
-  HorizontalSliderComposition = ({ className, items, type, rankIcons }) => {
+  HorizontalSliderComposition = ({
+  className,
+  items,
+  type,
+  rankIcons,
+  showArtistName = true,
+}) => {
   const imageSources = [disqueDiamant, disquePlatine, disqueOr];
 
   return (
@@ -56,7 +64,7 @@ const HorizontalSlider: React.FC<HorizontalSliderProps> &
                 <Link key={item.id} href={`/${type}/${item.id}`}>
                   <CarouselItem
                     className={cn(
-                      "space-y-2 h-full w-40 sm:w-52 p-3 rounded-lg bg-hover/10 hover:bg-hover transition-all duration-300",
+                      "flex flex-col gap-1 h-full w-40 sm:w-52 p-3 rounded-lg bg-hover/10 hover:bg-hover transition-all duration-300",
                       index === items.length - 1 && "mr-8 sm:mr-2"
                     )}
                   >
@@ -81,7 +89,19 @@ const HorizontalSlider: React.FC<HorizontalSliderProps> &
                         )}
                       </div>
                     ) : (
-                      <h2 className="line-clamp-3">{item.name}</h2>
+                      <>
+                        <h2 className="line-clamp-2">{item.name}</h2>
+
+                        <div className="mt-auto">
+                          {showArtistName && "artists" in item && (
+                            <ArtistLink artists={item.artists} />
+                          )}
+
+                          {"release_date" in item && (
+                            <h2>{item.release_date.split("-")[0]}</h2>
+                          )}
+                        </div>
+                      </>
                     )}
                   </CarouselItem>
                 </Link>

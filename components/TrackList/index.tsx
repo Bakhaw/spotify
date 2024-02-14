@@ -61,7 +61,9 @@ const TrackList: React.FC<TrackListProps> & TrackListComposition = ({
               className="flex items-center gap-1"
             >
               {trackNumber && (
-                <span className="group-hover:opacity-0 w-6">{index + 1}</span>
+                <span className="shrink-0 group-hover:opacity-0 w-6">
+                  {index + 1}
+                </span>
               )}
 
               <div className="w-full">
@@ -72,7 +74,7 @@ const TrackList: React.FC<TrackListProps> & TrackListComposition = ({
                         <Track.PlaybackControls trackNumber={index + 1} />
                       )}
 
-                      <div className="flex items-center gap-2 flex-1">
+                      <div className="flex items-center md:flex-1 gap-2 truncate">
                         {showCoverWithPlayButton && (
                           <Track.CoverWithPlayButton />
                         )}
@@ -88,7 +90,7 @@ const TrackList: React.FC<TrackListProps> & TrackListComposition = ({
                         </div>
                       )}
 
-                      <div className="flex items-center gap-2 flex-1 justify-end">
+                      <div className="flex items-center flex-1 gap-2 justify-end">
                         <Track.Actions />
 
                         <div className="hidden sm:block">

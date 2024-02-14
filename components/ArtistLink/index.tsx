@@ -16,9 +16,9 @@ const ArtistLink: React.FC<ArtistLinkProps> = ({
   if (!artists) return null;
 
   return (
-    <ul className="flex text-foreground items-center overflow-hidden">
+    <ul className="flex items-center">
       {artists.map((artist, index) => (
-        <li key={artist.id} className="flex whitespace-nowrap">
+        <li key={artist.id} className="flex text-foreground">
           <Link
             className={cn("block text-left hover:underline", className)}
             href={`/artist/${artist.id}`}
