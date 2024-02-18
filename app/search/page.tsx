@@ -4,6 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 
 import { FullTrack, SearchProvider, TrackOrigin, YTMusicSong } from "@/types";
 
+import { usePlayerStore } from "@/store/usePlayerStore";
+
 import useSpotify from "@/hooks/useSpotify";
 
 import searchMapper from "@/lib/searchMapper";
@@ -29,6 +31,7 @@ const Search = ({
 }) => {
   const spotifyApi = useSpotify();
   const { provider, query } = searchParams;
+  const currentPlaybackState = usePlayerStore((s) => s.currentPlaybackState);
 
   const search = async () => {
     if (!query) return;
@@ -82,11 +85,24 @@ const Search = ({
 
   const formattedSearchResponse = searchMapper(searchYoutubeResponse ?? []);
 
+  const iframeParams = "?enablejsapi=1&autoplay=1&controls=2&disablekb=1&rel=1";
+  const iframeSrc = `https://www.youtube.com/embed/${currentPlaybackState?.item.id}${iframeParams}`;
+
   return (
     <Container>
       <BlurBackground />
       <div className="space-y-4 sm:space-y-8">
         <SearchBar />
+
+        {currentPlaybackState?.item.origin === TrackOrigin.YOUTUBE && (
+          <iframe
+            allow="autoplay"
+            allowFullScreen
+            src={iframeSrc}
+            height="480"
+            width="768"
+          />
+        )}
 
         {provider !== "youtube" && isFetching && (
           <div className="space-y-6">
@@ -109,7 +125,6 @@ const Search = ({
             </div>
           </div>
         )}
-
         {provider !== "youtube" && searchResponse && (
           <div className="space-y-6">
             <TrackList

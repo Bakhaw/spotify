@@ -15,7 +15,7 @@ export async function GET(req: Request) {
     const videos = await ytmusic.searchVideos(query);
 
     // TODO display the most closest to the search
-    const result = await Promise.all([...songs, ...videos]);
+    const result = await Promise.all([...videos, ...songs]);
 
     return NextResponse.json({ result });
   } catch (error) {
