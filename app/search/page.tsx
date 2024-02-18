@@ -85,7 +85,7 @@ const Search = ({
 
   const formattedSearchResponse = searchMapper(searchYoutubeResponse ?? []);
 
-  const iframeParams = "?enablejsapi=1&autoplay=1&controls=2&disablekb=1&rel=1";
+  const iframeParams = "?enablejsapi=1&autoplay=1&controls=2&rel=1";
   const iframeSrc = `https://www.youtube.com/embed/${currentPlaybackState?.item.id}${iframeParams}`;
 
   return (
