@@ -1,6 +1,11 @@
 ## Spotify
 
-A Spotify clone, with some personal additions
+A Spotify clone, with improved UX/UI.
+
+<img width="1792" alt="Capture d’écran 2025-01-07 à 15 58 28" src="https://github.com/user-attachments/assets/d2985791-1d07-47ee-962e-797ab0b55806" />
+<img width="1792" alt="Capture d’écran 2025-01-07 à 15 59 26" src="https://github.com/user-attachments/assets/065761c4-2edd-47ad-9a2e-29d0985b0cf9" />
+<img width="1792" alt="Capture d’écran 2025-01-07 à 16 00 12" src="https://github.com/user-attachments/assets/94161f95-fe33-4f24-99c4-df75d28826b1" />
+
 
 ## About The Project
 
