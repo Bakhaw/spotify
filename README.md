@@ -2,8 +2,13 @@
 
 A Spotify clone, with improved UX/UI.
 
+Personal dashboard
 <img width="1792" alt="Capture d’écran 2025-01-07 à 15 58 28" src="https://github.com/user-attachments/assets/d2985791-1d07-47ee-962e-797ab0b55806" />
+
+Album page
 <img width="1792" alt="Capture d’écran 2025-01-07 à 15 59 26" src="https://github.com/user-attachments/assets/065761c4-2edd-47ad-9a2e-29d0985b0cf9" />
+
+Studio (and else more...)
 <img width="1792" alt="Capture d’écran 2025-01-07 à 16 00 12" src="https://github.com/user-attachments/assets/94161f95-fe33-4f24-99c4-df75d28826b1" />
 
 
