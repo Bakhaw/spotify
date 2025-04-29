@@ -41,7 +41,7 @@ const Controls = () => {
     }, 500);
   }
 
-  async function onForwardButtonClick() {
+  async function nextSong() {
     const queue = await fetchQueue();
     const nextTrack = queue?.queue[0];
 
@@ -134,7 +134,7 @@ const Controls = () => {
         disabled={provider === "youtube"}
         variant="ghost"
         className="h-full p-2 cursor-pointer transition-all	hover:scale-105"
-        onClick={onForwardButtonClick}
+        onClick={nextSong}
       >
         <svg
           data-encore-id="icon"
