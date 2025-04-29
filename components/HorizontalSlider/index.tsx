@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { useMemo } from "react";
 
 import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 
@@ -49,9 +50,14 @@ const HorizontalSlider: React.FC<HorizontalSliderProps> &
 }) => {
   const imageSources = [disqueDiamant, disquePlatine, disqueOr];
 
+  const sanitizedItems = useMemo(
+    () => items?.filter((item) => item !== null),
+    [items]
+  );
+
   return (
     <>
-      {items ? (
+      {sanitizedItems ? (
         <div className={cn("space-y-2 -mx-8", className)}>
           <Carousel
             plugins={[WheelGesturesPlugin()]}
@@ -60,12 +66,12 @@ const HorizontalSlider: React.FC<HorizontalSliderProps> &
             }}
           >
             <CarouselContent className="pl-12 gap-2">
-              {items.map((item, index) => (
+              {sanitizedItems.map((item, index) => (
                 <Link key={item.id} href={`/${type}/${item.id}`}>
                   <CarouselItem
                     className={cn(
                       "flex flex-col gap-1 h-full w-40 sm:w-52 p-3 rounded-lg bg-hover/10 hover:bg-hover transition-all duration-300",
-                      index === items.length - 1 && "mr-8 sm:mr-2"
+                      index === sanitizedItems.length - 1 && "mr-8 sm:mr-2"
                     )}
                   >
                     <Cover

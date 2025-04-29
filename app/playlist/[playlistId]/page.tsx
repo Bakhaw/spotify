@@ -35,7 +35,7 @@ const Playlist: NextPage = () => {
     queryFn: getPlaylist,
   });
 
-  const dominantColor = useDominantColor(playlist?.images[0].url);
+  const dominantColor = useDominantColor(playlist?.images?.[0].url);
   const backgroundColor = generateRGBString(dominantColor);
 
   const formattedItems: FullTrack[] | undefined = useMemo(
