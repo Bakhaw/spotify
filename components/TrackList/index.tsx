@@ -7,6 +7,7 @@ import Draggable from "@/components/Draggable";
 import Track from "@/components/Track";
 
 import TrackListSkeleton from "./TrackListSkeleton";
+import spotifyApi from "@/lib/spotify";
 
 type TrackListOptions = {
   showAlbumName?: boolean; // default true
@@ -49,6 +50,27 @@ const TrackList: React.FC<TrackListProps> & TrackListComposition = ({
 
   const trackNumber = showRank || showOrder;
 
+  async function addToQueueFromTrack(currentTrack: FullTrack) {
+    if (!tracks || !currentTrack) return;
+
+    const startIndex = tracks.findIndex((t) => t.uri === currentTrack.uri);
+
+    if (startIndex === -1) {
+      console.warn("Current track not found in track list");
+      return;
+    }
+
+    const tracksToQueue = tracks.slice(startIndex + 1);
+
+    for (const t of tracksToQueue) {
+      try {
+        await spotifyApi.addToQueue(t.uri);
+      } catch (err) {
+        console.error("Failed to add to queue:", t.uri, err);
+      }
+    }
+  }
+
   return (
     <div>
       {title && <h1 className="text-3xl font-bold lowercase mb-2">{title}</h1>}
@@ -69,7 +91,11 @@ const TrackList: React.FC<TrackListProps> & TrackListComposition = ({
               <div className="w-full">
                 <Draggable id={`track_list:${track?.id}`}>
                   <ContextMenu playlists={playlists} track={track}>
-                    <Track contextUri={contextUri} track={track}>
+                    <Track
+                      contextUri={contextUri}
+                      track={track}
+                      onPlay={() => addToQueueFromTrack(track)}
+                    >
                       {showPlaybackControls && (
                         <Track.PlaybackControls trackNumber={index + 1} />
                       )}

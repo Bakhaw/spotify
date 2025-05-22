@@ -18,6 +18,7 @@ export interface TrackProps {
   children: React.ReactNode;
   contextUri?: string;
   track: FullTrack | null;
+  onPlay: () => void;
 }
 
 export interface TrackComposition {
@@ -35,6 +36,7 @@ const Track: React.FC<TrackProps> & TrackComposition = ({
   children,
   contextUri,
   track,
+  onPlay,
 }) => {
   const { playSong } = usePlaybackControls();
 
@@ -55,6 +57,7 @@ const Track: React.FC<TrackProps> & TrackComposition = ({
 
     try {
       await playSong(track, fallbackContextUri);
+      onPlay();
     } catch (error) {
       if (error === "NO_ACTIVE_DEVICE_FOUND") {
         console.log("NO_ACTIVE_DEVICE_FOUND");
