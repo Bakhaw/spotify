@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { JSDOM } from "jsdom";
+import puppeteer from "puppeteer";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -7,15 +7,23 @@ export async function GET(req: Request) {
 
   if (!artistId) throw new Error("monthlyListeners: artist id not provided");
 
-  const url = `https://open.spotify.com/intl-fr/artist/${artistId}`;
-  const html = await fetch(url).then((res) => res.text());
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+  await page.goto(`https://open.spotify.com/intl-fr/artist/${artistId}`, {
+    waitUntil: "networkidle0",
+  });
 
-  const dom = new JSDOM(html);
-  const document = dom.window.document;
+  const spanText = await page.evaluate(() => {
+    const spans = Array.from(document.querySelectorAll("span"));
+    const target = spans.find(
+      (span) =>
+        span.textContent?.toLowerCase().includes("auditeurs") ||
+        span.textContent?.toLowerCase().includes("listeners")
+    );
+    return target?.textContent || null;
+  });
 
-  const result = document.querySelector(
-    "[data-testid='monthly-listeners-label']"
-  )?.textContent;
+  await browser.close();
 
-  return NextResponse.json({ result });
+  return NextResponse.json({ result: spanText });
 }
