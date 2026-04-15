@@ -40,6 +40,9 @@ const nextConfig = withPWA({
       hostname: host,
     })),
   },
+  experimental: {
+    missingSuspenseWithCSRBailout: false,
+  },
 });
 
 module.exports = nextConfig;

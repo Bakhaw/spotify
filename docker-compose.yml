@@ -7,9 +7,8 @@ services:
       context: .
       dockerfile: ./Dockerfile
     restart: unless-stopped
+    env_file:
+      - .env.local
     ports:
       - 7555:7555
-
-volumes:
-  spotifyproject:
 
