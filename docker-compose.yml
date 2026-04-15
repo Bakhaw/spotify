@@ -11,4 +11,12 @@ services:
       - .env.local
     ports:
       - 7555:7555
+    networks:
+      - default
+      - npm_network
+
+networks:
+  npm_network:
+    external: true
+    name: proxy-network
 

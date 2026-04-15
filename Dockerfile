@@ -21,4 +21,4 @@ RUN pnpm run build
 EXPOSE 7555
 
 # Démarrez l'application
-CMD ["pnpm", "start", "--", "-p", "7555"]
+CMD ["pnpm", "next", "start", "--port", "7555"]
